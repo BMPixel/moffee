@@ -1,10 +1,70 @@
+<style>
+    .slide-content.split {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+    }
+
+    .columns-container {
+        display: flex;
+        flex: 1;
+        width: 100%;
+    }
+
+    .left-column,
+    .right-column {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .left-column {
+        flex: 1;
+        background-color: #f0f0f0;
+        margin-right: 10px;
+    }
+
+    .right-column {
+        flex: 1;
+        background-color: #ffff0f;
+        margin-left: 10px;
+    }
+
+    h1,
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .content-item {
+        margin-bottom: 15px;
+    }
+</style>
+
 <div class="slide-content split">
-    <div class="left-column">
-        <h1>{{ slide.title }}</h1>
-    </div>
-    <div class="right-column">
-        <div class="content">
-            {{ slide.content | nl2br }}
+    {% if slide.title %}
+    <h1>{{ slide.title }}</h1>
+    {% endif %}
+    {% if slide.subtitle %}
+    <h2>{{ slide.subtitle }}</h2>
+    {% endif %}
+    <div class="columns-container">
+        <div class="left-column">
+            {% if slide.contents|length > 0 %}
+            <div class="content-item">
+                {{ slide.contents[0] | markdown }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="right-column">
+            <div class="content">
+                {% for item in slide.contents[1:] %}
+                <div class="content-item">
+                    {{ item | markdown }}
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

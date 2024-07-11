@@ -7,7 +7,7 @@
     <title>{{ title|default('PDF-Optimized Presentation') }}</title>
     <style>
         @page {
-            size: 1920px 1080px;
+            size: 720px 405px;
             margin: 0;
         }
 
@@ -16,11 +16,12 @@
             margin: 0;
             padding: 0;
             background-color: #333;
+            /* font-size: 30px; */
         }
 
         .slide-container {
-            width: 1920px;
-            height: 1080px;
+            width: 720px;
+            height: 405px;
             margin: 40px;
             background-color: white;
         }
@@ -28,20 +29,10 @@
         .slide-content {
             width: 100%;
             height: 100%;
-            padding: 40px;
+            padding: 10px 30px 30px 30px;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
             color: #333;
-        }
-
-        h1 {
-            font-size: 60px;
-            margin-bottom: 30px;
-        }
-
-        p {
-            font-size: 30px;
-            line-height: 1.6;
         }
 
         .slide-number {
@@ -54,8 +45,8 @@
 
         @media print {
             body {
-                width: 1920px;
-                height: 1080px;
+                width: 720px;
+                height: 405px;
             }
 
             .slide-container {
@@ -71,7 +62,6 @@
     <div class="slide-container">
         {% set layout = slide.layout|default('top-down') %}
         {% include 'layouts/' + layout + '.html' %}
-        <div class="slide-number">{{ loop.index }} / {{ slides|length }}</div>
     </div>
     {% endfor %}
 </body>

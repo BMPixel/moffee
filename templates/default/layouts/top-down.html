@@ -1,6 +1,15 @@
 <div class="slide-content top-down">
+    {% if slide.title %}
     <h1>{{ slide.title }}</h1>
+    {% endif %}
+    {% if slide.subtitle %}
+    <h2>{{ slide.subtitle }}</h2>
+    {% endif %}
     <div class="content">
-        {{ slide.content | nl2br }}
+        {% for item in slide.contents %}
+        <div class="content-item">
+            {{ item | markdown }}
+        </div>
+        {% endfor %}
     </div>
 </div>

@@ -1,38 +1,38 @@
 import os
 from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
+from markdown import markdown
 from markupsafe import Markup
+from splitter import paginate
 
-def nl2br(value):
-    return Markup(value.replace('\n', '<br>\n'))
+def md(text):
+    return Markup(markdown(text))
 
 # 设置 Jinja2 环境
-template_dir = os.path.join(os.path.dirname(__file__), 'templates', 'default')
+template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates', 'default')
+tmp_dir = os.path.join(os.path.dirname(__file__), "..", "tmp")  # 确保 tmp 目录存在
 env = Environment(loader=FileSystemLoader(template_dir))
 
 # 添加自定义过滤器
-env.filters['nl2br'] = nl2br
+env.filters['markdown'] = md
 
 # 加载基础模板
 template = env.get_template('base.html')
 
 # 准备要填充到模板中的数据
+
 data = {
     'title': 'My Awesome Presentation',
     'slides': [
         {
             'title': 'Welcome Slide',
-            'content': 'Welcome to this awesome presentation!',
-            'layout': 'top-down'
-        },
-        {
-            'title': 'Key Points',
-            'content': 'Here are the main takeaways:\n- Point 1\n- Point 2\n- Point 3',
+            'subtitle': "Example Slide",
+            'contents': inputs_str,
             'layout': 'split'
         },
         {
             'title': 'Thank You',
-            'content': 'Any questions?',
+            'contents': ['### Any questions?\n\n[Contact us](mailto:example@example.com)'],
             'layout': 'top-down'
         }
     ]
@@ -42,11 +42,10 @@ data = {
 output = template.render(data)
 
 # 确保 tmp 目录存在
-tmp_dir = os.path.join(os.path.dirname(__file__), 'tmp')
 os.makedirs(tmp_dir, exist_ok=True)
 
 # 将渲染后的 HTML 写入文件
-output_file = os.path.join(tmp_dir, f'presentation_{datetime.now().strftime("%Y%m%d_%H%M%S")}.html')
+output_file = os.path.join(tmp_dir, f'presentation.html')
 with open(output_file, 'w', encoding='utf-8') as f:
     f.write(output)
 
