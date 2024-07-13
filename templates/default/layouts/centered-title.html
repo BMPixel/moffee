@@ -1,0 +1,86 @@
+<style>
+    .slide-content.centered-title {
+        font-family: Arial, sans-serif;
+        color: #333;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .centered-title h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        color: #0066cc;
+        position: relative;
+        z-index: 2;
+    }
+
+    .centered-title h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        color: #0099ff;
+    }
+
+    .centered-title h3 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+        color: #33bbff;
+    }
+
+    .centered-title .content {
+        max-width: 80%;
+    }
+
+    .centered-title .content-item {
+        font-size: 1.2em;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .centered-title::before,
+    .centered-title::after {
+        content: '';
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, #e6f7ff, transparent 70%);
+        z-index: 1;
+    }
+
+    .centered-title::before {
+        top: -100px;
+        left: -100px;
+    }
+
+    .centered-title::after {
+        bottom: -100px;
+        right: -100px;
+    }
+</style>
+
+<div class="slide-content centered-title">
+    {% if slide.h1 %}
+    <h1>{{ slide.h1 }}</h1>
+    {% endif %}
+    {% if slide.h2 %}
+    <h2>{{ slide.h2 }}</h2>
+    {% endif %}
+    {% if slide.h3 %}
+    <h3>{{ slide.h3 }}</h3>
+    {% endif %}
+    <div class="content">
+        {% for item in slide.contents %}
+        <div class="content-item">
+            {{ item | markdown }}
+        </div>
+        {% endfor %}
+    </div>
+</div>

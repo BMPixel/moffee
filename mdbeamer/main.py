@@ -3,7 +3,7 @@ from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
 from markdown import markdown
 from markupsafe import Markup
-from splitter import paginate
+from mdbeamer.splitter import paginate
 
 def md(text):
     return Markup(markdown(text))
@@ -20,22 +20,22 @@ env.filters['markdown'] = md
 template = env.get_template('base.html')
 
 # 准备要填充到模板中的数据
+with open(os.path.join(tmp_dir, 'testdoc.md')) as f:
+    document = f.read()
+pages = paginate(document)
 
 data = {
-    'title': 'My Awesome Presentation',
-    'slides': [
+    "title": "My Awesome Presentation",
+    "slides": [
         {
-            'title': 'Welcome Slide',
-            'subtitle': "Example Slide",
-            'contents': inputs_str,
-            'layout': 'split'
-        },
-        {
-            'title': 'Thank You',
-            'contents': ['### Any questions?\n\n[Contact us](mailto:example@example.com)'],
-            'layout': 'top-down'
+            "h1": page.h1,
+            "h2": page.h2,
+            "h3": page.h3,
+            "contents": [c.content for c in page.chunks],
+            "layout": page.option.layout,
         }
-    ]
+        for page in pages
+    ],
 }
 
 # 渲染模板

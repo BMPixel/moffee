@@ -1,6 +1,9 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
-from md_helper import get_header_level, is_divider, is_empty, contains_image
+from typing import List, Optional, Tuple, Dict, Any
+from copy import deepcopy
+import yaml
+import re
+from mdbeamer.md_helper import get_header_level, is_divider, is_empty, contains_image, contains_deco
 
 @dataclass
 class PageOption:
@@ -23,6 +26,7 @@ class Page:
     h1: Optional[str] = None
     h2: Optional[str] = None
     h3: Optional[str] = None
+    deco: Dict[str, Any] = field(default_factory=dict)
 
     @property
     def title(self) -> Optional[str]:
@@ -44,6 +48,8 @@ class Page:
 
         Modifies the page's 'chunks' list in-place.
         """
+        self._preprocess()
+        
         lines = self.raw_md.split("\n")
         current_chunk = []
         blank_line_count = 0
@@ -72,21 +78,103 @@ class Page:
             if i == len(lines) - 1 and current_chunk:
                 self.chunks.append(Chunk(content="\n".join(current_chunk)))
 
-    def process(self):
-        # Any additional processing needed for the page
-        pass
+    def _preprocess(self):
+        """
+        Additional processing needed for the page.
+        Modifies raw_md in place.
+        
+        - Removes headings 1-3
+        - Stripes
+        """
+        
+        lines = self.raw_md.splitlines()
+        lines = [l for l in lines if not (1 <= get_header_level(l) <= 3)]
+        self.raw_md = "\n".join(lines).strip()
 
-def parse_md_yaml(document: str) -> Tuple[str, PageOption]:
+
+def parse_frontmatter(document: str) -> Tuple[str, PageOption]:
     """
-    Parse the yaml header in a given markdown document
-    TODO: actual option retrival
+    Parse the YAML front matter in a given markdown document.
 
     :param document: Input markdown document as a string.
-    :return: document with yaml removed and the PageOption
+    :return: A tuple containing the document with front matter removed and the PageOption.
     """
     document = document.strip()
-    option = PageOption()
-    return document, option
+    front_matter = ""
+    content = document
+
+    # Check if the document starts with '---'
+    if document.startswith('---'):
+        parts = document.split('---', 2)
+        if len(parts) >= 3:
+            front_matter = parts[1].strip()
+            content = parts[2].strip()
+
+    # Parse YAML front matter
+    try:
+        yaml_data = yaml.safe_load(front_matter) if front_matter else {}
+    except yaml.YAMLError:
+        yaml_data = {}
+
+    # Create PageOption from YAML data
+    option = PageOption(
+        default_h1=yaml_data.get('default_h1', False),
+        default_h2=yaml_data.get('default_h2', True),
+        default_h3=yaml_data.get('default_h3', True),
+        layout=yaml_data.get('layout', 'top-down')
+    )
+
+    return content, option
+
+
+def parse_deco(
+    line: str, base_option: Optional[PageOption] = None
+) -> Tuple[Optional[Dict[str, str]], Optional[PageOption]]:
+    """
+    Parses a deco (custom decorator) line and returns a dictionary of key-value pairs.
+    If base_option is provided, it updates the option with matching keys from the deco.
+
+    :param line: The line containing the deco
+    :param base_option: Optional PageOption to update with deco values
+    :return: A tuple containing:
+             - A dictionary of remaining key-value pairs if the line is a valid deco, None otherwise
+             - An updated PageOption if base_option was provided, None otherwise
+    """
+    deco_match = re.match(r"^\s*@\((.*?)\)\s*$", line)
+    if not deco_match:
+        raise ValueError(f"Input line should contain a deco, {line} received.")
+
+    deco_content = deco_match.group(1)
+    pairs = re.findall(r"(\w+)\s*=\s*([^,]+)(?:,|$)", deco_content)
+    deco = {key.strip(): value.strip() for key, value in pairs}
+
+    if base_option is None:
+        return deco, None
+
+    updated_option = deepcopy(base_option)
+    remained_deco = {}
+
+    for key, value in deco.items():
+        if hasattr(updated_option, key):
+            setattr(updated_option, key, parse_value(value))
+        else:
+            remained_deco[key] = parse_value(value)
+
+    return remained_deco, updated_option
+
+
+def parse_value(value: str):
+    """Helper function to parse string values into appropriate types"""
+    if value.lower() == "true":
+        return True
+    elif value.lower() == "false":
+        return False
+    elif value.isdigit():
+        return int(value)
+    elif value.replace(".", "", 1).isdigit():
+        return float(value)
+    return value
+
 
 def paginate(document: str, option: PageOption = None) -> List[Page]:
     """
@@ -94,7 +182,7 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
 
     Splitting criteria:
     - New h1/h2/h3 header (except when following another header)
-    - More than 12 non-empty lines in a page
+    - More than 8 non-empty lines in a page
     - Divider (___, ***, +++)
 
     :param document: Input markdown document as a string.
@@ -105,27 +193,37 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
     current_page_lines = []
     current_h1 = current_h2 = current_h3 = None
     line_count = 0
-    prev_line_was_header = False
-    
-    document, parsed_option = parse_md_yaml(document)
+    prev_header_level = 0
+
+    document, parsed_option = parse_frontmatter(document)
     if option == None:
         option = parsed_option
 
     lines = document.split("\n")
 
     def create_page():
-        nonlocal current_page_lines, line_count, current_h1, current_h2, current_h3
+        nonlocal current_page_lines, line_count, current_h1, current_h2, current_h3, option
         # Only make new page if has non empty lines
 
         if all([l.strip() == '' for l in current_page_lines]):
             return
 
-        raw_md = "\n".join(current_page_lines)
+        deco = {}
+        raw_md = ""
+        local_option = deepcopy(option)
+        for line in current_page_lines:
+            if contains_deco(line):
+                _deco, local_option = parse_deco(line, local_option)
+                deco = {**deco, **_deco}
+            else:
+                raw_md += "\n" + line
+
         page = Page(raw_md=raw_md, 
-                    option=option, 
+                    option=local_option, 
                     h1=current_h1,
                     h2=current_h2,
-                    h3=current_h3)
+                    h3=current_h3,
+                    deco=deco)
 
         pages.append(page)
         current_page_lines = []
@@ -136,13 +234,16 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
         header_level = get_header_level(line)
 
         # Check if this is a new header and not consecutive
-        if header_level > 0 and not prev_line_was_header:
+        # Only break at heading 1-3
+        is_downstep_header_level = prev_header_level == 0 or prev_header_level > header_level
+        is_more_than_level_4 = prev_header_level > header_level >= 3
+        if header_level > 0 and is_downstep_header_level and not is_more_than_level_4:
             # Check if the next line is also a header
             create_page()
 
-        if line_count > 12:
+        if line_count > 8:
             create_page()
-            
+
         if is_divider(line):
             create_page()
             continue
@@ -162,9 +263,9 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
             line_count += 1
 
         if header_level > 0:
-            prev_line_was_header = True
-        if header_level == 0 and not is_empty(line):
-            prev_line_was_header = False
+            prev_header_level = header_level
+        if header_level == 0 and not is_empty(line) and not contains_deco(line):
+            prev_header_level = 0
 
     # Create the last page if there's remaining content
     create_page()
@@ -196,70 +297,3 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
         page.chunk()
 
     return pages
-
-if __name__ == "__main__":
-    # Test the paginate function
-    test_document = """
-# Main Title
-
-## Subtitle
-
-Content of the first slide.
-
----
-
-## Second Slide
-
-- Bullet point 1
-- Bullet point 2
-
-### Subheader
-More content.
-![](Image.png)
-
-## Another Header
-### Consecutive Header
-
-Normal text here.
-
-# New Main Title
-
-1. Numbered list
-2. Second item
-3. Third item
-
-This is a long paragraph that should trigger a new page due to line count.
-It continues for several lines to demonstrate the line count limit.
-We'll add more lines to ensure it goes over the 12 non-empty lines limit.
-This is line 4.
-This is line 5.
-This is line 6.
-This is line 7.
-This is line 8.
-This is line 9.
-This is line 10.
-This is line 11.
-This is line 12.
-This line should be on a new page.
-    """
-
-    option = PageOption(default_h1=False, default_h2=True, default_h3=True)
-    pages = paginate(test_document, option)
-
-    print(f"Total pages created: {len(pages)}")
-    for i, page in enumerate(pages, 1):
-        print(f"\nPage {i}:")
-        print(f"H1: {page.h1}")
-        print(f"H2: {page.h2}")
-        print(f"H3: {page.h3}")
-        print(f"Title: {page.title}")
-        print(f"Subtitle: {page.subtitle}")
-        print("Content:")
-        print(page.raw_md)
-        print("Chunks:")
-        for j, chunk in enumerate(page.chunks, 1):
-            print(f"  Chunk {j}:")
-            print(f"    Type: {chunk.type}")
-            print(f"    Content:")
-            print(f"      {chunk.content.replace(chr(10), chr(10) + '      ')}")
-        print("-" * 40)

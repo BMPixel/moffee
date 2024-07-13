@@ -1,9 +1,75 @@
+<style>
+    /* 整体幻灯片样式 */
+    .slide-content {
+        font-family: Arial, sans-serif;
+        color: #333;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 5px 20px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        position: relative;
+        padding-bottom: 10px;
+        margin-bottom: 0px;
+        font-size: 1.4em;
+    }
+
+    h2::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(to right, #0066cc, #86d7ff);
+    }
+
+    h3 {
+        font-size: 1.2em;
+        margin-bottom: 0;
+    }
+
+    .content {
+        padding: 0 15px;
+    }
+
+    .content-item {
+        max-height: 300px;
+        text-align: justify;
+        text-justify: inter-word;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        font-size: clamp(12px, 3vw, 20px);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        hyphens: auto;
+    }
+
+    .content-item img {
+        display: block;
+        max-width: 100%;
+        max-height: 250px;
+        object-fit: contain;
+        margin: 0 auto;
+    }
+
+</style>
+
 <div class="slide-content top-down">
-    {% if slide.title %}
-    <h1>{{ slide.title }}</h1>
+    {% if slide.h1 %}
+    <h1>{{ slide.h1 }}</h1>
     {% endif %}
-    {% if slide.subtitle %}
-    <h2>{{ slide.subtitle }}</h2>
+    {% if slide.h2 %}
+    <h2>{{ slide.h2 }}</h2>
+    {% endif %}
+    {% if slide.h3 %}
+    <h3>{{ slide.h3 }}</h3>
     {% endif %}
     <div class="content">
         {% for item in slide.contents %}
