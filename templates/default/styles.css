@@ -181,3 +181,296 @@ h3 {
     object-fit: contain;
     margin: 0 auto;
 }
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #f8f8f8; }
+.highlight .c { color: #3D7B7B; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #9C6500 } /* Comment.Preproc */
+.highlight .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #E40000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #008400 } /* Generic.Inserted */
+.highlight .go { color: #717171 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #687822 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #767600 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #A45A77 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+
+/* Stylesheet for Sphinx's documentation */
+
+/* Set master colours */
+:root {
+    --fonts-sans-serif: system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --colour-sphinx-blue: #0A507A;
+    --colour-text: #333;
+    --colour-links-light: #057;
+    --admonition-radius: 3px;
+
+    /* colours for admonition titles */
+    --color-admonition-bg: hsl(0, 0%, 90%);
+    --color-admonition-fg: hsl(0, 0%, 50%);
+    --colour-warning-bg: hsl(28.5, 74%, 90%);
+    --colour-warning-fg: hsl(28.5, 74%, 50%);
+    --colour-note-bg: hsl(219.5, 84%, 90%);
+    --colour-note-fg: hsl(219.5, 84%, 50%);
+    --colour-success-bg: hsl(150, 36.7%, 90%);
+    --colour-success-fg: hsl(150, 36.7%, 50%);
+    --colour-error-bg: hsl(0, 37%, 90%);
+    --colour-error-fg: hsl(0, 37%, 50%);
+    --colour-todo-bg: hsl(266.8, 100%, 90%);
+    --colour-todo-fg: hsl(266.8, 100%, 50%);
+
+    /* icons used for admonition titles */
+    --icon-pencil: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>');
+    --icon-abstract: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v2H4V5m0 4h16v2H4V9m0 4h16v2H4v-2m0 4h10v2H4v-2z"/></svg>');
+    --icon-info: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h-2V7h2m0 10h-2v-6h2m-1-9A10 10 0 002 12a10 10 0 0010 10 10 10 0 0010-10A10 10 0 0012 2z"/></svg>');
+    --icon-flame: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.55 11.2c-.23-.3-.5-.56-.76-.82-.65-.6-1.4-1.03-2.03-1.66C13.3 7.26 13 4.85 13.91 3c-.91.23-1.75.75-2.45 1.32-2.54 2.08-3.54 5.75-2.34 8.9.04.1.08.2.08.33 0 .22-.15.42-.35.5-.22.1-.46.04-.64-.12a.83.83 0 01-.15-.17c-1.1-1.43-1.28-3.48-.53-5.12C5.89 10 5 12.3 5.14 14.47c.04.5.1 1 .27 1.5.14.6.4 1.2.72 1.73 1.04 1.73 2.87 2.97 4.84 3.22 2.1.27 4.35-.12 5.96-1.6 1.8-1.66 2.45-4.32 1.5-6.6l-.13-.26c-.2-.46-.47-.87-.8-1.25l.05-.01m-3.1 6.3c-.28.24-.73.5-1.08.6-1.1.4-2.2-.16-2.87-.82 1.19-.28 1.89-1.16 2.09-2.05.17-.8-.14-1.46-.27-2.23-.12-.74-.1-1.37.18-2.06.17.38.37.76.6 1.06.76 1 1.95 1.44 2.2 2.8.04.14.06.28.06.43.03.82-.32 1.72-.92 2.27h.01z"/></svg>');
+    --icon-question: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.07 11.25l-.9.92C13.45 12.89 13 13.5 13 15h-2v-.5c0-1.11.45-2.11 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41a2 2 0 00-2-2 2 2 0 00-2 2H8a4 4 0 014-4 4 4 0 014 4 3.2 3.2 0 01-.93 2.25M13 19h-2v-2h2M12 2A10 10 0 002 12a10 10 0 0010 10 10 10 0 0010-10c0-5.53-4.5-10-10-10z"/></svg>');
+    --icon-warning: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14h-2v-4h2m0 8h-2v-2h2M1 21h22L12 2 1 21z"/></svg>');
+    --icon-failure: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41 15.59 7z"/></svg>');
+    --icon-spark: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.5 20l4.86-9.73H13V4l-5 9.73h3.5V20M12 2c2.75 0 5.1 1 7.05 2.95C21 6.9 22 9.25 22 12s-1 5.1-2.95 7.05C17.1 21 14.75 22 12 22s-5.1-1-7.05-2.95C3 17.1 2 14.75 2 12s1-5.1 2.95-7.05C6.9 3 9.25 2 12 2z"/></svg>');
+}
+
+div.admonition,
+div.warning {
+    font-size: 0.9em;
+    margin: 1em 0 1em 0;
+    border: 1px solid #86989B;
+    border-radius: var(--admonition-radius);
+    background-color: #f7f7f7;
+    padding: 1rem;
+}
+
+div.admonition>p,
+div.warning>p {
+    margin: 0;
+    padding: 0;
+}
+
+div.admonition>pre,
+div.warning>pre {
+    margin: 0.4em 1em 0.4em 1em;
+}
+
+div.admonition>p.admonition-title {
+    position: relative;
+    font-weight: 500;
+    background-color: var(--color-admonition-bg);
+    margin: -1rem -1rem 0.8rem -1rem;
+    padding: 0.3rem 1rem 0.3rem 2rem;
+    border-radius: var(--admonition-radius) var(--admonition-radius) 0 0;
+}
+
+div.attention>p.admonition-title,
+div.danger>p.admonition-title,
+div.error>p.admonition-title {
+    background-color: var(--colour-error-bg);
+}
+
+div.important>p.admonition-title,
+div.caution>p.admonition-title,
+div.warning>p.admonition-title {
+    background-color: var(--colour-warning-bg);
+}
+
+div.note>p.admonition-title {
+    background-color: var(--colour-note-bg);
+}
+
+div.hint>p.admonition-title,
+div.tip>p.admonition-title,
+div.seealso>p.admonition-title {
+    background-color: var(--colour-success-bg);
+}
+
+div.admonition-todo>p.admonition-title {
+    background-color: var(--colour-todo-bg);
+}
+
+p.admonition-title::before {
+    content: "";
+    height: 1rem;
+    left: .5rem;
+    top: .5rem;
+    position: absolute;
+    width: 1rem;
+    background-color: #5f5f5f;
+}
+
+div.admonition>p.admonition-title::before {
+    background-color: var(--color-admonition-fg);
+    -webkit-mask-image: var(--icon-abstract);
+    mask-image: var(--icon-abstract);
+}
+
+div.attention>p.admonition-title::before {
+    background-color: var(--colour-error-fg);
+    -webkit-mask-image: var(--icon-warning);
+    mask-image: var(--icon-warning);
+}
+
+div.caution>p.admonition-title::before {
+    background-color: var(--colour-warning-fg);
+    -webkit-mask-image: var(--icon-spark);
+    mask-image: var(--icon-spark);
+}
+
+div.danger>p.admonition-title::before {
+    background-color: var(--colour-error-fg);
+    -webkit-mask-image: var(--icon-spark);
+    mask-image: var(--icon-spark);
+}
+
+div.error>p.admonition-title::before {
+    background-color: var(--colour-error-fg);
+    -webkit-mask-image: var(--icon-failure);
+    mask-image: var(--icon-failure);
+}
+
+div.hint>p.admonition-title::before {
+    background-color: var(--colour-success-fg);
+    -webkit-mask-image: var(--icon-question);
+    mask-image: var(--icon-question);
+}
+
+div.important>p.admonition-title::before {
+    background-color: var(--colour-warning-fg);
+    -webkit-mask-image: var(--icon-flame);
+    mask-image: var(--icon-flame);
+}
+
+div.note>p.admonition-title::before {
+    background-color: var(--colour-note-fg);
+    -webkit-mask-image: var(--icon-pencil);
+    mask-image: var(--icon-pencil);
+}
+
+div.seealso>p.admonition-title::before {
+    background-color: var(--colour-success-fg);
+    -webkit-mask-image: var(--icon-info);
+    mask-image: var(--icon-info);
+}
+
+div.tip>p.admonition-title::before {
+    background-color: var(--colour-success-fg);
+    -webkit-mask-image: var(--icon-info);
+    mask-image: var(--icon-info);
+}
+
+div.admonition-todo>p.admonition-title::before {
+    background-color: var(--colour-todo-fg);
+    -webkit-mask-image: var(--icon-pencil);
+    mask-image: var(--icon-pencil);
+}
+
+div.warning>p.admonition-title::before {
+    background-color: var(--colour-warning-fg);
+    -webkit-mask-image: var(--icon-warning);
+    mask-image: var(--icon-warning);
+}
+
+div.caution,
+div.important,
+div.warning {
+    border-color: var(--colour-warning-fg);
+}
+
+div.attention,
+div.danger,
+div.error {
+    border-color: var(--colour-error-fg);
+}
+
+div.admonition>ul,
+div.admonition>ol,
+div.warning>ul,
+div.warning>ol {
+    margin: 0.1em 0.5em 0.5em 3em;
+    padding: 0;
+}
+
+div.admonition div.highlight {
+    background: none;
+}
+
+blockquote {
+    border-left: 4px solid #007acc;
+    background-color: #f0f8ff;
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-style: italic;
+    color: #333;
+}
+
+.task-list-item {
+    list-style-type: none !important;
+}
+
+.task-list-item input[type="checkbox"] {
+    margin: 0 4px 0.25em -30px;
+    vertical-align: middle;
+}

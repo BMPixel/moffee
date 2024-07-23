@@ -2,9 +2,8 @@ import os
 import shutil
 from functools import partial
 from jinja2 import Environment, FileSystemLoader
-from markdown import markdown
-from markupsafe import Markup
 from mdbeamer.splitter import paginate
+from mdbeamer.markdown import md
 from livereload import Server
 import click
 
@@ -12,9 +11,6 @@ import click
 def render(document_path: str, output_dir: str, template_dir):
     # Setup Jinja 2
     env = Environment(loader=FileSystemLoader(template_dir))
-
-    def md(text):
-        return Markup(markdown(text))
 
     env.filters["markdown"] = md
 
@@ -70,10 +66,9 @@ def html(md: str, output: str, theme: str = "default", live: bool = False):
         render, document_path=md, output_dir=output, template_dir=template_dir
     )
 
-    if not live:
-        render_handler()
-        print(f"Generated html written to {os.path.join(output, "index.html")}")
-    else:
+    render_handler()
+    print(f"Generated html written to {os.path.join(output, "index.html")}")
+    if live:
         server = Server()
         server.watch(md, render_handler)
         server.watch(template_dir, render_handler)
