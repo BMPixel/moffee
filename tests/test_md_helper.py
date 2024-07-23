@@ -1,5 +1,5 @@
 import pytest
-from mdbeamer.md_helper import (
+from mdbeamer.utils.md_helper import (
     is_comment,
     is_empty,
     get_header_level,

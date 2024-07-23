@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
 import yaml
 import re
-from mdbeamer.md_helper import get_header_level, is_divider, is_empty, contains_image, contains_deco
+from mdbeamer.utils.md_helper import get_header_level, is_divider, is_empty, contains_image, contains_deco
 
 @dataclass
 class PageOption:
