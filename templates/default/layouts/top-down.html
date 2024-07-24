@@ -8,11 +8,13 @@
     {% if slide.h3 %}
     <h3>{{ slide.h3 }}</h3>
     {% endif %}
-    <div class="content">
-        {% for item in slide.contents %}
-        <div class="content-item">
-            {{ item | markdown }}
+    <div class="content" data-sizing-inset-width="0" data-sizing-inset-height="20">
+        <div class="auto-sizing">
+            {% for item in slide.contents %}
+            <div class="content-item">
+                {{ item | markdown }}
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
