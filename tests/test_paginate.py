@@ -105,11 +105,6 @@ Content 3
     pages = paginate(doc)
     assert len(pages) == 3
 
-def test_page_splitting_on_line_count():
-    doc = "\n".join([f"Line {i}" for i in range(15)])
-    pages = paginate(doc)
-    assert len(pages) == 2
-
 def test_chunking():
     doc = """
 Paragraph 1

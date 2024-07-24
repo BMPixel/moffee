@@ -241,8 +241,8 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
             # Check if the next line is also a header
             create_page()
 
-        if line_count > 8:
-            create_page()
+        # if line_count > 8:
+            # create_page()
 
         if is_divider(line):
             create_page()
