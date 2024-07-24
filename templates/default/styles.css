@@ -297,10 +297,9 @@ div.admonition,
 div.warning {
     font-size: 0.9em;
     margin: 1em 0 1em 0;
-    border: 1px solid #86989B;
     border-radius: var(--admonition-radius);
-    background-color: #f7f7f7;
     padding: 1rem;
+    background-color: var(--color-admonition-bg);
 }
 
 div.admonition>p,
@@ -316,47 +315,73 @@ div.warning>pre {
 
 div.admonition>p.admonition-title {
     position: relative;
-    font-weight: 500;
-    background-color: var(--color-admonition-bg);
+    font-weight: 600;
     margin: -1rem -1rem 0.8rem -1rem;
     padding: 0.3rem 1rem 0.3rem 2rem;
     border-radius: var(--admonition-radius) var(--admonition-radius) 0 0;
+    color: var(--color-admonition-fg)
 }
+
+div.attention,
+div.danger,
+div.error {
+    background-color: var(--colour-error-bg);
+}
+
+div.important,
+div.caution,
+div.warning {
+    background-color: var(--colour-warning-bg);
+}
+
+div.note {
+    background-color: var(--colour-note-bg);
+}
+
+div.hint,
+div.tip,
+div.seealso {
+    background-color: var(--colour-success-bg);
+}
+
+div.admonition-todo {
+    background-color: var(--colour-todo-bg);
+}
+
 
 div.attention>p.admonition-title,
 div.danger>p.admonition-title,
 div.error>p.admonition-title {
-    background-color: var(--colour-error-bg);
+    color: var(--colour-error-fg);
 }
 
 div.important>p.admonition-title,
 div.caution>p.admonition-title,
 div.warning>p.admonition-title {
-    background-color: var(--colour-warning-bg);
+    color: var(--colour-warning-fg);
 }
 
 div.note>p.admonition-title {
-    background-color: var(--colour-note-bg);
+    color: var(--colour-note-fg);
 }
 
 div.hint>p.admonition-title,
 div.tip>p.admonition-title,
 div.seealso>p.admonition-title {
-    background-color: var(--colour-success-bg);
+    color: var(--colour-success-fg);
 }
 
 div.admonition-todo>p.admonition-title {
-    background-color: var(--colour-todo-bg);
+    color: var(--colour-todo-fg);
 }
 
 p.admonition-title::before {
     content: "";
     height: 1rem;
-    left: .5rem;
-    top: .5rem;
+    left: .8rem;
+    top: .6rem;
     position: absolute;
     width: 1rem;
-    background-color: #5f5f5f;
 }
 
 div.admonition>p.admonition-title::before {
@@ -419,6 +444,7 @@ div.tip>p.admonition-title::before {
     mask-image: var(--icon-info);
 }
 
+
 div.admonition-todo>p.admonition-title::before {
     background-color: var(--colour-todo-fg);
     -webkit-mask-image: var(--icon-pencil);
@@ -429,18 +455,6 @@ div.warning>p.admonition-title::before {
     background-color: var(--colour-warning-fg);
     -webkit-mask-image: var(--icon-warning);
     mask-image: var(--icon-warning);
-}
-
-div.caution,
-div.important,
-div.warning {
-    border-color: var(--colour-warning-fg);
-}
-
-div.attention,
-div.danger,
-div.error {
-    border-color: var(--colour-error-fg);
 }
 
 div.admonition>ul,
