@@ -17,6 +17,7 @@ extensions = [
     "toc",
     "wikilinks",
     "pymdownx.inlinehilite",
+    "mdbeamer.utils.md_obsidian_ext"
 ]
 
 extension_configs = {
