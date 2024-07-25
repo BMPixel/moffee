@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function () {
     function autoScale() {
         const elements = document.querySelectorAll('.auto-sizing');
 
@@ -55,4 +55,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 在窗口大小改变时再次调用
     window.addEventListener('resize', autoScale);
+
+    // 为所有图片添加 load 事件监听器
+    document.querySelectorAll('img').forEach(img => {
+        img.addEventListener('load', autoScale);
+    });
+
+    // 定期重新检查尺寸
+    setInterval(autoScale, 1000);
+
+    // 提供一个全局函数来手动触发重新计算
+    window.triggerAutoScale = autoScale;
 });

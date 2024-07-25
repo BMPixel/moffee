@@ -14,7 +14,7 @@ def render(document_path: str, output_dir: str, template_dir):
 
     env.filters["markdown"] = md
 
-    template = env.get_template("base.html")
+    template = env.get_template("index.html")
 
     # Fill template
     with open(document_path) as f:
@@ -49,14 +49,14 @@ def render(document_path: str, output_dir: str, template_dir):
 @click.argument("md")
 @click.argument("output")
 @click.option(
-    "--theme", default="default", help='Theme of slides, defaults to "default"'
+    "--theme", default="base", help='Theme of slides, defaults to "base"'
 )
 @click.option(
     "--live",
     is_flag=True,
     help="Launch a live web server which updates html outputs on the markdown file, defaults to false",
 )
-def html(md: str, output: str, theme: str = "default", live: bool = False):
+def html(md: str, output: str, theme: str = "base", live: bool = False):
     """
     Render markdown file into slides, displayed in an html webpage.
     """
