@@ -13,16 +13,28 @@
     --colour-todo-fg: hsl(266.8, 100%, 50%);
 }
 
+@page {
+    size: 720px 405px;
+    margin: 0;
+}
+
+/* Force colored printing */
+* {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
 body{
     background-color: #333;
 }
+
 
 /* Basic Layouts */
 
 .slide-container {
     width: 720px;
     height: 405px;
-    margin: 40px;
+    margin: 40px auto;
     background-color: white;
 }
 
@@ -394,7 +406,7 @@ div.highlight {
     position: absolute;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, #cceeff, transparent 50%);
+    background: radial-gradient(circle, #f2fbff, #ffffff 100%);
     z-index: 1;
 }
 
@@ -406,4 +418,83 @@ div.highlight {
 .centered-title::after {
     bottom: -200px;
     right: -200px;
+}
+
+/* Action Buttons */
+
+.floating-btn {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    background-color: #0056b3;
+}
+
+.action-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.action-btn i {
+    margin-right: 10px;
+}
+
+/* Clean print */
+
+@media print {
+    body {
+        background-color: white;
+    }
+    
+    .slide-container {
+        margin: 0;
+    }
+    
+    .floating-btn {
+        display: none;
+    }
+}
+
+/* Presentation Mode */
+
+html {
+    height: 100%;
+}
+
+body.presentation-mode {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+body.presentation-mode .slide-container {
+    display: none;
+}
+
+body.presentation-mode .slide-container.active {
+    display: block;
+}
+
+body.presentation-mode .floating-btn {
+    display: none;
 }

@@ -5,40 +5,35 @@ window.addEventListener('load', function () {
         elements.forEach(element => {
             const container = element.parentElement;
 
-            // 重置transform以获取内容的自然尺寸
+            // Reset transform for real dimensions
             element.style.transform = 'scale(1)';
             element.style.width = 'auto';
             element.style.height = 'auto';
 
-            // 获取内容和容器的宽高
             const contentHeight = element.scrollHeight;
             const containerHeight = container.clientHeight;
             const contentWidth = element.scrollWidth;
             const containerWidth = container.clientWidth;
 
-            // 获取容器和内容的实际位置
+            // Element may not align with container
             const containerRect = container.getBoundingClientRect();
             const contentRect = element.getBoundingClientRect();
-
-            // 计算偏移量
             const offsetX = contentRect.left - containerRect.left;
             const offsetY = contentRect.top - containerRect.top;
 
-            // 获取容器的内边距
+            // Consider padding
             const computedStyle = window.getComputedStyle(container);
             const paddingLeft = parseFloat(computedStyle.paddingLeft);
             const paddingRight = parseFloat(computedStyle.paddingRight);
             const paddingTop = parseFloat(computedStyle.paddingTop);
             const paddingBottom = parseFloat(computedStyle.paddingBottom);
 
-            // 计算实际可用空间
             const availableWidth = containerWidth - paddingLeft - paddingRight - offsetX;
             const availableHeight = containerHeight - paddingTop - paddingBottom - offsetY;
 
-            // 计算高度缩放比例
             let scale = availableHeight / contentHeight;
 
-            // 根据高度缩放比例调整内容宽度
+            // Width has to be adjusted so that text is always full width
             if (scale < 1 || contentWidth > availableWidth) {
                 element.style.transform = `scale(${scale})`;
                 element.style.width = `${availableWidth / scale}px`;
@@ -50,20 +45,96 @@ window.addEventListener('load', function () {
         });
     }
 
-    // 初始调用
     autoScale();
 
-    // 在窗口大小改变时再次调用
+    // update
     window.addEventListener('resize', autoScale);
-
-    // 为所有图片添加 load 事件监听器
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('load', autoScale);
     });
-
-    // 定期重新检查尺寸
-    setInterval(autoScale, 1000);
-
-    // 提供一个全局函数来手动触发重新计算
+    // setInterval(autoScale, 1000);
     window.triggerAutoScale = autoScale;
 });
+
+
+// Presentation
+let isPresentationMode = false;
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide-container');
+
+function togglePresentationMode() {
+    isPresentationMode = !isPresentationMode;
+    if (isPresentationMode) {
+        enterPresentationMode();
+    } else {
+        exitPresentationMode();
+    }
+}
+
+function enterPresentationMode() {
+    document.body.classList.add('presentation-mode');
+    // document.body.requestFullscreen().catch(err => console.log(err));
+    showSlide(currentSlide);
+    document.addEventListener('keydown', handleKeydown);
+    fullscreenCheck();
+}
+
+function exitPresentationMode() {
+    document.exitFullscreen().catch(err => console.log(err));
+    document.body.classList.remove('presentation-mode');
+    slides.forEach(slide => slide.classList.remove('active'));
+    document.removeEventListener('keydown', handleKeydown);
+    fullscreenCheck();
+}
+
+function handleKeydown(event) {
+    switch (event.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+            showSlide(currentSlide + 1);
+            break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+            showSlide(currentSlide - 1);
+            break;
+        case 'Escape':
+            togglePresentationMode();
+            break;
+    }
+}
+
+function showSlide(index) {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (index + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+    window.triggerAutoScale()
+}
+
+function scaleToFullScreen(element) {
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+    var originalWidth = 720; 
+    var originalHeight = 405;
+
+    var scaleX = windowWidth / originalWidth;
+    var scaleY = windowHeight / originalHeight;
+    var scale = Math.min(scaleX, scaleY);
+
+    element.style.transform = 'scale(' + scale + ')';
+    element.style.transformOrigin = 'center';
+}
+
+function scaleTo1(element) {
+    element.style.transform = null;
+    element.style.transformOrigin = null;
+}
+
+function fullscreenCheck() {
+    if (isPresentationMode) {
+        slides.forEach(slide => scaleToFullScreen(slide));
+    } else {
+        slides.forEach(slide => scaleTo1(slide));
+    }
+}
+
+window.addEventListener('resize', fullscreenCheck);
