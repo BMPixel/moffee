@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 
 def is_comment(line: str) -> bool:
@@ -74,3 +75,20 @@ def contains_deco(line: str) -> bool:
     :return: True if the line contains a deco, False otherwise
     """
     return bool(re.match(r"^\s*@\(.*?\)\s*$", line))
+
+
+def extract_title(document: str) -> Optional[str]:
+    """
+    Extracts proper title from document.
+    The title should be the first-occurred level 1 or 2 heading.
+
+    :param document: The document in markdown
+    :return: title if there is one, otherwise None
+    """
+    heading_pattern = r"^(#|##)\s+(.*?)(?:\n|$)"
+    match = re.search(heading_pattern, document, re.MULTILINE)
+
+    if match:
+        return match.group(2).strip()
+    else:
+        return None

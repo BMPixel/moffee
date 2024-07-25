@@ -4,6 +4,7 @@ from functools import partial
 from jinja2 import Environment, FileSystemLoader
 from mdbeamer.splitter import paginate
 from mdbeamer.markdown import md
+from mdbeamer.utils.md_helper import extract_title
 from livereload import Server
 import click
 
@@ -19,10 +20,11 @@ def render(document_path: str, output_dir: str, template_dir):
     # Fill template
     with open(document_path) as f:
         document = f.read()
+    title = extract_title(document) or "Untitled"
     pages = paginate(document)
 
     data = {
-        "title": "My Awesome Presentation",
+        "title": title,
         "slides": [
             {
                 "h1": page.h1,
