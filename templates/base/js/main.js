@@ -37,11 +37,26 @@ window.addEventListener('load', function () {
             if (scale < 1 || contentWidth > availableWidth) {
                 element.style.transform = `scale(${scale})`;
                 element.style.width = `${availableWidth / scale}px`;
-                element.style.height = `${availableHeight / scale}px`;
+                // Force refresh
+                document.body.offsetHeight;
             } else {
-                element.style.width = '100%';
-                element.style.height = '100%';
+                return;
             }
+            
+            // console.log(`Performed auto scale Scale=${scale.toFixed(2)}, scrollHeight=${(element.scrollHeight * scale).toFixed(2)}, containerHeight=${containerHeight.toFixed(2)}`);
+
+            if (element.scrollHeight * scale < 0.85 * containerHeight) {
+                step = 0.05 * (1 - scale)
+                scale = 1;
+                while (element.scrollHeight * scale > 0.9 *containerHeight) {
+                    scale -= step;
+                    element.style.transform = `scale(${scale})`;
+                    element.style.width = `${availableWidth / scale}px`;
+                    document.body.offsetHeight;
+                    // console.log(`Scale=${scale.toFixed(2)}, scrollHeight=${(element.scrollHeight * scale).toFixed(2)}, containerHeight=${containerHeight.toFixed(2)}`);
+                }
+            }
+        
         });
     }
 
@@ -52,7 +67,7 @@ window.addEventListener('load', function () {
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('load', autoScale);
     });
-    // setInterval(autoScale, 1000);
+    setInterval(autoScale, 1000);
     window.triggerAutoScale = autoScale;
 });
 
