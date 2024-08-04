@@ -2,9 +2,9 @@ import os
 import shutil
 from functools import partial
 from jinja2 import Environment, FileSystemLoader
-from mdbeamer.splitter import paginate
-from mdbeamer.markdown import md
-from mdbeamer.utils.md_helper import extract_title
+from moffie.splitter import paginate
+from moffie.markdown import md
+from moffie.utils.md_helper import extract_title
 from livereload import Server
 import click
 

@@ -1,5 +1,5 @@
 import pytest
-from mdbeamer.splitter import paginate
+from moffie.splitter import paginate
 
 @pytest.fixture
 def sample_document():

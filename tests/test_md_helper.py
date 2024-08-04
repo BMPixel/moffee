@@ -1,5 +1,5 @@
 import pytest
-from mdbeamer.utils.md_helper import (
+from moffie.utils.md_helper import (
     is_comment,
     is_empty,
     get_header_level,

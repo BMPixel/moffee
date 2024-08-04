@@ -48,7 +48,7 @@ window.addEventListener('load', function () {
             if (element.scrollHeight * scale < 0.85 * containerHeight) {
                 step = 0.05 * (1 - scale)
                 scale = 1;
-                while (element.scrollHeight * scale > 0.9 *containerHeight) {
+                while (element.scrollHeight * scale > 0.95 *containerHeight) {
                     scale -= step;
                     element.style.transform = `scale(${scale})`;
                     element.style.width = `${availableWidth / scale}px`;
