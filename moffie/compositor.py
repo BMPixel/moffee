@@ -1,3 +1,5 @@
+from typing import List
+from enum import Enum
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
@@ -12,21 +14,40 @@ class PageOption:
     default_h3: bool = True
     layout: str = "content"
 
+class Direction(Enum):
+    HORIZONTAL = "horizontal"
+    VERTICAL = "vertical"
+
+class Type(Enum):
+    PARAGRAPH = "paragraph"
+    NODE = "node"
+
+class Alignment(Enum):
+    LEFT = "left"
+    CENTER = "center"
+    RIGHT = "right"
+    JUSTIFY = "justify"
+
 @dataclass
 class Chunk:
-    content: str
-    type: str = "paragraph"
+    paragraph: Optional[str] = None
+    children: Optional[List['Chunk']] = field(default_factory=list) # List of chunks
+    direction: Direction = Direction.HORIZONTAL
+    type: Type = Type.PARAGRAPH
+    alignment: Alignment = Alignment.LEFT
 
 
 @dataclass
 class Page:
     raw_md: str
     option: PageOption
-    chunks: List[Chunk] = field(default_factory=list)
     h1: Optional[str] = None
     h2: Optional[str] = None
     h3: Optional[str] = None
     deco: Dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self):
+        self._preprocess()
 
     @property
     def title(self) -> Optional[str]:
@@ -39,44 +60,40 @@ class Page:
         elif self.h2:
             return self.h3
         return None
-    
-    def chunk(self):
-        """
-        Split raw_md into chunks based on the following criteria:
-        - Before/after lines that contain images
-        - Two consecutive blank lines
 
-        Modifies the page's 'chunks' list in-place.
+    @property
+    def chunk(self) -> Chunk:
         """
-        self._preprocess()
-        
-        lines = self.raw_md.split("\n")
-        current_chunk = []
-        blank_line_count = 0
+        Split raw_md into chunk tree
+        Chunk tree branches when in-page divider is met.
+        - adjacent "***"s create chunk with horizontal direction
+        - adjacent "___" create chunk with vertical direction
+        "___" possesses higher priority than "***"
 
-        for i, line in enumerate(lines):
-            if contains_image(line):
-                if current_chunk:
-                    self.chunks.append(Chunk(content="\n".join(current_chunk)))
-                    current_chunk = []
-                self.chunks.append(Chunk(content=line, type="image"))
-                blank_line_count = 0
-            elif is_empty(line):
-                blank_line_count += 1
-                if blank_line_count == 2:
-                    if current_chunk:
-                        self.chunks.append(Chunk(content="\n".join(current_chunk)))
-                        current_chunk = []
-                    blank_line_count = 0
+        :return: Root of the chunk tree
+        """
+
+        def split_by_div(text, type) -> List[Chunk]:
+            strs = [""]
+            for line in text.split("\n"):
+                if is_divider(line, type):
+                    strs.append("\n")
                 else:
-                    current_chunk.append(line)
-            else:
-                current_chunk.append(line)
-                blank_line_count = 0
+                    strs[-1] += line + "\n"
+            return [Chunk(paragraph=s) for s in strs]
 
-            # Check if it's the last line
-            if i == len(lines) - 1 and current_chunk:
-                self.chunks.append(Chunk(content="\n".join(current_chunk)))
+        # collect "___"
+        vchunks = split_by_div(self.raw_md, "_")
+        # split by "***" if possible
+        for i in range(len(vchunks)):
+            hchunks = split_by_div(vchunks[i].paragraph, "*")
+            if len(hchunks) > 1: # found ***
+                vchunks[i] = Chunk(children=hchunks, type=Type.NODE)
+            
+        if len(vchunks) == 1:
+            return vchunks[0]
+        
+        return Chunk(children=vchunks, direction=Direction.VERTICAL, type=Type.NODE)
 
     def _preprocess(self):
         """
@@ -86,7 +103,7 @@ class Page:
         - Removes headings 1-3
         - Stripes
         """
-        
+
         lines = self.raw_md.splitlines()
         lines = [l for l in lines if not (1 <= get_header_level(l) <= 3)]
         self.raw_md = "\n".join(lines).strip()
@@ -182,8 +199,7 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
 
     Splitting criteria:
     - New h1/h2/h3 header (except when following another header)
-    - More than 8 non-empty lines in a page
-    - Divider (___, ***, +++)
+    - "---" Divider (___, ***, +++ not count)
 
     :param document: Input markdown document as a string.
     :param option: PageOption object containing pagination configuration. Will try to parse from document yaml area if None.
@@ -241,10 +257,7 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
             # Check if the next line is also a header
             create_page()
 
-        # if line_count > 8:
-            # create_page()
-
-        if is_divider(line):
+        if is_divider(line, type='-'):
             create_page()
             continue
 
@@ -293,7 +306,5 @@ def paginate(document: str, option: PageOption = None) -> List[Page]:
             page.h2 = env_h2
         if inherit_h3:
             page.h3 = env_h3
-
-        page.chunk()
 
     return pages

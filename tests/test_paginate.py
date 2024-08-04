@@ -1,5 +1,7 @@
 import pytest
-from moffie.compositor import paginate
+import ipdb
+import wat
+from moffie.compositor import paginate, Direction, Type
 
 @pytest.fixture
 def sample_document():
@@ -103,23 +105,7 @@ Content 2
 Content 3
     """
     pages = paginate(doc)
-    assert len(pages) == 3
-
-def test_chunking():
-    doc = """
-Paragraph 1
-
-Paragraph 2
-![](image.jpg)
-Paragraph 3
-
-
-Paragraph 4
-    """
-    pages = paginate(doc)
-    chunks = pages[0].chunks
-    assert len(chunks) == 4
-    assert chunks[1].type == "image"
+    assert len(pages) == 2
 
 def test_title_and_subtitle():
     doc = """
@@ -136,6 +122,76 @@ Content
     assert pages[0].subtitle == "Subtitle"
     assert pages[1].title == "Title2"
 
+def test_chunking_trivial():
+    doc = """
+Paragraph 1
+
+Paragraph 2
+![](image.jpg)
+Paragraph 3
+
+Paragraph 4
+    """
+    pages = paginate(doc)
+    chunk = pages[0].chunk
+    assert chunk.type == Type.PARAGRAPH
+    assert len(chunk.children) == 0
+    assert chunk.paragraph.strip() == doc.strip()
+    
+def test_chunking_vertical():
+    doc = """
+Paragraph 1
+___
+
+Paragraph 2
+    """
+    pages = paginate(doc)
+    chunk = pages[0].chunk
+    assert chunk.type == Type.NODE
+    assert len(chunk.children) == 2
+    assert chunk.direction == Direction.VERTICAL
+    assert chunk.children[0].type == Type.PARAGRAPH
+    
+def test_chunking_horizontal():
+    doc = """
+Paragraph 1
+***
+
+Paragraph 2
+***
+    """
+    pages = paginate(doc)
+    chunk = pages[0].chunk
+    assert chunk.type == Type.NODE
+    assert len(chunk.children) == 3
+    assert chunk.direction == Direction.HORIZONTAL
+    assert chunk.children[0].type == Type.PARAGRAPH
+
+def test_chunking_hybrid():
+    doc = """
+Other Pages
+---
+Paragraph 1
+___
+Paragraph 2
+***
+Paragraph 3
+***
+Paragraph 4
+    """
+    pages = paginate(doc)
+    assert len(pages) == 2
+    chunk = pages[1].chunk
+    assert chunk.type == Type.NODE
+    assert len(chunk.children) == 2
+    assert chunk.direction == Direction.VERTICAL
+    assert len(chunk.children[0].children) == 0
+    assert chunk.children[0].type == Type.PARAGRAPH
+    assert chunk.children[0].paragraph.strip() == "Paragraph 1"
+    next = chunk.children[1]
+    assert next.direction == Direction.HORIZONTAL
+    assert len(next.children) == 3
+
 def test_empty_lines_handling():
     doc = """
 # Title
@@ -143,17 +199,8 @@ def test_empty_lines_handling():
 Content with empty line above
     """
     pages = paginate(doc)
-    assert len(pages[0].chunks) == 1
+    assert len(pages[0].chunk.children) == 0
     assert pages[0].deco == {}
-
-def test_image_handling():
-    doc = """
-# Title
-![Alt text](image.jpg)
-Content after image
-    """
-    pages = paginate(doc)
-    assert any(chunk.type == "image" for chunk in pages[0].chunks)
 
 def test_deco_handling():
     doc = """
@@ -190,7 +237,6 @@ Hello
     assert pages[0].deco == {'background': 'blue'}
     assert pages[0].option.default_h1 == True
     assert pages[1].option.default_h1 == False
-    assert pages[1].chunks[0].content == 'Hello'
     
     
 

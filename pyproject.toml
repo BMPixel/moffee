@@ -17,6 +17,7 @@ click = "^8.1.7"
 pygments = "^2.18.0"
 pymdown-extensions = "^10.8.1"
 ipdb = "^0.13.13"
+wat-inspector = "^0.3.3"
 
 [tool.ipdb]
 context=10

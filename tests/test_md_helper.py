@@ -36,6 +36,10 @@ def test_is_divider():
     assert is_divider("--") == False
     assert is_divider("- - -") == False
     assert is_divider("This is not a divider") == False
+    assert is_divider("***", type="*") == True
+    assert is_divider("***", type="-") == False
+    assert is_divider("* * *", type="*") == False
+
 
 
 def test_contains_image():
