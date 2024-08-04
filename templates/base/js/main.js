@@ -1,3 +1,4 @@
+// Automatic resizing to fit elements
 window.addEventListener('load', function () {
     function autoScale() {
         const elements = document.querySelectorAll('.auto-sizing');
@@ -45,6 +46,8 @@ window.addEventListener('load', function () {
             
             // console.log(`Performed auto scale Scale=${scale.toFixed(2)}, scrollHeight=${(element.scrollHeight * scale).toFixed(2)}, containerHeight=${containerHeight.toFixed(2)}`);
 
+            // If somehow after resizing element significantly smaller than container
+            // resizes element by stepping through every scale value
             if (element.scrollHeight * scale < 0.85 * containerHeight) {
                 step = 0.05 * (1 - scale)
                 scale = 1;
@@ -52,6 +55,7 @@ window.addEventListener('load', function () {
                     scale -= step;
                     element.style.transform = `scale(${scale})`;
                     element.style.width = `${availableWidth / scale}px`;
+                    // force dom size to be recalculated
                     document.body.offsetHeight;
                     // console.log(`Scale=${scale.toFixed(2)}, scrollHeight=${(element.scrollHeight * scale).toFixed(2)}, containerHeight=${containerHeight.toFixed(2)}`);
                 }
@@ -72,7 +76,7 @@ window.addEventListener('load', function () {
 });
 
 
-// Presentation
+// Presentation mode
 let isPresentationMode = false;
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide-container');
@@ -119,10 +123,19 @@ function handleKeydown(event) {
 }
 
 function showSlide(index) {
-    slides[currentSlide].classList.remove('active');
-    currentSlide = (index + slides.length) % slides.length;
-    slides[currentSlide].classList.add('active');
-    window.triggerAutoScale()
+    if (index < 0) {
+        return;
+    }
+    if (currentSlide < slides.length) {
+        slides[currentSlide].classList.remove('active');
+    }
+    if (index >= slides.length) {
+        currentSlide = slides.length;
+    } else {
+        currentSlide = index
+        slides[currentSlide].classList.add('active');
+        window.triggerAutoScale();
+    }
 }
 
 function scaleToFullScreen(element) {
