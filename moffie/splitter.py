@@ -10,7 +10,7 @@ class PageOption:
     default_h1: bool = False
     default_h2: bool = True
     default_h3: bool = True
-    layout: str = "top-down"
+    layout: str = "content"
 
 @dataclass
 class Chunk:
@@ -121,7 +121,7 @@ def parse_frontmatter(document: str) -> Tuple[str, PageOption]:
         default_h1=yaml_data.get('default_h1', False),
         default_h2=yaml_data.get('default_h2', True),
         default_h3=yaml_data.get('default_h3', True),
-        layout=yaml_data.get('layout', 'top-down')
+        layout=yaml_data.get('layout', 'content')
     )
 
     return content, option

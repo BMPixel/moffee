@@ -14,7 +14,7 @@
 <body>
     {% for slide in slides %}
     <div class="slide-container">
-        {% set layout = slide.layout|default('top-down') %}
+        {% set layout = slide.layout|default('content') %}
         {% with slide_number=loop.index %}
         {% include 'layouts/' + layout + '.html' %}
         {% endwith %}

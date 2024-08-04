@@ -356,7 +356,7 @@ div.highlight {
 }
 
 /* Individual layout */
-.slide-content.centered-title {
+.slide-content.centered {
     padding: 120px 15px 15px 15px;
     display: flex;
     flex-direction: column;
@@ -367,7 +367,7 @@ div.highlight {
     overflow: hidden;
 }
 
-.centered-title h1 {
+.centered h1 {
     font-size: 3em;
     margin: 0;
     background: linear-gradient(to right, #00478e, #005fbd);
@@ -378,30 +378,30 @@ div.highlight {
     z-index: 2;
 }
 
-.centered-title h2 {
+.centered h2 {
     font-size: 1.8em;
     margin-bottom: 15px;
     color: rgb(77, 77, 77);
 }
 
-.centered-title h2::after {
+.centered h2::after {
     display: none;
 }
 
-.centered-title h3 {
+.centered h3 {
     font-size: 1.4em;
     margin-bottom: 10px;
 }
 
-.centered-title .content-item {
+.centered .content-item {
     font-size: 20px;
     text-align: center;
     font-weight: 300;
     /* Centers the text within the content item */
 }
 
-.centered-title::before,
-.centered-title::after {
+.centered::before,
+.centered::after {
     content: '';
     position: absolute;
     width: 400px;
@@ -410,12 +410,12 @@ div.highlight {
     z-index: 1;
 }
 
-.centered-title::before {
+.centered::before {
     top: -200px;
     left: -200px;
 }
 
-.centered-title::after {
+.centered::after {
     bottom: -200px;
     right: -200px;
 }

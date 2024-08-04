@@ -26,7 +26,7 @@ def test_invalid_deco():
 def test_deco_with_base_option():
     line = "@(layout=split, default_h1=true, custom_key=value)"
     base_option = PageOption(
-        layout="top-down", default_h1=False, default_h2=True, default_h3=True
+        layout="content", default_h1=False, default_h2=True, default_h3=True
     )
     deco, updated_option = parse_deco(line, base_option)
 
