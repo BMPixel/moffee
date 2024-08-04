@@ -1,5 +1,5 @@
 import pytest
-from moffie.splitter import paginate
+from moffie.compositor import paginate
 
 @pytest.fixture
 def sample_document():

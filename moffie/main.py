@@ -2,7 +2,7 @@ import os
 import shutil
 from functools import partial
 from jinja2 import Environment, FileSystemLoader
-from moffie.splitter import paginate
+from moffie.compositor import paginate
 from moffie.markdown import md
 from moffie.utils.md_helper import extract_title
 from livereload import Server
