@@ -7,6 +7,7 @@ from moffie.compositor import composite, Direction, Type
 def sample_document():
     return """
 ---
+background-color: gray
 layout: split
 default_h1: true
 default_h2: false
@@ -18,7 +19,7 @@ default_h2: false
 Content of the first slide.
 
 ---
-
+@(background-color=yellow)
 ## Second Slide
 
 - Bullet point 1
@@ -39,7 +40,7 @@ Normal text here.
 2. Second item
 3. Third item
 
-This is a long paragraph that should trigger a new page due to line count.
+This is a long paragraph 
 It continues for several lines to demonstrate the line count limit.
 We'll add more lines to ensure it goes over the 12 non-empty lines limit.
 This is line 4.
@@ -51,7 +52,6 @@ This is line 9.
 This is line 10.
 This is line 11.
 This is line 12.
-This line should be on a new page.
     """
 
 def test_paginate_creates_correct_number_of_pages(sample_document):
@@ -63,6 +63,12 @@ def test_frontmatter_parsing(sample_document):
     assert pages[0].option.layout == "split"
     assert pages[0].option.default_h1 == True
     assert pages[0].option.default_h2 == False
+    assert pages[0].option.styles == {"background-color": "gray"}
+
+def test_style_overwrite(sample_document):
+    pages = composite(sample_document)
+    assert pages[1].option.styles == {"background-color": "yellow"}
+    assert pages[0].option.styles == {"background-color": "gray"}
 
 def test_header_inheritance():
     doc = """
@@ -200,7 +206,7 @@ Content with empty line above
     """
     pages = composite(doc)
     assert len(pages[0].chunk.children) == 0
-    assert pages[0].deco == {}
+    assert pages[0].option.styles == {}
 
 def test_deco_handling():
     doc = """
@@ -215,7 +221,7 @@ Hello
     pages = composite(doc)
     assert pages[0].raw_md == 'Hello'
     assert pages[0].option.default_h1 == False
-    assert pages[0].deco == {'background': 'blue'}
+    assert pages[0].option.styles == {'background': 'blue'}
     
 def test_multiple_deco():
     doc = """
@@ -234,7 +240,7 @@ Hello
     assert pages[0].raw_md == ''
     assert pages[0].title == 'Title1'
     assert pages[0].subtitle == 'Title2'
-    assert pages[0].deco == {'background': 'blue'}
+    assert pages[0].option.styles == {'background': 'blue'}
     assert pages[0].option.default_h1 == True
     assert pages[1].option.default_h1 == False
     

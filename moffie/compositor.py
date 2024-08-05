@@ -13,6 +13,7 @@ class PageOption:
     default_h2: bool = True
     default_h3: bool = True
     layout: str = "content"
+    styles: dict = field(default_factory=dict)
 
 class Direction:
     HORIZONTAL = "horizontal"
@@ -44,7 +45,6 @@ class Page:
     h1: Optional[str] = None
     h2: Optional[str] = None
     h3: Optional[str] = None
-    deco: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self):
         self._preprocess()
@@ -135,27 +135,26 @@ def parse_frontmatter(document: str) -> Tuple[str, PageOption]:
 
     # Create PageOption from YAML data
     option = PageOption(
-        default_h1=yaml_data.get('default_h1', False),
-        default_h2=yaml_data.get('default_h2', True),
-        default_h3=yaml_data.get('default_h3', True),
-        layout=yaml_data.get('layout', 'content')
+        default_h1=yaml_data.pop('default_h1', False),
+        default_h2=yaml_data.pop('default_h2', True),
+        default_h3=yaml_data.pop('default_h3', True),
+        layout=yaml_data.pop('layout', 'content')
     )
+    option.styles = yaml_data
 
     return content, option
 
 
 def parse_deco(
     line: str, base_option: Optional[PageOption] = None
-) -> Tuple[Optional[Dict[str, str]], Optional[PageOption]]:
+) -> PageOption:
     """
     Parses a deco (custom decorator) line and returns a dictionary of key-value pairs.
-    If base_option is provided, it updates the option with matching keys from the deco.
+    If base_option is provided, it updates the option with matching keys from the deco. Otherwise initialize an option.
 
     :param line: The line containing the deco
     :param base_option: Optional PageOption to update with deco values
-    :return: A tuple containing:
-             - A dictionary of remaining key-value pairs if the line is a valid deco, None otherwise
-             - An updated PageOption if base_option was provided, None otherwise
+    :return: An updated PageOption
     """
 
     def rm_quotes(s):
@@ -172,18 +171,17 @@ def parse_deco(
     deco = {key.strip(): rm_quotes(value.strip()) for key, value in pairs}
 
     if base_option is None:
-        return deco, None
+        base_option = PageOption()
 
     updated_option = deepcopy(base_option)
-    remained_deco = {}
 
     for key, value in deco.items():
         if hasattr(updated_option, key):
             setattr(updated_option, key, parse_value(value))
         else:
-            remained_deco[key] = parse_value(value)
+            updated_option.styles[key] = parse_value(value)
 
-    return remained_deco, updated_option
+    return updated_option
 
 
 def parse_value(value: str):
@@ -230,13 +228,11 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
         if all([l.strip() == '' for l in current_page_lines]):
             return
 
-        deco = {}
         raw_md = ""
         local_option = deepcopy(option)
         for line in current_page_lines:
             if contains_deco(line):
-                _deco, local_option = parse_deco(line, local_option)
-                deco = {**deco, **_deco}
+                local_option = parse_deco(line, local_option)
             else:
                 raw_md += "\n" + line
 
@@ -244,8 +240,7 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
                     option=local_option, 
                     h1=current_h1,
                     h2=current_h2,
-                    h3=current_h3,
-                    deco=deco)
+                    h3=current_h3)
 
         pages.append(page)
         current_page_lines = []
