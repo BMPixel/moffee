@@ -29,6 +29,7 @@ def render(document: str, template_dir) -> str:
                 "h3": page.h3,
                 "chunk": page.chunk,
                 "layout": page.option.layout,
+                "deco": page.deco
             }
             for page in pages
         ],

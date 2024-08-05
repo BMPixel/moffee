@@ -58,5 +58,11 @@ def test_deco_with_quotes():
     deco, option = parse_deco(line)
     assert deco == {"layout": "split", "length": "34px"}
 
+def test_deco_with_hyphen():
+    line = "@(background-color='red')"
+    deco, option = parse_deco(line)
+    assert deco == {"background-color": "red"}
+
+
 if __name__ == "__main__":
     pytest.main()

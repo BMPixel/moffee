@@ -168,7 +168,7 @@ def parse_deco(
         raise ValueError(f"Input line should contain a deco, {line} received.")
 
     deco_content = deco_match.group(1)
-    pairs = re.findall(r"(\w+)\s*=\s*([^,]+)(?:,|$)", deco_content)
+    pairs = re.findall(r"([\w\-]+)\s*=\s*([^,]+)(?:,|$)", deco_content)
     deco = {key.strip(): rm_quotes(value.strip()) for key, value in pairs}
 
     if base_option is None:

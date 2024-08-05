@@ -1,4 +1,4 @@
-<div class="slide-content split">
+<div class="slide-content product" {{"style"}}="{% for key, value in slide.deco.items() %}{{ key }}: {{ value }}; {% endfor %}">
     {% if slide.h1 %}
     <h1>{{ slide.h1 }}</h1>
     {% endif %}
