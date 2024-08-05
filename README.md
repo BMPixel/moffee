@@ -59,7 +59,9 @@ moffee automatically adjusts element sizes to accommodate large blocks of text o
 ```
 </details>
 
-Result slide:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b766cf39-e46c-4b7d-8dfc-bb717feba974" alt="moffee example pdf">
+</p>
 
 ## Installation
 
