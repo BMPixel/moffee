@@ -9,14 +9,14 @@
 
 moffee is an open source slide maker. It transforms the markdown document you want to present into a clean slide sheet. 
 
-- moffee handles layout, pagination and styling, so you can focus on your text.
-- There are few things to learn. moffee brings simple syntax to allow arranging and styling content to your like.
-- A live web interface updates slides as you type, where you can start the slideshow or export it to PDF.
+- **moffee handles layout, pagination and styling**, so you can focus on your text.
+- **There are few things to learn**. moffee brings simple syntax to allow arranging and styling content to your like.
+- **A live web interface** updates slides as you type, where you can start the slideshow or export it to PDF.
 
 ## An Example
 
 <details>
-  <summary> Markdown Document (29 lines)</summary>
+  <summary> Input Markdown Document (29 lines)</summary>
   
 ```markdown
 # Moffee
@@ -65,11 +65,11 @@ moffee automatically adjusts element sizes to accommodate large blocks of text o
 
 ## Installation
 
-moffie is written in python. It's recommended to install with `pipx`:
+moffee is written in python. It's recommended to install with `pipx`:
 
 ```bash
-pipx install moffie
-# or `pip install moffie`
+pipx install moffee
+# or `pip install moffee`
 ```
 
 Preview slides in a live web server or export to html:
@@ -82,5 +82,5 @@ moffee example.md output_html/ # export to html
 
 ## Use moffee
 
-moffee uses frontmatter to configure and repurposes dividers (`---`) for creating and arrange pages. This section covers everything about customize the slides.
+moffee is designed with low learning curve. moffee uses frontmatter to configure and repurposes dividers (`---`) for creating and arrange pages. This section covers everything about making use of moffee.
 
