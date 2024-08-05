@@ -1,6 +1,4 @@
 import pytest
-import ipdb
-import wat
 from moffie.compositor import composite, Direction, Type
 
 @pytest.fixture

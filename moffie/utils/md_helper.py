@@ -131,8 +131,6 @@ def redirect_url(document: str, document_path: str, resource_dir: str = ".") -> 
         return os.path.abspath(os.path.normpath(os.path.join(base, relative)))
 
     def replace_url(match):
-        import ipdb
-        # ipdb.set_trace(context=15)
         url = match.group(2)
         if is_absolute_url(url):
             return match.group(0) 

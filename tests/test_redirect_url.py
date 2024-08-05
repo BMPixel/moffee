@@ -1,37 +1,51 @@
 import os
 import pytest
+import tempfile
 
 from moffie.utils.md_helper import redirect_url
 
 @pytest.fixture(scope='module', autouse=True)
 def setup_test_env():
-    # Create test directories and files
-    os.makedirs('/tmp/redirect_url_pytest/test_env/images', exist_ok=True)
-    os.makedirs('/tmp/redirect_url_pytest/test_env/docs', exist_ok=True)
-    os.makedirs('/tmp/redirect_url_pytest/resources', exist_ok=True)
-    os.makedirs('/tmp/redirect_url_pytest/another_dir', exist_ok=True)
+    # Use tempfile to create a temporary directory for the test environment
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create test directories and files
+        test_env_path = os.path.join(temp_dir, 'test_env')
+        resources_path = os.path.join(temp_dir, 'resources')
+        another_dir_path = os.path.join(temp_dir, 'another_dir')
 
-    # Create test files to simulate the environment
-    with open('/tmp/redirect_url_pytest/test_env/images/photo.png', 'w') as f:
-        f.write('This is a test image file.')
+        os.makedirs(os.path.join(test_env_path, 'images'), exist_ok=True)
+        os.makedirs(os.path.join(test_env_path, 'docs'), exist_ok=True)
+        os.makedirs(resources_path, exist_ok=True)
+        os.makedirs(another_dir_path, exist_ok=True)
 
-    with open('/tmp/redirect_url_pytest/test_env/docs/readme.md', 'w') as f:
-        f.write('This is a test markdown file.')
+        # Create test files to simulate the environment
+        with open(os.path.join(test_env_path, 'images', 'photo.png'), 'w') as f:
+            f.write('This is a test image file.')
 
-    with open('/tmp/redirect_url_pytest/resources/external.txt', 'w') as f:
-        f.write('This is a resource file in the absolute resource directory.')
+        with open(os.path.join(test_env_path, 'docs', 'readme.md'), 'w') as f:
+            f.write('This is a test markdown file.')
 
-    with open('/tmp/redirect_url_pytest/another_dir/test.md', 'w') as f:
-        f.write('Another test markdown file.')
+        with open(os.path.join(resources_path, 'external.txt'), 'w') as f:
+            f.write('This is a resource file in the absolute resource directory.')
 
-def test_absolute_urls():
+        with open(os.path.join(another_dir_path, 'test.md'), 'w') as f:
+            f.write('Another test markdown file.')
+
+        # Provide the test environment paths to the tests
+        yield {
+            'test_env_path': test_env_path,
+            'resources_path': resources_path,
+            'another_dir_path': another_dir_path
+        }
+
+def test_absolute_urls(setup_test_env):
     document = """
     Here is a link to an absolute URL [Google](https://www.google.com).
     Here is a link to an absolute file path ![File](/tmp/redirect_url_pytest/test_env/images/photo.png).
     """
 
-    document_path = "/tmp/redirect_url_pytest/test_env/markdown.md"
-    resource_dir = "/tmp/redirect_url_pytest/resources"
+    document_path = os.path.join(setup_test_env['test_env_path'], 'markdown.md')
+    resource_dir = setup_test_env['resources_path']
 
     expected_document = """
     Here is a link to an absolute URL [Google](https://www.google.com).
@@ -41,13 +55,13 @@ def test_absolute_urls():
     result = redirect_url(document, document_path, resource_dir)
     assert result == expected_document
 
-def test_nonexistent_paths():
+def test_nonexistent_paths(setup_test_env):
     document = """
     This link should remain unchanged [Nonexistent](nonexistent/path/file.txt).
     """
 
-    document_path = "/tmp/redirect_url_pytest/test_env/markdown.md"
-    resource_dir = "/tmp/redirect_url_pytest/resources"
+    document_path = os.path.join(setup_test_env['test_env_path'], 'markdown.md')
+    resource_dir = setup_test_env['resources_path']
 
     expected_document = """
     This link should remain unchanged [Nonexistent](nonexistent/path/file.txt).
@@ -56,7 +70,7 @@ def test_nonexistent_paths():
     result = redirect_url(document, document_path, resource_dir)
     assert result == expected_document
 
-def test_multiple_links():
+def test_multiple_links(setup_test_env):
     document = """
     ![Image](images/photo.png)
     [Readme](docs/readme.md)
@@ -64,72 +78,71 @@ def test_multiple_links():
     [Another](../another_dir/test.md)
     """
 
-    document_path = "/tmp/redirect_url_pytest/test_env/markdown.md"
-    resource_dir = "/tmp/redirect_url_pytest/resources"
+    document_path = os.path.join(setup_test_env['test_env_path'], 'markdown.md')
+    resource_dir = setup_test_env['resources_path']
 
-    expected_document = """
-    ![Image](/tmp/redirect_url_pytest/test_env/images/photo.png)
-    [Readme](/tmp/redirect_url_pytest/test_env/docs/readme.md)
-    [External](/tmp/redirect_url_pytest/resources/external.txt)
-    [Another](/tmp/redirect_url_pytest/another_dir/test.md)
+    expected_document = f"""
+    ![Image]({os.path.join(setup_test_env['test_env_path'], 'images/photo.png')})
+    [Readme]({os.path.join(setup_test_env['test_env_path'], 'docs/readme.md')})
+    [External]({os.path.join(setup_test_env['resources_path'], 'external.txt')})
+    [Another]({os.path.join(setup_test_env['another_dir_path'], 'test.md')})
     """
 
     result = redirect_url(document, document_path, resource_dir)
     assert result == expected_document
 
-def test_complex_relative_paths():
+def test_complex_relative_paths(setup_test_env):
     document = """
     ![Parent Image](../test_env/images/photo.png)
     [Parent Readme](../test_env/docs/readme.md)
     """
 
-    document_path = "/tmp/redirect_url_pytest/test_env/docs/nested/markdown.md"
-    resource_dir = "/tmp/redirect_url_pytest/resources"
+    document_path = os.path.join(setup_test_env['test_env_path'], 'docs/nested/markdown.md')
+    resource_dir = setup_test_env['resources_path']
 
-    expected_document = """
-    ![Parent Image](/tmp/redirect_url_pytest/test_env/images/photo.png)
-    [Parent Readme](/tmp/redirect_url_pytest/test_env/docs/readme.md)
+    expected_document = f"""
+    ![Parent Image]({os.path.join(setup_test_env['test_env_path'], 'images/photo.png')})
+    [Parent Readme]({os.path.join(setup_test_env['test_env_path'], 'docs/readme.md')})
     """
 
     result = redirect_url(document, document_path, resource_dir)
     assert result == expected_document
 
-def test_links_with_anchors_and_queries():
+def test_links_with_anchors_and_queries(setup_test_env):
     document = """
     [Section](docs/readme.md#section)
     [Query](docs/readme.md?query=1)
     """
 
-    document_path = "/tmp/redirect_url_pytest/test_env/markdown.md"
-    resource_dir = "/tmp/redirect_url_pytest/resources"
+    document_path = os.path.join(setup_test_env['test_env_path'], 'markdown.md')
+    resource_dir = setup_test_env['resources_path']
 
-    expected_document = """
-    [Section](/tmp/redirect_url_pytest/test_env/docs/readme.md#section)
-    [Query](/tmp/redirect_url_pytest/test_env/docs/readme.md?query=1)
+    expected_document = f"""
+    [Section]({os.path.join(setup_test_env['test_env_path'], 'docs/readme.md')}#section)
+    [Query]({os.path.join(setup_test_env['test_env_path'], 'docs/readme.md')}?query=1)
     """
 
     result = redirect_url(document, document_path, resource_dir)
     assert result == expected_document
 
-def test_no_resource_dir():
+def test_no_resource_dir(setup_test_env):
     document = """
     ![Image](images/photo.png)
     [Readme](docs/readme.md)
     [Nonexistent](nonexistent/path/file.txt)
     """
 
-    document_path = "/tmp/redirect_url_pytest/test_env/markdown.md"
+    document_path = os.path.join(setup_test_env['test_env_path'], 'markdown.md')
     # No resource_dir provided
 
-    expected_document = """
-    ![Image](/tmp/redirect_url_pytest/test_env/images/photo.png)
-    [Readme](/tmp/redirect_url_pytest/test_env/docs/readme.md)
+    expected_document = f"""
+    ![Image]({os.path.join(setup_test_env['test_env_path'], 'images/photo.png')})
+    [Readme]({os.path.join(setup_test_env['test_env_path'], 'docs/readme.md')})
     [Nonexistent](nonexistent/path/file.txt)
     """
 
     result = redirect_url(document, document_path)
     assert result == expected_document
-    
 
 if __name__ == "__main__":
     pytest.main([__file__])

@@ -1,6 +1,8 @@
 import os
+import re
 import shutil
 from functools import partial
+import uuid
 from jinja2 import Environment, FileSystemLoader
 from moffie.compositor import composite
 from moffie.markdown import md
@@ -39,10 +41,42 @@ def render(document: str, template_dir, document_path: str = None) -> str:
     return template.render(data)
         
 
+def copy_statics(document: str, target_dir: str) -> str:
+    """
+    Copy all static resources in html document to target_dir, renaming url to target_dir/uuid.ext
+    
+    :param document: html document to process
+    :param target_dir: Target directory
+    :return: Updated document with url redirected
+    """
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+
+    pattern = re.compile(r'"([^"]*)"')
+    matches = pattern.findall(document)
+    for url in matches:
+        if os.path.exists(url):
+            _, ext = os.path.splitext(url)
+
+            # Generate a random ID for the new file name
+            random_id = str(uuid.uuid4())
+            new_filename = f"{random_id}{ext}"
+            new_path = os.path.join(target_dir, new_filename)
+
+            shutil.copy(url, new_path)
+
+            # Replace the URL in the document
+            document = document.replace(url, new_path)
+
+    return document
+
 def render_and_write(document_path: str, output_dir: str, template_dir):
     with open(document_path) as f:
         document = f.read()
+    # import ipdb; ipdb.set_trace()
+    static_dir = os.path.join(output_dir, "static")
     output_html = render(document, template_dir, document_path=document_path)
+    output_html = copy_statics(output_html, static_dir).replace(static_dir, "static")
 
     os.makedirs(output_dir, exist_ok=True)
 
