@@ -1,16 +1,16 @@
 <p align="center">
   <a href="https://github.com/BMPixel/moffee">
-    <img src="https://github.com/user-attachments/assets/37fa6c1b-df21-4df1-9ccf-6075f009c74d" alt="Moffee logo" width="500">
+    <img src="https://github.com/user-attachments/assets/37fa6c1b-df21-4df1-9ccf-6075f009c74d" alt="moffee logo" width="500">
   </a>
 </p>
 <p align="center">
-  <strong>Moffee</strong>: Make Markdown Ready to Present
+  <strong>moffee</strong>: Make Markdown Ready to Present
 </p>
 
-Moffee is an open-source slide maker that transforms markdown documents into clean, professional slide decks. 
+moffee is an open-source slide maker that transforms markdown documents into clean, professional slide decks. 
 
-- **Moffee handles layout, pagination, and styling**, so you can focus on your content.
-- **There's little to learn**. Moffee uses simple syntax to arrange and style content to your liking.
+- **moffee handles layout, pagination, and styling**, so you can focus on your content.
+- **There's little to learn**. moffee uses simple syntax to arrange and style content to your liking.
 - **A live web interface** updates slides as you type, allowing you to start a slideshow or export it to PDF.
 
 ## An Example
@@ -19,11 +19,11 @@ Moffee is an open-source slide maker that transforms markdown documents into cle
   <summary> Click to expand input markdown document (29 lines)</summary>
   
 ```markdown
-# Moffee
+# moffee
 ## Make markdown ready to present
 @(layout=centered)
 
-## Why Moffee?
+## Why moffee?
 
 - **80/20 Rule**[^1]: Creating slides can be time-consuming, often requiring 80% of the effort for just 20% of the outcome.
 - `moffee` transforms markdown into professional presentations effortlessly.
@@ -60,12 +60,12 @@ moffee automatically adjusts element sizes to accommodate large blocks of text o
 </details>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/b766cf39-e46c-4b7d-8dfc-bb717feba974" alt="Moffee example PDF">
+  <img src="https://github.com/user-attachments/assets/b766cf39-e46c-4b7d-8dfc-bb717feba974" alt="moffee example PDF">
 </p>
 
 ## Installation
 
-Moffee is written in Python and is recommended to install with `pipx`:
+moffee is written in Python and is recommended to install with `pipx`:
 
 ```bash
 pipx install moffee
@@ -83,7 +83,7 @@ moffee example.md output_html/ # export to HTML
 
 ## Usage
 
-To start, write in standard markdown. Moffee supports most extended syntax found in [Obsidian Flavored Markdown](https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown).
+To start, write in standard markdown. moffee supports most extended syntax found in [Obsidian Flavored Markdown](https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown).
 
 ```markdown
 # Markdown Title
@@ -111,9 +111,9 @@ Text on the first slide
 Text on the next slide.
 ```
 
-You'll notice the second slide shares the `Page 1` title. Moffee selects the most suitable title for each slide.
+You'll notice the second slide shares the `Page 1` title. moffee selects the most suitable title for each slide.
 
-In addition to `---`, Moffee supports `***` and `___` for in-slide layout. Use `***` to separate elements horizontally:
+In addition to `---`, moffee supports `***` and `___` for in-slide layout. Use `***` to separate elements horizontally:
 
 ```markdown
 Text on the left.
@@ -135,7 +135,7 @@ Bottom bun
 
 ### Options and Styles
 
-Front matter is used to define Moffee's behavior. Default values are:
+Front matter is used to define moffee's behavior. Default values are:
 
 ```yaml
 ---
@@ -157,7 +157,7 @@ color: white
 ---
 ```
 
-Moffee also supports local style decorators with the syntax `@(property=value)`. Use these within the document to set attributes for specific slides:
+moffee also supports local style decorators with the syntax `@(property=value)`. Use these within the document to set attributes for specific slides:
 
 ```markdown
 # A refined landing page
