@@ -355,6 +355,14 @@ td {
     padding: 12px 15px;
 }
 
+/* Mermaid */
+
+div.mermaid {
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+}
+
 /* Fenced Code */
 
 div.highlight {

@@ -9,6 +9,7 @@ from moffee.markdown import md
 from moffee.utils.md_helper import extract_title
 from livereload import Server
 import click
+import tempfile
 
 def render(document: str, template_dir, document_path: str = None) -> str:
     # Setup Jinja 2
@@ -71,10 +72,13 @@ def copy_statics(document: str, target_dir: str) -> str:
     return document
 
 def render_and_write(document_path: str, output_dir: str, template_dir):
+    # remove existing output_dir
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+    static_dir = os.path.join(output_dir, "static")
+
     with open(document_path) as f:
         document = f.read()
-    # import ipdb; ipdb.set_trace()
-    static_dir = os.path.join(output_dir, "static")
     output_html = render(document, template_dir, document_path=document_path)
     output_html = copy_statics(output_html, static_dir).replace(static_dir, "static")
 
@@ -88,7 +92,9 @@ def render_and_write(document_path: str, output_dir: str, template_dir):
 
 @click.command()
 @click.argument("md")
-@click.argument("output")
+@click.option(
+    "--output", default=None, help="Output file path. If not specified, a default name will be used."
+)
 @click.option(
     "--theme", default="base", help='Theme of slides, defaults to "base"'
 )
@@ -97,12 +103,14 @@ def render_and_write(document_path: str, output_dir: str, template_dir):
     is_flag=True,
     help="Launch a live web server which updates html outputs on the markdown file, defaults to false",
 )
-def html(md: str, output: str, theme: str = "base", live: bool = False):
+def html(md: str, output: str = None, theme: str = "base", live: bool = False):
     """
     Render markdown file into slides, displayed in an html webpage.
     """
 
     template_dir = os.path.join(os.path.dirname(__file__), "..", "templates", theme)
+    if not output:
+        output = tempfile.mkdtemp()
     render_handler = partial(
         render_and_write, document_path=md, output_dir=output, template_dir=template_dir
     )
