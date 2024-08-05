@@ -53,6 +53,10 @@ def test_deco_with_spaces():
     deco, option = parse_deco(line)
     assert deco == {"layout": "split", "background": "blue"}
 
+def test_deco_with_quotes():
+    line = "@(layout = \"split\",length='34px')"
+    deco, option = parse_deco(line)
+    assert deco == {"layout": "split", "length": "34px"}
 
 if __name__ == "__main__":
     pytest.main()

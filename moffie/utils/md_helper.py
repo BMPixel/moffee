@@ -81,7 +81,6 @@ def contains_deco(line: str) -> bool:
     """
     return bool(re.match(r"^\s*@\(.*?\)\s*$", line))
 
-
 def extract_title(document: str) -> Optional[str]:
     """
     Extracts proper title from document.
@@ -97,3 +96,4 @@ def extract_title(document: str) -> Optional[str]:
         return match.group(2).strip()
     else:
         return None
+    

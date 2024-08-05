@@ -157,13 +157,19 @@ def parse_deco(
              - A dictionary of remaining key-value pairs if the line is a valid deco, None otherwise
              - An updated PageOption if base_option was provided, None otherwise
     """
+
+    def rm_quotes(s):
+        if (s.startswith('"') and s.endswith('"')) or (s.startswith("'") and s.endswith("'")):
+            return s[1:-1]
+        return s
+
     deco_match = re.match(r"^\s*@\((.*?)\)\s*$", line)
     if not deco_match:
         raise ValueError(f"Input line should contain a deco, {line} received.")
 
     deco_content = deco_match.group(1)
     pairs = re.findall(r"(\w+)\s*=\s*([^,]+)(?:,|$)", deco_content)
-    deco = {key.strip(): value.strip() for key, value in pairs}
+    deco = {key.strip(): rm_quotes(value.strip()) for key, value in pairs}
 
     if base_option is None:
         return deco, None
