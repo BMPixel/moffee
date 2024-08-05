@@ -111,6 +111,33 @@ Content 3
     pages = composite(doc)
     assert len(pages) == 2
 
+def test_escaped_area_paging():
+    doc = """
+Content 1
+```bash
+---
+Content 2
+```
+***
+Content 3
+    """
+    pages = composite(doc)
+    assert len(pages) == 1
+
+def test_escaped_area_chunking():
+    doc = """
+Content 1
+---
+Content 2
+```bash
+***
+Content 3
+```
+    """
+    pages = composite(doc)
+    assert len(pages) == 2
+    assert len(pages[1].chunk.children) == 0
+
 def test_title_and_subtitle():
     doc = """
 # Title

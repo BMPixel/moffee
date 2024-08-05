@@ -410,26 +410,6 @@ div.highlight {
     /* Centers the text within the content item */
 }
 
-.centered::before,
-.centered::after {
-    content: '';
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, #f2fbff, #ffffff 100%);
-    z-index: 1;
-}
-
-.centered::before {
-    top: -200px;
-    left: -200px;
-}
-
-.centered::after {
-    bottom: -200px;
-    right: -200px;
-}
-
 /* Action Buttons */
 
 .floating-btn {

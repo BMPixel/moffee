@@ -76,8 +76,11 @@ class Page:
 
         def split_by_div(text, type) -> List[Chunk]:
             strs = [""]
+            current_escaped = False
             for line in text.split("\n"):
-                if is_divider(line, type):
+                if line.strip().startswith('```'):
+                    current_escaped = not current_escaped
+                if is_divider(line, type) and not current_escaped:
                     strs.append("\n")
                 else:
                     strs[-1] += line + "\n"
@@ -212,6 +215,7 @@ def composite(document: str, option: PageOption = None, document_path:str = None
     """
     pages: List[Page] = []
     current_page_lines = []
+    current_escaped = False # track whether in code area
     current_h1 = current_h2 = current_h3 = None
     prev_header_level = 0
 
@@ -250,7 +254,11 @@ def composite(document: str, option: PageOption = None, document_path:str = None
         current_h1 = current_h2 = current_h3 = None
 
     for _, line in enumerate(lines):
-        header_level = get_header_level(line)
+        # update current env stack
+        if line.strip().startswith('```'):
+            current_escaped = not current_escaped
+            
+        header_level = get_header_level(line) if not current_escaped else 0
 
         # Check if this is a new header and not consecutive
         # Only break at heading 1-3
@@ -260,9 +268,11 @@ def composite(document: str, option: PageOption = None, document_path:str = None
             # Check if the next line is also a header
             create_page()
 
-        if is_divider(line, type='-'):
+        if is_divider(line, type='-') and not current_escaped:
             create_page()
             continue
+
+        current_page_lines.append(line)
 
         match header_level:
             case 1:
@@ -274,8 +284,6 @@ def composite(document: str, option: PageOption = None, document_path:str = None
             case _:
                 pass  # Handle other cases or do nothing
 
-        current_page_lines.append(line)
-
         if header_level > 0:
             prev_header_level = header_level
         if header_level == 0 and not is_empty(line) and not contains_deco(line):
@@ -284,7 +292,7 @@ def composite(document: str, option: PageOption = None, document_path:str = None
     # Create the last page if there's remaining content
     create_page()
 
-    # Process each page
+    # Process each page and choose titles
     env_h1 = env_h2 = env_h3 = None
     for page in pages:
         inherit_h1 = page.option.default_h1
