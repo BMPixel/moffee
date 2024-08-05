@@ -14,15 +14,15 @@ class PageOption:
     default_h3: bool = True
     layout: str = "content"
 
-class Direction(Enum):
+class Direction:
     HORIZONTAL = "horizontal"
     VERTICAL = "vertical"
 
-class Type(Enum):
+class Type:
     PARAGRAPH = "paragraph"
     NODE = "node"
 
-class Alignment(Enum):
+class Alignment:
     LEFT = "left"
     CENTER = "center"
     RIGHT = "right"
@@ -193,7 +193,7 @@ def parse_value(value: str):
     return value
 
 
-def paginate(document: str, option: PageOption = None) -> List[Page]:
+def composite(document: str, option: PageOption = None) -> List[Page]:
     """
     Paginates a markdown document into slide pages.
 

@@ -82,24 +82,30 @@ h3 {
     font-size: 1.6em;
 }
 
-.columns-container {
-    display: flex;
-    gap: 20px;
-}
-
-.left-column,
-.right-column {
-    flex: 1;
-    padding: 0 15px;
-}
-
 .content {
     flex-grow: 1;
     overflow: hidden;
     margin: 0 15px 30px 15px;
+    display: flex;
+    flex-direction: column;
 }
 
-.content-item {
+.chunk {
+    display: flex;
+    width: 100%;
+}
+
+.chunk-vertical {
+    flex-direction: column;
+}
+
+.chunk-horizontal {
+    flex-direction: row;
+    gap: 20px;
+}
+
+.chunk-paragraph {
+    flex-direction: column;
     text-align: justify;
     text-justify: inter-word;
     line-height: 1.5;
@@ -107,7 +113,7 @@ h3 {
     hyphens: auto;
 }
 
-.content-item img {
+.chunk-paragraph img {
     display: block;
     object-fit: contain;
     max-width: 280px;
@@ -118,6 +124,7 @@ h3 {
 .auto-sizing {
     transform-origin: top left;
     flex-direction: column;
+    flex-grow: 1;
 }
 
 
@@ -393,7 +400,7 @@ div.highlight {
     margin-bottom: 10px;
 }
 
-.centered .content-item {
+.centered .chunk-paragraph {
     font-size: 20px;
     text-align: center;
     font-weight: 300;

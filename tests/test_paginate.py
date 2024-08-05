@@ -1,7 +1,7 @@
 import pytest
 import ipdb
 import wat
-from moffie.compositor import paginate, Direction, Type
+from moffie.compositor import composite, Direction, Type
 
 @pytest.fixture
 def sample_document():
@@ -55,11 +55,11 @@ This line should be on a new page.
     """
 
 def test_paginate_creates_correct_number_of_pages(sample_document):
-    pages = paginate(sample_document)
+    pages = composite(sample_document)
     assert len(pages) > 1, "Pagination should create multiple pages"
 
 def test_frontmatter_parsing(sample_document):
-    pages = paginate(sample_document)
+    pages = composite(sample_document)
     assert pages[0].option.layout == "split"
     assert pages[0].option.default_h1 == True
     assert pages[0].option.default_h2 == False
@@ -73,7 +73,7 @@ More content
 ### Subheader
 Even more content
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     assert pages[0].h1 == "Main Title"
     assert pages[1].h1 == None
     assert pages[1].h2 == "Subtitle"
@@ -90,7 +90,7 @@ Content 2
 # New Header 1
 Content 3
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     assert len(pages) == 3
     assert pages[0].h1 == "Header 1"
     assert pages[1].h2 == "Header 2"
@@ -104,7 +104,7 @@ Content 2
 ***
 Content 3
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     assert len(pages) == 2
 
 def test_title_and_subtitle():
@@ -116,7 +116,7 @@ def test_title_and_subtitle():
 ### Heading3
 Content
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     assert len(pages) == 2
     assert pages[0].title == "Title"
     assert pages[0].subtitle == "Subtitle"
@@ -132,7 +132,7 @@ Paragraph 3
 
 Paragraph 4
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     chunk = pages[0].chunk
     assert chunk.type == Type.PARAGRAPH
     assert len(chunk.children) == 0
@@ -145,7 +145,7 @@ ___
 
 Paragraph 2
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     chunk = pages[0].chunk
     assert chunk.type == Type.NODE
     assert len(chunk.children) == 2
@@ -160,7 +160,7 @@ Paragraph 1
 Paragraph 2
 ***
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     chunk = pages[0].chunk
     assert chunk.type == Type.NODE
     assert len(chunk.children) == 3
@@ -179,7 +179,7 @@ Paragraph 3
 ***
 Paragraph 4
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     assert len(pages) == 2
     chunk = pages[1].chunk
     assert chunk.type == Type.NODE
@@ -198,7 +198,7 @@ def test_empty_lines_handling():
 
 Content with empty line above
     """
-    pages = paginate(doc)
+    pages = composite(doc)
     assert len(pages[0].chunk.children) == 0
     assert pages[0].deco == {}
 
@@ -212,7 +212,7 @@ default_h1: true
 Hello
 @(background=blue)
 """
-    pages = paginate(doc)
+    pages = composite(doc)
     assert pages[0].raw_md == 'Hello'
     assert pages[0].option.default_h1 == False
     assert pages[0].deco == {'background': 'blue'}
@@ -229,7 +229,7 @@ default_h1: true
 @(default_h1=false)
 Hello
 """
-    pages = paginate(doc)
+    pages = composite(doc)
     assert len(pages) == 2
     assert pages[0].raw_md == ''
     assert pages[0].title == 'Title1'
