@@ -3,7 +3,7 @@ import pytest
 import shutil
 import tempfile
 
-from moffie.main import (
+from moffee.main import (
     copy_statics,
 ) 
 

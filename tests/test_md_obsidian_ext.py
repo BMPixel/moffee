@@ -3,7 +3,7 @@ from markdown import markdown
 
 
 def check_markdown_conversion(text, expected):
-    md = markdown(text, extensions=["moffie.utils.md_obsidian_ext"])
+    md = markdown(text, extensions=["moffee.utils.md_obsidian_ext"])
     assert md.strip() == expected.strip()
 
 

@@ -2,7 +2,7 @@ import os
 import pytest
 import tempfile
 
-from moffie.utils.md_helper import redirect_url
+from moffee.utils.md_helper import redirect_url
 
 @pytest.fixture(scope='module', autouse=True)
 def setup_test_env():

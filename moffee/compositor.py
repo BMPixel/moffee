@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
 import yaml
 import re
-from moffie.utils.md_helper import get_header_level, is_divider, is_empty, rm_comments, contains_deco, redirect_url
+from moffee.utils.md_helper import get_header_level, is_divider, is_empty, rm_comments, contains_deco, redirect_url
 
 @dataclass
 class PageOption:

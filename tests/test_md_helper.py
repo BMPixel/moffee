@@ -1,5 +1,5 @@
 import pytest
-from moffie.utils.md_helper import (
+from moffee.utils.md_helper import (
     is_comment,
     is_empty,
     get_header_level,

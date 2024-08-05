@@ -1,5 +1,5 @@
 import pytest
-from moffie.compositor import composite, Direction, Type
+from moffee.compositor import composite, Direction, Type
 
 @pytest.fixture
 def sample_document():

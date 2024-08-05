@@ -4,9 +4,9 @@ import shutil
 from functools import partial
 import uuid
 from jinja2 import Environment, FileSystemLoader
-from moffie.compositor import composite
-from moffie.markdown import md
-from moffie.utils.md_helper import extract_title
+from moffee.compositor import composite
+from moffee.markdown import md
+from moffee.utils.md_helper import extract_title
 from livereload import Server
 import click
 

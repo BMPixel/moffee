@@ -17,7 +17,7 @@ extensions = [
     "toc",
     "wikilinks",
     "pymdownx.inlinehilite",
-    "moffie.utils.md_obsidian_ext"
+    "moffee.utils.md_obsidian_ext"
 ]
 
 extension_configs = {

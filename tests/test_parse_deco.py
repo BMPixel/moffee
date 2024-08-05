@@ -1,6 +1,6 @@
 import pytest
 
-from moffie.compositor import parse_deco, PageOption
+from moffee.compositor import parse_deco, PageOption
 
 
 def test_basic_deco():

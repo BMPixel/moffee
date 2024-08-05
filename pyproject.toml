@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "moffie"
+name = "moffee"
 version = "0.1.0"
 description = ""
 authors = ["bmpixel <pixelwenbo@gmail.com>"]

@@ -1,8 +1,8 @@
 import os
 import pytest
 import re
-from moffie.compositor import Page, PageOption
-from moffie.main import render
+from moffee.compositor import Page, PageOption
+from moffee.main import render
 
 @pytest.fixture
 def example_page():
