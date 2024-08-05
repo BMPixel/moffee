@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
 import yaml
 import re
-from moffie.utils.md_helper import get_header_level, is_divider, is_empty, contains_image, contains_deco
+from moffie.utils.md_helper import get_header_level, is_divider, is_empty, rm_comments, contains_deco
 
 @dataclass
 class PageOption:
@@ -199,7 +199,7 @@ def parse_value(value: str):
 
 def composite(document: str, option: PageOption = None) -> List[Page]:
     """
-    Paginates a markdown document into slide pages.
+    Composite a markdown document into slide pages.
 
     Splitting criteria:
     - New h1/h2/h3 header (except when following another header)
@@ -215,6 +215,7 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
     line_count = 0
     prev_header_level = 0
 
+    document = rm_comments(document)
     document, parsed_option = parse_frontmatter(document)
     if option == None:
         option = parsed_option

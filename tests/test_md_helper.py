@@ -6,7 +6,8 @@ from moffie.utils.md_helper import (
     is_divider,
     contains_image,
     contains_deco,
-    extract_title
+    extract_title,
+    rm_comments
 )
 
 
@@ -41,7 +42,6 @@ def test_is_divider():
     assert is_divider("* * *", type="*") == False
 
 
-
 def test_contains_image():
     assert contains_image("![Alt text](image.jpg)") == True
     assert contains_image("This is an image: ![Alt text](image.jpg)") == True
@@ -57,8 +57,6 @@ def test_contains_deco():
     assert contains_deco("@(key=value) Some text") == False
     assert contains_deco("@()") == True  # empty deco
 
-import pytest
-
 def test_extract_title():
     assert extract_title("# Main Title\nSome content") == "Main Title"
     assert extract_title("## Secondary Title\nSome content") == "Secondary Title"
@@ -69,3 +67,71 @@ def test_extract_title():
     assert extract_title("#  Title with spaces  \nContent") == "Title with spaces"
     multi_para = "Para 1\n\nPara 2\n\n# Actual Title\nContent"
     assert extract_title(multi_para) == "Actual Title"
+
+def multi_strip(text):
+    return "\n".join([t.strip() for t in text.split("\n") if t.strip() != ""])
+
+def test_remove_html_comments():
+    markdown = """
+    # Title
+    <!-- This is a comment -->
+    Normal text.
+    <!--
+    This is a
+    multi-line comment
+    -->
+    More text.
+    """
+    expected = """
+    # Title
+    Normal text.
+    More text.
+    """
+    assert multi_strip(rm_comments(markdown)) == multi_strip(expected)
+
+
+def test_remove_single_line_comments():
+    markdown = """
+    # Title
+    %% This is a comment
+    Normal text.
+    %% Another comment
+    More text.
+    """
+    expected = """
+    # Title
+    Normal text.
+    More text.
+    """
+    assert multi_strip(rm_comments(markdown)) == multi_strip(expected)
+
+
+def test_remove_all_types_of_comments():
+    markdown = """
+    # Title
+    <!-- HTML comment -->
+    Normal text.
+    %% Single line comment
+    <!--
+    Multi-line
+    HTML comment
+    -->
+    More text.
+    Final text.
+    """
+    expected = """
+    # Title
+    Normal text.
+    More text.
+    Final text.
+    """
+    assert multi_strip(rm_comments(markdown)) == multi_strip(expected)
+
+
+def test_no_comments():
+    markdown = """
+    # Title
+    This is a normal Markdown
+    document with no comments.
+    """
+    assert multi_strip(rm_comments(markdown)) == multi_strip(markdown)
