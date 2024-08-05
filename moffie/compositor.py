@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
 import yaml
 import re
-from moffie.utils.md_helper import get_header_level, is_divider, is_empty, rm_comments, contains_deco
+from moffie.utils.md_helper import get_header_level, is_divider, is_empty, rm_comments, contains_deco, redirect_url
 
 @dataclass
 class PageOption:
@@ -13,6 +13,7 @@ class PageOption:
     default_h2: bool = True
     default_h3: bool = True
     layout: str = "content"
+    resource_dir: str = "."
     styles: dict = field(default_factory=dict)
 
 class Direction:
@@ -197,7 +198,7 @@ def parse_value(value: str):
     return value
 
 
-def composite(document: str, option: PageOption = None) -> List[Page]:
+def composite(document: str, option: PageOption = None, document_path:str = None) -> List[Page]:
     """
     Composite a markdown document into slide pages.
 
@@ -218,6 +219,8 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
     document, parsed_option = parse_frontmatter(document)
     if option == None:
         option = parsed_option
+    if document_path:
+        document = redirect_url(document, document_path, option.resource_dir)
 
     lines = document.split("\n")
 

@@ -1,3 +1,5 @@
+import os
+from urllib.parse import urljoin, urlparse
 import re
 from typing import Optional
 
@@ -96,9 +98,67 @@ def extract_title(document: str) -> Optional[str]:
         return match.group(2).strip()
     else:
         return None
-    
+
 def rm_comments(document):
+    """
+    Remove comments from markdown. Supports html and "%%"
+    """
     document = re.sub(r'<!--[\s\S]*?-->', '', document)
     document = re.sub(r'^\s*%%.*$', '', document, flags=re.MULTILINE)
-    
+
     return document.strip()
+
+
+def redirect_url(document: str, document_path: str, resource_dir: str = ".") -> str:
+    """
+    Redirect all relative paths in markdown document to absolute paths with some guessing.
+    Following possible base paths will be tried:
+    - The original path itself maybe a valid absolute url (Absolute path or http)
+    - The direct parent dir of the document
+    - The resource dir (if it exists as an absolute path)
+    - The resource dir relative to the document (Otherwise)
+
+    :param document: Markdown document string
+    :param document_path: Path to the document
+    :param resource_dir: Optional resource path
+    :return: Document string with all urls redirected.
+    """
+
+    def is_absolute_url(url):
+        return bool(urlparse(url).netloc) or (os.path.isabs(url) and os.path.exists(url))
+
+    def make_absolute(base, relative):
+        return os.path.abspath(os.path.normpath(os.path.join(base, relative)))
+
+    def replace_url(match):
+        import ipdb
+        # ipdb.set_trace(context=15)
+        url = match.group(2)
+        if is_absolute_url(url):
+            return match.group(0) 
+        # escape anchors(#) and queries(?)
+        url = re.match(r'^[^#?]*', url).group(0)
+
+        # Try different base paths to make the URL absolute
+        base_paths = [
+            os.path.dirname(document_path), 
+            os.path.abspath(resource_dir), 
+            os.path.join(
+                os.path.dirname(document_path), resource_dir
+            ),  
+        ]
+
+        for base in base_paths:
+            absolute_url = make_absolute(base, url)
+            if os.path.exists(absolute_url) or is_absolute_url(absolute_url):
+                return match.group(0).replace(url, absolute_url)
+
+        return match.group(0) 
+
+    # Regular expression to find markdown links
+    url_pattern = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+
+    # Substitute all URLs in the document using the replace_url function
+    redirected_document = url_pattern.sub(replace_url, document)
+
+    return redirected_document

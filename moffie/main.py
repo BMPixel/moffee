@@ -8,7 +8,7 @@ from moffie.utils.md_helper import extract_title
 from livereload import Server
 import click
 
-def render(document: str, template_dir) -> str:
+def render(document: str, template_dir, document_path: str = None) -> str:
     # Setup Jinja 2
     env = Environment(loader=FileSystemLoader(template_dir))
 
@@ -18,7 +18,7 @@ def render(document: str, template_dir) -> str:
 
     # Fill template
     title = extract_title(document) or "Untitled"
-    pages = composite(document)
+    pages = composite(document, document_path=document_path)
 
     data = {
         "title": title,
@@ -42,7 +42,7 @@ def render(document: str, template_dir) -> str:
 def render_and_write(document_path: str, output_dir: str, template_dir):
     with open(document_path) as f:
         document = f.read()
-    output_html = render(document, template_dir)
+    output_html = render(document, template_dir, document_path=document_path)
 
     os.makedirs(output_dir, exist_ok=True)
 
