@@ -127,6 +127,19 @@ Content
     assert pages[0].title == "Title"
     assert pages[0].subtitle == "Subtitle"
     assert pages[1].title == "Title2"
+    
+def test_adjacent_headings_same_level():
+    doc = """
+# Title
+## Subtitle
+## Subtitle2
+### Heading 
+### Heading2
+"""
+    pages = composite(doc)
+    assert len(pages) == 3
+    assert pages[1].title == "Subtitle2"
+    assert pages[1].subtitle == "Heading"
 
 def test_chunking_trivial():
     doc = """

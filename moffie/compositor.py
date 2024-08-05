@@ -212,7 +212,6 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
     pages: List[Page] = []
     current_page_lines = []
     current_h1 = current_h2 = current_h3 = None
-    line_count = 0
     prev_header_level = 0
 
     document = rm_comments(document)
@@ -223,7 +222,7 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
     lines = document.split("\n")
 
     def create_page():
-        nonlocal current_page_lines, line_count, current_h1, current_h2, current_h3, option
+        nonlocal current_page_lines, current_h1, current_h2, current_h3, option
         # Only make new page if has non empty lines
 
         if all([l.strip() == '' for l in current_page_lines]):
@@ -245,7 +244,6 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
 
         pages.append(page)
         current_page_lines = []
-        line_count = 0
         current_h1 = current_h2 = current_h3 = None
 
     for _, line in enumerate(lines):
@@ -253,7 +251,7 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
 
         # Check if this is a new header and not consecutive
         # Only break at heading 1-3
-        is_downstep_header_level = prev_header_level == 0 or prev_header_level > header_level
+        is_downstep_header_level = prev_header_level == 0 or prev_header_level >= header_level
         is_more_than_level_4 = prev_header_level > header_level >= 3
         if header_level > 0 and is_downstep_header_level and not is_more_than_level_4:
             # Check if the next line is also a header
@@ -274,8 +272,6 @@ def composite(document: str, option: PageOption = None) -> List[Page]:
                 pass  # Handle other cases or do nothing
 
         current_page_lines.append(line)
-        if not is_empty(line):
-            line_count += 1
 
         if header_level > 0:
             prev_header_level = header_level
