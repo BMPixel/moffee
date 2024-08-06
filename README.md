@@ -75,9 +75,9 @@ pipx install moffee
 Preview slides in a live web server or export to HTML:
 
 ```bash
-moffee example.md --live # launch a server
+moffee live example.md # launch a server
 # or
-moffee example.md output_html/ # export to HTML
+moffee make example.md -o output_html/ # export to HTML
 ```
 
 

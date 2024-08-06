@@ -1,27 +1,35 @@
 [tool.poetry]
 name = "moffee"
-version = "0.1.0"
-description = ""
-authors = ["bmpixel <pixelwenbo@gmail.com>"]
+version = "0.1.1"
+description = "A slide maker that transform markdown into slides."
+authors = ["Wenbo Pan <pixelwenbo@gmail.com>"]
 readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/bmpixel/moffee"
+repository = "https://github.com/bmpixel/moffee"
+keywords = ["markdown", "slides", "presentation", "CLI"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
 jinja2 = "^3.1.4"
 markdown = "^3.6"
 pyyaml = "^6.0.1"
-pytest = "^8.2.2"
-livereload = "^2.7.0"
-fire = "^0.6.0"
-click = "^8.1.7"
-pygments = "^2.18.0"
 pymdown-extensions = "^10.8.1"
-ipdb = "^0.13.13"
+livereload = "^2.7.0"
+click = "^8.1.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.2.2"
 wat-inspector = "^0.3.3"
+pygments = "^2.18.0"
+ipdb = "^0.13.13"
 
 [tool.ipdb]
-context=10
+context = 15
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+moffee = "moffee.main:cli"

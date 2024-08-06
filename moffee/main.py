@@ -3,12 +3,12 @@ import re
 import shutil
 from functools import partial
 import uuid
+import click
 from jinja2 import Environment, FileSystemLoader
 from moffee.compositor import composite
 from moffee.markdown import md
 from moffee.utils.md_helper import extract_title
 from livereload import Server
-import argparse
 import tempfile
 
 def render(document: str, template_dir, document_path: str = None) -> str:
@@ -89,36 +89,9 @@ def render_and_write(document_path: str, output_dir: str, template_dir):
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(output_html)
 
-
-def parse_arguments():
-    parser = argparse.ArgumentParser(
-        description="Render markdown file into slides, displayed in an html webpage."
-    )
-    parser.add_argument("markdown", help="Markdown file to be rendered.")
-    parser.add_argument(
-        "--output",
-        default=None,
-        help="Output file path. If not specified, a default name will be used."
-    )
-    parser.add_argument(
-        "--theme",
-        default="base",
-        help='Theme of slides, defaults to "base".'
-    )
-    parser.add_argument(
-        "--live",
-        action="store_true",
-        help="Launch a live web server which updates html outputs on the markdown file, defaults to false."
-    )
-    return parser.parse_args()
-
-
-def main(md: str, output: str = None, theme: str = "base", live: bool = False):
-    """
-    Render markdown file into slides, displayed in an html webpage.
-    """
-
-    template_dir = os.path.join(os.path.dirname(__file__), "..", "templates", theme)
+def run(md, output=None, theme='base', live=False):
+    """Process the markdown file to render slides."""
+    template_dir = os.path.join(os.path.dirname(__file__), "templates", theme)
     if not output:
         output = tempfile.mkdtemp()
     render_handler = partial(
@@ -134,6 +107,54 @@ def main(md: str, output: str = None, theme: str = "base", live: bool = False):
         server.serve(root=output)
 
 
+import click
+
+@click.group(help="""
+Render markdown file into slides.
+
+This tool allows you to convert markdown files into HTML slides,
+either generating them once or launching a live server to continuously
+update the output as changes are made to the markdown file.
+""")
+def cli():
+    pass
+
+@cli.command(help="""
+Generate slides from a markdown file.
+
+This command takes a markdown file as input and produces a set of slides
+formatted as an HTML file. You can specify an output directory where the
+HTML will be saved. Optionally, you can choose a theme for the slides.
+
+Example usage:
+
+\b
+  python moffee.py make example.md -o output/ --theme base
+""")
+@click.argument('markdown', metavar='<markdown-file>')
+@click.option('-o', '--output', metavar='<output-path>', default=None, help='Output file path. If not specified, a temporary directory will be used.')
+@click.option('-t', '--theme', metavar='<theme>', default='base', help='Theme of slides, defaults to "base".')
+def make(markdown, output, theme):
+    """Generate slides from a markdown file."""
+    run(markdown, output, theme, live=False)
+
+@cli.command(help="""
+Launch live mode to update HTML outputs.
+
+This command starts a live server that watches for changes to the specified
+markdown file. As changes are made, the slides are automatically updated and
+reflected in the browser. You can specify a theme for the live updates.
+
+Example usage:
+
+\b
+  python moffee.py live example.md --theme base
+""")
+@click.argument('markdown', metavar='<markdown-file>')
+@click.option('-t', '--theme', metavar='<theme>', default='base', help='Theme of slides, defaults to "base".')
+def live(markdown, theme):
+    """Launch live mode to update html outputs."""
+    run(markdown, output=None, theme=theme, live=True)
+
 if __name__ == "__main__":
-    args = parse_arguments()
-    main(md=args.markdown, output=args.output, theme=args.theme, live=args.live)
+    cli()
