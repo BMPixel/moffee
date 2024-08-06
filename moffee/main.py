@@ -8,7 +8,7 @@ from moffee.compositor import composite
 from moffee.markdown import md
 from moffee.utils.md_helper import extract_title
 from livereload import Server
-import click
+import argparse
 import tempfile
 
 def render(document: str, template_dir, document_path: str = None) -> str:
@@ -40,7 +40,7 @@ def render(document: str, template_dir, document_path: str = None) -> str:
 
     # Render
     return template.render(data)
-        
+
 
 def copy_statics(document: str, target_dir: str) -> str:
     """
@@ -90,20 +90,30 @@ def render_and_write(document_path: str, output_dir: str, template_dir):
         f.write(output_html)
 
 
-@click.command()
-@click.argument("md")
-@click.option(
-    "--output", default=None, help="Output file path. If not specified, a default name will be used."
-)
-@click.option(
-    "--theme", default="base", help='Theme of slides, defaults to "base"'
-)
-@click.option(
-    "--live",
-    is_flag=True,
-    help="Launch a live web server which updates html outputs on the markdown file, defaults to false",
-)
-def html(md: str, output: str = None, theme: str = "base", live: bool = False):
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Render markdown file into slides, displayed in an html webpage."
+    )
+    parser.add_argument("markdown", help="Markdown file to be rendered.")
+    parser.add_argument(
+        "--output",
+        default=None,
+        help="Output file path. If not specified, a default name will be used."
+    )
+    parser.add_argument(
+        "--theme",
+        default="base",
+        help='Theme of slides, defaults to "base".'
+    )
+    parser.add_argument(
+        "--live",
+        action="store_true",
+        help="Launch a live web server which updates html outputs on the markdown file, defaults to false."
+    )
+    return parser.parse_args()
+
+
+def main(md: str, output: str = None, theme: str = "base", live: bool = False):
     """
     Render markdown file into slides, displayed in an html webpage.
     """
@@ -116,7 +126,7 @@ def html(md: str, output: str = None, theme: str = "base", live: bool = False):
     )
 
     render_handler()
-    print(f"Generated html written to {os.path.join(output, "index.html")}")
+    print(f"Generated html written to {os.path.join(output, 'index.html')}")
     if live:
         server = Server()
         server.watch(md, render_handler)
@@ -125,4 +135,5 @@ def html(md: str, output: str = None, theme: str = "base", live: bool = False):
 
 
 if __name__ == "__main__":
-    html()
+    args = parse_arguments()
+    main(md=args.markdown, output=args.output, theme=args.theme, live=args.live)
