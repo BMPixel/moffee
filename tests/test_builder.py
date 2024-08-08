@@ -4,8 +4,8 @@ import pytest
 import re
 from moffee.builder import build, render_jinja2, read_options
 
-def template_dir():
-    return os.path.join(os.path.dirname(__file__), "..", "moffee", "templates", "default")
+def template_dir(name="default"):
+    return os.path.join(os.path.dirname(__file__), "..", "moffee", "templates", name)
 
 @pytest.fixture(scope='module', autouse=True)
 def setup_test_env():
@@ -73,7 +73,8 @@ def test_read_options(setup_test_env):
 
 def test_build(setup_test_env):
     temp_dir, doc_path, res_dir, output_dir = setup_test_env
-    build(doc_path, output_dir, template_dir(), None)
+    options = read_options(doc_path)
+    build(doc_path, output_dir, template_dir(), template_dir(options.theme))
     j = os.path.join
     with open(j(output_dir, "index.html")) as f:
         output_html = f.read()
@@ -86,6 +87,11 @@ def test_build(setup_test_env):
     assert len(asset_dir) == 2
     for name in asset_dir:
         assert name in output_html
+        
+    # use beamer css
+    with open(j(output_dir, "css", "extension.css")) as f:
+        assert len(f.readlines()) > 2
+
 
 
 if __name__ == "__main__":

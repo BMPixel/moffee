@@ -26,7 +26,8 @@ def run(md, output=None, live=False):
     if live:
         server = Server()
         server.watch(md, render_handler)
-        server.watch(template_dir, render_handler)
+        server.watch(default_template_dir, render_handler)
+        server.watch(theme_template_dir, render_handler)
         server.serve(root=output)
 
 
