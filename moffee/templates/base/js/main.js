@@ -40,7 +40,10 @@ window.addEventListener('load', function () {
                 element.style.width = `${availableWidth / scale}px`;
                 // Force refresh
                 document.body.offsetHeight;
+                element.classList.add("auto-scaled")
+                element.classList.add("s" + (scale*10).toFixed(0))
             } else {
+                element.classList.remove("auto-scaled")
                 return;
             }
             
@@ -71,7 +74,7 @@ window.addEventListener('load', function () {
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('load', autoScale);
     });
-    // setInterval(autoScale, 1000);
+    setInterval(autoScale, 1000);
     window.triggerAutoScale = autoScale;
 });
 
