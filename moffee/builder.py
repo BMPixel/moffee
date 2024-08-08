@@ -4,7 +4,7 @@ from jinja2 import Environment, FileSystemLoader
 from moffee.compositor import PageOption, composite, parse_frontmatter
 from moffee.markdown import md
 from moffee.utils.md_helper import extract_title
-from moffee.utils.file_helper import redirect_paths, copy_statics, merge_directories
+from moffee.utils.file_helper import redirect_paths, copy_assets, merge_directories
 
 def read_options(document_path) -> PageOption:
     """Read frontmatter options from the document path"""
@@ -48,13 +48,13 @@ def build(document_path: str, output_dir: str, template_dir: str, theme_dir: str
     """Render document, create output directories and write result html."""
     with open(document_path) as f:
         document = f.read()
-    static_dir = os.path.join(output_dir, "static")
+    asset_dir = os.path.join(output_dir, "assets")
 
     merge_directories(template_dir, output_dir, theme_dir)
     options = read_options(document_path)
     output_html = render_jinja2(document, output_dir)
     output_html = redirect_paths(output_html, document_path=document_path, resource_dir=options.resource_dir)
-    output_html = copy_statics(output_html, static_dir).replace(static_dir, "static")
+    output_html = copy_assets(output_html, asset_dir).replace(asset_dir, "assets")
 
     output_file = os.path.join(output_dir, f"index.html")
     with open(output_file, "w", encoding="utf-8") as f:

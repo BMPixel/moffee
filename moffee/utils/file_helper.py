@@ -69,9 +69,9 @@ def redirect_paths(document: str, document_path: str, resource_dir: str = ".") -
     return redirected_document
 
 
-def copy_statics(document: str, target_dir: str) -> str:
+def copy_assets(document: str, target_dir: str) -> str:
     """
-    Copy all static resources in html document to target_dir, renaming url to target_dir/uuid.ext
+    Copy all asset resources in a document to target_dir, then renaming url to target_dir/uuid.ext
     
     :param document: html document to process
     :param target_dir: Target directory

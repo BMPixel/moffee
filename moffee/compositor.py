@@ -1,5 +1,5 @@
 from typing import List
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
 import yaml
@@ -138,12 +138,11 @@ def parse_frontmatter(document: str) -> Tuple[str, PageOption]:
         yaml_data = {}
 
     # Create PageOption from YAML data
-    option = PageOption(
-        default_h1=yaml_data.pop('default_h1', False),
-        default_h2=yaml_data.pop('default_h2', True),
-        default_h3=yaml_data.pop('default_h3', True),
-        layout=yaml_data.pop('layout', 'content')
-    )
+    option = PageOption()
+    for field in fields(option):
+        name = field.name
+        if name in yaml_data:
+            setattr(option, name, yaml_data.pop(name))
     option.styles = yaml_data
 
     return content, option
