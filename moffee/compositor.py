@@ -1,17 +1,17 @@
 from typing import List
-from enum import Enum
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
 import yaml
 import re
-from moffee.utils.md_helper import get_header_level, is_divider, is_empty, rm_comments, contains_deco, redirect_url
+from moffee.utils.md_helper import get_header_level, is_divider, is_empty, rm_comments, contains_deco
 
 @dataclass
 class PageOption:
     default_h1: bool = False
     default_h2: bool = True
     default_h3: bool = True
+    theme: str = "default"
     layout: str = "content"
     resource_dir: str = "."
     styles: dict = field(default_factory=dict)
@@ -201,7 +201,7 @@ def parse_value(value: str):
     return value
 
 
-def composite(document: str, option: PageOption = None, document_path:str = None) -> List[Page]:
+def composite(document: str) -> List[Page]:
     """
     Composite a markdown document into slide pages.
 
@@ -210,8 +210,8 @@ def composite(document: str, option: PageOption = None, document_path:str = None
     - "---" Divider (___, ***, +++ not count)
 
     :param document: Input markdown document as a string.
-    :param option: PageOption object containing pagination configuration. Will try to parse from document yaml area if None.
-    :return: List of Page objects representing paginated slides.
+    :param document_path: Optional string, will be used to redirect url in documents if given.
+    :return: List of Page objects representing paginated slides
     """
     pages: List[Page] = []
     current_page_lines = []
@@ -220,23 +220,19 @@ def composite(document: str, option: PageOption = None, document_path:str = None
     prev_header_level = 0
 
     document = rm_comments(document)
-    document, parsed_option = parse_frontmatter(document)
-    if option == None:
-        option = parsed_option
-    if document_path:
-        document = redirect_url(document, document_path, option.resource_dir)
+    document, options = parse_frontmatter(document)
 
     lines = document.split("\n")
 
     def create_page():
-        nonlocal current_page_lines, current_h1, current_h2, current_h3, option
+        nonlocal current_page_lines, current_h1, current_h2, current_h3, options
         # Only make new page if has non empty lines
 
         if all([l.strip() == '' for l in current_page_lines]):
             return
 
         raw_md = ""
-        local_option = deepcopy(option)
+        local_option = deepcopy(options)
         for line in current_page_lines:
             if contains_deco(line):
                 local_option = parse_deco(line, local_option)

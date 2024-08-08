@@ -32,4 +32,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-moffee = "moffee.main:cli"
+moffee = "moffee.cli:cli"
