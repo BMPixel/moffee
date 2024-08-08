@@ -51,7 +51,7 @@ window.addEventListener('load', function () {
             if (element.scrollHeight * scale < 0.85 * containerHeight) {
                 step = 0.05 * (1 - scale)
                 scale = 1;
-                while (element.scrollHeight * scale > 0.95 *containerHeight) {
+                while (element.scrollHeight * scale >= containerHeight) {
                     scale -= step;
                     element.style.transform = `scale(${scale})`;
                     element.style.width = `${availableWidth / scale}px`;
@@ -71,7 +71,7 @@ window.addEventListener('load', function () {
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('load', autoScale);
     });
-    setInterval(autoScale, 1000);
+    // setInterval(autoScale, 1000);
     window.triggerAutoScale = autoScale;
 });
 
