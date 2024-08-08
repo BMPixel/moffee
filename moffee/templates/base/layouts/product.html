@@ -1,5 +1,5 @@
-<div class="slide-content" {{"style"}}="{% for key, value in slide.styles.items() %}{{ key }}: {{ value }}; {% endfor %}">
-    {% if slide.h1 %}
+<div class="slide-content product" {{"style"}}="{% for key, value in slide.styles.items() %}{{ key }}: {{ value }}; {% endfor %}">
+    <!-- {% if slide.h1 %}
     <h1>{{ slide.h1 }}</h1>
     {% endif %}
     {% if slide.h2 %}
@@ -7,7 +7,7 @@
     {% endif %}
     {% if slide.h3 %}
     <h3>{{ slide.h3 }}</h3>
-    {% endif %}
+    {% endif %} -->
     <div class="content">
         <div class="auto-sizing">
             {% macro render_chunk(chunk) %}

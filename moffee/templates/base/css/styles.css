@@ -119,8 +119,8 @@ h3 {
 .chunk-paragraph img {
     display: block;
     object-fit: contain;
-    max-width: 280px;
-    max-height: 280px;
+    max-width: 720px;
+    max-height: 405px;
     margin: 0 auto;
 }
 
@@ -411,11 +411,32 @@ div.highlight {
     margin-bottom: 10px;
 }
 
-.centered .chunk-paragraph {
+.centered .chunk-paragraph > p {
     font-size: 20px;
     text-align: center;
     font-weight: 300;
     /* Centers the text within the content item */
+}
+
+/* Product Page */
+.slide-content.product {
+    padding: 0;
+}
+
+.product .content {
+    margin: 0;
+}
+
+.product .chunk-paragraph > p:has(img) {
+    margin: 0;
+}
+
+.product .chunk-paragraph img {
+    height: 100%;
+}
+
+.product .chunk-paragraph > p {
+    margin: 1rem 0 0 20px;
 }
 
 /* Action Buttons */
