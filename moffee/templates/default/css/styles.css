@@ -11,6 +11,8 @@
     --colour-error-fg: hsl(0, 37%, 50%);
     --colour-todo-bg: hsl(266.8, 100%, 90%);
     --colour-todo-fg: hsl(266.8, 100%, 50%);
+    --max-content-height: 290px;
+    --max-content-width: 650px;
 }
 
 @page {
@@ -35,7 +37,7 @@ body{
     width: 720px;
     height: 405px;
     margin: 40px auto;
-    background-color: white;
+    overflow: hidden;
 }
 
 .slide-content {
@@ -46,6 +48,7 @@ body{
     padding: 0 20px;
     display: flex;
     flex-direction: column;
+    background-color: white;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -62,16 +65,17 @@ body{
 h1 {
     font-size: 2.2em;
     margin: 10px 0;
+    position: relative;
 }
 
 h2 {
+    z-index: 1;
     font-size: 1.8em;
     position: relative;
-    /* margin: 0; */
     padding: 10px 0;
 }
 
-h2::after {
+h2::before {
     content: '';
     position: absolute;
     left: 0;
@@ -123,8 +127,8 @@ h3 {
 .chunk-paragraph img {
     display: block;
     object-fit: contain;
-    max-height: 300px;
-    max-width: 700px;
+    max-height: var(--max-content-height);
+    max-width: var(--max-content-width);
     width: 100%;
     height: 100%;
     margin: 0 auto;
@@ -136,7 +140,7 @@ h3 {
     flex-grow: 1;
 }
 
-/* enlarge img when scale ratio is high */
+enlarge img when scale ratio is high
 .auto-scaled.s7 img,
 .auto-scaled.s6 img,
 .auto-scaled.s5 img,
@@ -395,8 +399,7 @@ div.highlight {
 }
 
 /* Individual layout */
-.slide-content.centered {
-    padding: 120px 15px 15px 15px;
+.content.centered {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -415,6 +418,7 @@ div.highlight {
     -webkit-text-fill-color: transparent;
     position: relative;
     z-index: 2;
+    margin: 15% auto 20px auto;
 }
 
 .centered h2 {

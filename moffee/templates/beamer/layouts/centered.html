@@ -1,0 +1,45 @@
+<div class="slide-content centered" {{"style"}}="{% for key, value in slide.styles.items() %}{{ key }}: {{ value }}; {% endfor %}">
+    <div class="header">
+        <ul class="headings-list">
+            {% for heading in struct["headings"] %}
+            {% if heading["level"] == 2%}
+            <li class="{% if slide.h2 == heading['content'] %} active {% endif %}"> {{heading["content"]}} </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% if slide.h1 %}
+    <h1>{{ slide.h1 }}</h1>
+    {% endif %}
+    {% if slide.h2 %}
+    <h2>{{ slide.h2 }}</h2>
+    {% endif %}
+    {% if slide.h3 %}
+    <h3>{{ slide.h3 }}</h3>
+    {% endif %}
+    <div class="content">
+        <div class="auto-sizing">
+            {% macro render_chunk(chunk) %}
+            {% if chunk.type == 'paragraph' %}
+            <div class="chunk chunk-paragraph">
+                {{ chunk.paragraph | markdown }}
+            </div>
+            {% elif chunk.type == 'node' %}
+            <div class="chunk {% if chunk.direction == 'vertical' %}chunk-vertical{% else %}chunk-horizontal{% endif %}">
+                {% for child in chunk.children %}
+                {{ render_chunk(child) }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endmacro %}
+
+            {{ render_chunk(slide.chunk) }}
+        </div>
+    </div>
+    <div class="footer">
+        <p> {{ title }}</p>
+        <div class="slide-number">
+            <p>{{ slide_number }} / {{slides | length}}</p>
+        </div>
+    </div>
+</div>

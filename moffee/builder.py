@@ -1,7 +1,7 @@
+from typing import List
 import os
-import shutil
 from jinja2 import Environment, FileSystemLoader
-from moffee.compositor import PageOption, composite, parse_frontmatter
+from moffee.compositor import Page, PageOption, composite, parse_frontmatter
 from moffee.markdown import md
 from moffee.utils.md_helper import extract_title
 from moffee.utils.file_helper import redirect_paths, copy_assets, merge_directories
@@ -12,6 +12,64 @@ def read_options(document_path) -> PageOption:
         document = f.read()
     _, options = parse_frontmatter(document)
     return options
+
+def retrieve_structure(pages: List[Page]) -> dict:
+    current_h1 = None
+    current_h2 = None
+    current_h3 = None
+    last_h1_idx = -1
+    last_h2_idx = -1
+    last_h3_idx = -1
+    page_meta = []
+    headings = []
+    for i, page in enumerate(pages):
+        if page.h1 and page.h1 != current_h1:
+            current_h1 = page.h1
+            current_h2 = None
+            current_h3 = None
+            last_h1_idx = len(headings)
+            headings.append({
+                "level": 1,
+                "content": page.h1,
+                "page_ids": []
+            })
+
+        if page.h2 and page.h2 != current_h2:
+            current_h2 = page.h2
+            current_h3 = None
+            last_h2_idx = len(headings)
+            headings.append({
+                "level": 2,
+                "content": page.h2,
+                "page_ids": []
+            })
+
+        if page.h3 and page.h3 != current_h3:
+            current_h3 = page.h3
+            last_h3_idx = len(headings)
+            headings.append({
+                "level": 3,
+                "content": page.h3,
+                "page_ids": []
+            })
+
+        if page.h1 or page.h2 or page.h3:
+            headings[last_h1_idx]["page_ids"].append(i)
+        if page.h2 or page.h3:
+            headings[last_h2_idx]["page_ids"].append(i)
+        if page.h3:
+            headings[last_h3_idx]["page_ids"].append(i)
+
+        page_meta.append({
+            "h1": current_h1,
+            "h2": current_h2,
+            "h3": current_h3
+        })
+    
+    return {
+        "page_meta": page_meta,
+        "headings": headings
+    }
 
 def render_jinja2(document: str, template_dir) -> str:
     """Run jinja2 templating to create html"""
@@ -25,9 +83,11 @@ def render_jinja2(document: str, template_dir) -> str:
     # Fill template
     pages = composite(document)
     title = extract_title(document) or "Untitled"
+    slide_struct = retrieve_structure(pages)
 
     data = {
         "title": title,
+        "struct": slide_struct,
         "slides": [
             {
                 "h1": page.h1,

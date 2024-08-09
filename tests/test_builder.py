@@ -2,7 +2,8 @@ import os
 import tempfile
 import pytest
 import re
-from moffee.builder import build, render_jinja2, read_options
+from moffee.builder import build, render_jinja2, read_options, retrieve_structure
+from moffee.compositor import composite
 
 def template_dir(name="default"):
     return os.path.join(os.path.dirname(__file__), "..", "moffee", "templates", name)
@@ -91,8 +92,42 @@ def test_build(setup_test_env):
     # use beamer css
     with open(j(output_dir, "css", "extension.css")) as f:
         assert len(f.readlines()) > 2
-
-
+        
+def test_retrieve_structure():
+    doc = """
+# Title
+p0
+## Heading1
+p1
+### Subheading1
+p2
+## Heading2
+### Subheading1
+p3
+# Title2
+p4
+"""
+    pages = composite(doc)
+    slide_struct = retrieve_structure(pages)
+    headings = slide_struct["headings"]
+    page_meta = slide_struct["page_meta"]
+    
+    assert headings == [
+        {"level": 1, "content": "Title", "page_ids": [0, 1, 2, 3]},
+        {"level": 2, "content": "Heading1", "page_ids": [1, 2]},
+        {"level": 3, "content": "Subheading1", "page_ids": [2]},
+        {"level": 2, "content": "Heading2", "page_ids": [3]},
+        {"level": 3, "content": "Subheading1", "page_ids": [3]},
+        {"level": 1, "content": "Title2", "page_ids": [4]}
+    ]
+    
+    assert page_meta == [
+        {"h1": "Title", "h2": None, "h3": None},
+        {"h1": "Title", "h2": "Heading1", "h3": None},
+        {"h1": "Title", "h2": "Heading1", "h3": "Subheading1"},
+        {"h1": "Title", "h2": "Heading2", "h3": "Subheading1"},
+        {"h1": "Title2", "h2": None, "h3": None}
+    ]
 
 if __name__ == "__main__":
     pytest.main()
