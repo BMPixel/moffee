@@ -1,4 +1,16 @@
 :root {
+    --color-admonition-bg: hsl(0, 0%, 70%);
+    --color-admonition-fg: hsl(0, 0%, 20%);
+    --colour-warning-bg: hsl(28.5, 74%, 70%);
+    --colour-warning-fg: hsl(28.5, 74%, 20%);
+    --colour-note-bg: hsl(219.5, 84%, 70%);
+    --colour-note-fg: hsl(219.5, 84%, 20%);
+    --colour-success-bg: hsl(150, 36.7%, 70%);
+    --colour-success-fg: hsl(150, 36.7%, 20%);
+    --colour-error-bg: hsl(0, 37%, 70%);
+    --colour-error-fg: hsl(0, 37%, 20%);
+    --colour-todo-bg: hsl(266.8, 100%, 70%);
+    --colour-todo-fg: hsl(266.8, 100%, 20%);
     --color-beamer-blue: #164994;
     --color-beamer-dark: #0B244A;
     --max-content-height: 250px;
@@ -117,11 +129,6 @@ h2::before {
     font-size: inherit;
 }
 
-div.admonition {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
-            0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
 h3 {
     font-size: 1.4em;
 }
@@ -149,6 +156,7 @@ table {
     margin: 20px 0;
     font-size: 16px;
     border-radius: 3px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 thead tr {
@@ -163,4 +171,68 @@ tbody tr {
 th,
 td {
     padding: 10px;
+}
+
+div.admonition {
+    font-size: 0.9em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
+            0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    border: 1px solid #86989B;
+    background-color: #f7f7f7 !important;
+    padding: 1rem;
+}
+
+div.admonition>p {
+    margin: 0;
+    padding: 0;
+}
+
+div.admonition>pre {
+    margin: 0.4em 1em 0.4em 1em;
+}
+
+div.admonition>p.admonition-title {
+    position: relative;
+    font-weight: 500;
+    background-color: var(--color-admonition-bg);
+    margin: -1rem -1rem 0.8rem -1rem;
+    padding: 0.3rem 1rem 0.3rem 2rem;
+    border-radius: 5px 5px 0 0;
+}
+
+div.attention>p.admonition-title,
+div.danger>p.admonition-title,
+div.error>p.admonition-title {
+    background-color: var(--colour-error-bg);
+}
+
+div.important>p.admonition-title,
+div.caution>p.admonition-title,
+div.warning>p.admonition-title {
+    background-color: var(--colour-warning-bg);
+}
+
+div.note>p.admonition-title {
+    background-color: var(--colour-note-bg);
+}
+
+div.hint>p.admonition-title,
+div.tip>p.admonition-title,
+div.seealso>p.admonition-title {
+    background-color: var(--colour-success-bg);
+}
+
+div.admonition-todo>p.admonition-title {
+    background-color: var(--colour-todo-bg);
+}
+
+p.admonition-title::before {
+    content: "";
+    height: 1rem;
+    left: .5rem;
+    top: .5rem;
+    position: absolute;
+    width: 1rem;
+    background-color: #5f5f5f;
 }
