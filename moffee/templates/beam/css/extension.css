@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
     --color-admonition-bg: hsl(0, 0%, 70%);
     --color-admonition-fg: hsl(0, 0%, 20%);
@@ -17,7 +19,7 @@
     --max-content-width: 650px;
 }
 body {
-    font-family: "Georgia", "SimSun", "STSong", "NSimSun", "PMingLiU", "MingLiU", serif;
+    font-family: "Noto Serif", "Georgia", "SimSun", "STSong", "NSimSun", "PMingLiU", "MingLiU", serif;
 }
 
 .centered h1 {
