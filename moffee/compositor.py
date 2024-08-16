@@ -269,15 +269,14 @@ def composite(document: str) -> List[Page]:
 
         current_page_lines.append(line)
 
-        match header_level:
-            case 1:
-                current_h1 = line.lstrip("#").strip()
-            case 2:
-                current_h2 = line.lstrip("#").strip()
-            case 3:
-                current_h3 = line.lstrip("#").strip()
-            case _:
-                pass  # Handle other cases or do nothing
+        if header_level == 1:
+            current_h1 = line.lstrip("#").strip()
+        elif header_level == 2:
+            current_h2 = line.lstrip("#").strip()
+        elif header_level == 3:
+            current_h3 = line.lstrip("#").strip()
+        else:
+            pass  # Handle other cases or do nothing
 
         if header_level > 0:
             prev_header_level = header_level
