@@ -7,12 +7,6 @@
     --color-accent: #2eaadc;
     --color-border: #e0e0e0;
     --max-content-height: 240px;
-    --color-admonition-bg: hsl(0, 0%, 90%);
-    --colour-warning-bg: hsla(28.5, 74%, 90%, 0.4);
-    --colour-note-bg: hsla(219.5, 84%, 90%, 0.4);
-    --colour-success-bg: hsla(150, 36.7%, 90%, 0.4);
-    --colour-error-bg: hsla(0, 37%, 90%, 0.4);
-    --colour-todo-bg: hsla(266.8, 100%, 90%, 0.4);
 }
 
 body {
@@ -37,25 +31,23 @@ h1 {
 
 h2 {
     font-size: 1.8em;
-    margin: 0;
+    /* margin-top: 40px; */
+    /* margin-bottom: 20px; */
+    /* padding-bottom: 10px; */
+    /* border-bottom: 1px solid var(--color-border); */
 }
 
 h2::before {
     content: '';
-    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: lightgray;
 }
 
 h3 {
-    font-size: 1em;
-    /* border: 1px solid #D3D3D3; */
-    font-weight: 400;
-    color: rgb(139, 139, 139);
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.02);
-    background-color: rgb(240, 240, 240);
-    padding: 3px 10px;
-    margin: 0 0 10px -2px;
-    width: fit-content;
+    font-size: 1.4em;
 }
 
 .chunk-paragraph {
