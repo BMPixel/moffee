@@ -24,6 +24,9 @@ wat-inspector = "^0.3.3"
 pygments = "^2.18.0"
 ipdb = "^0.13.13"
 
+[tool.poetry.group.dev.dependencies]
+pygments = "^2.18.0"
+
 [tool.ipdb]
 context = 15
 

@@ -1,4 +1,5 @@
 :root {
+    --colorscheme: light;
     --color-admonition-bg: hsl(0, 0%, 90%);
     --color-admonition-fg: hsl(0, 0%, 50%);
     --colour-warning-bg: hsl(28.5, 74%, 90%);
@@ -66,6 +67,7 @@ h1 {
     font-size: 2.2em;
     margin: 10px 0;
     position: relative;
+    color: #005fdb;
 }
 
 h2 {
@@ -412,10 +414,6 @@ div.highlight {
 .centered h1 {
     font-size: 3em;
     margin: 0;
-    background: linear-gradient(to right, #00478e, #005fbd);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     position: relative;
     z-index: 2;
     margin: 15% auto 20px auto;

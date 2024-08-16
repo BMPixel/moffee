@@ -31,7 +31,13 @@
     </div>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true });
+        const colorScheme = getComputedStyle(document.documentElement).getPropertyValue('--colorscheme').trim();
+        var mermaid_theme = "default";
+        if (colorScheme === "dark") {
+            console.log("Using dark theme");
+            mermaid_theme = "dark";
+        }
+        mermaid.initialize({ startOnLoad: true, theme: mermaid_theme });
     </script>
     <script>
         MathJax = {

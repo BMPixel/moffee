@@ -98,13 +98,6 @@ blockquote {
     font-style: normal;
 }
 
-.centered h1 {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    -webkit-text-fill-color: var(--color-text);
-}
-
 .slide-number {
     font-size: 14px;
     font-weight: lighter;
