@@ -7,7 +7,7 @@ from moffee.utils.md_helper import (
     contains_image,
     contains_deco,
     extract_title,
-    rm_comments
+    rm_comments,
 )
 
 
@@ -57,19 +57,27 @@ def test_contains_deco():
     assert contains_deco("@(key=value) Some text") == False
     assert contains_deco("@()") == True  # empty deco
 
+
 def test_extract_title():
     assert extract_title("# Main Title\nSome content") == "Main Title"
     assert extract_title("## Secondary Title\nSome content") == "Secondary Title"
-    assert extract_title("# Main Title\n## Secondary Title\nSome content") == "Main Title"
-    assert extract_title("## Secondary Title\n# Main Title\nSome content") == "Secondary Title"
+    assert (
+        extract_title("# Main Title\n## Secondary Title\nSome content") == "Main Title"
+    )
+    assert (
+        extract_title("## Secondary Title\n# Main Title\nSome content")
+        == "Secondary Title"
+    )
     assert extract_title("Some content without headings") == None
     assert extract_title("") == None
     assert extract_title("#  Title with spaces  \nContent") == "Title with spaces"
     multi_para = "Para 1\n\nPara 2\n\n# Actual Title\nContent"
     assert extract_title(multi_para) == "Actual Title"
 
+
 def multi_strip(text):
     return "\n".join([t.strip() for t in text.split("\n") if t.strip() != ""])
+
 
 def test_remove_html_comments():
     markdown = """

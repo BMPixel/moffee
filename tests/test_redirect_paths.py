@@ -3,7 +3,8 @@ import tempfile
 import os
 from moffee.utils.file_helper import redirect_paths
 
-@pytest.fixture(scope='module', autouse=True)
+
+@pytest.fixture(scope="module", autouse=True)
 def setup_test_env():
     with tempfile.TemporaryDirectory() as temp_dir:
         # Setup test files and directories
@@ -13,15 +14,18 @@ def setup_test_env():
 
         # Create various test files
         with open(doc_path, "w") as f:
-            f.write('This is a test document with links: "image.png", "http://example.com", "/absolute/path/image2.png"')
+            f.write(
+                'This is a test document with links: "image.png", "http://example.com", "/absolute/path/image2.png"'
+            )
 
         with open(os.path.join(temp_dir, "image.png"), "w") as f:
-            f.write('fake image content')
+            f.write("fake image content")
 
         with open(os.path.join(res_dir, "image2.png"), "w") as f:
-            f.write('fake image content')
+            f.write("fake image content")
 
         yield temp_dir, doc_path, res_dir
+
 
 def test_redirect_paths(setup_test_env):
     temp_dir, doc_path, res_dir = setup_test_env
@@ -60,6 +64,7 @@ URL: "http://example.com"
     assert '"http://example.com"' in redirected_document
     assert not f'"{expected_path_image2}"' in redirected_document
     assert f'"image2.png"' in redirected_document
+
 
 def test_redirect_paths_trivial(setup_test_env):
     temp_dir, doc_path, res_dir = setup_test_env

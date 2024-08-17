@@ -10,7 +10,7 @@ repository = "https://github.com/bmpixel/moffee"
 keywords = ["markdown", "slides", "presentation", "CLI"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 jinja2 = "^3.1.4"
 markdown = "^3.6"
 pyyaml = "^6.0.1"
@@ -27,6 +27,8 @@ ipdb = "^0.13.13"
 
 [tool.poetry.group.dev.dependencies]
 pygments = "^2.18.0"
+flake8 = "^7.1.1"
+black = "^24.8.0"
 
 [tool.ipdb]
 context = 15
@@ -37,3 +39,20 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 moffee = "moffee.cli:cli"
+
+[tool.flake8]
+exclude = [
+    ".venv",
+    "venv",
+    "env",
+    "*/migrations/*",
+]
+max-complexity = 10
+ignore = ["E9", "F63", "F7", "F82"]
+per-file-ignores = [
+    "__init__.py:F401",
+]
+
+[tool.flake8.import-order]
+application-import-names = ["your_project_name"]
+import-order-style = "google"

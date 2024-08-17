@@ -7,7 +7,7 @@ extensions = [
     "pymdownx.extra",
     "pymdownx.caret",
     "pymdownx.tilde",
-    "nl2br", 
+    "nl2br",
     "admonition",
     "pymdownx.superfences",
     "pymdownx.saneheaders",
@@ -17,7 +17,7 @@ extensions = [
     "toc",
     "wikilinks",
     "pymdownx.inlinehilite",
-    "moffee.utils.md_obsidian_ext"
+    "moffee.utils.md_obsidian_ext",
 ]
 
 extension_configs = {
@@ -32,5 +32,8 @@ extension_configs = {
     }
 }
 
+
 def md(text):
-    return Markup(markdown(text, extensions=extensions, extension_configs=extension_configs))
+    return Markup(
+        markdown(text, extensions=extensions, extension_configs=extension_configs)
+    )

@@ -1,6 +1,7 @@
 import pytest
 from moffee.compositor import composite, Direction, Type
 
+
 @pytest.fixture
 def sample_document():
     return """
@@ -52,9 +53,11 @@ This is line 11.
 This is line 12.
     """
 
+
 def test_paginate_creates_correct_number_of_pages(sample_document):
     pages = composite(sample_document)
     assert len(pages) > 1, "Pagination should create multiple pages"
+
 
 def test_frontmatter_parsing(sample_document):
     pages = composite(sample_document)
@@ -63,10 +66,12 @@ def test_frontmatter_parsing(sample_document):
     assert pages[0].option.default_h2 == False
     assert pages[0].option.styles == {"background-color": "gray"}
 
+
 def test_style_overwrite(sample_document):
     pages = composite(sample_document)
     assert pages[1].option.styles == {"background-color": "yellow"}
     assert pages[0].option.styles == {"background-color": "gray"}
+
 
 def test_header_inheritance():
     doc = """
@@ -85,6 +90,7 @@ Even more content
     assert pages[2].h2 == "Subtitle"
     assert pages[2].h3 == "Subheader"
 
+
 def test_page_splitting_on_headers():
     doc = """
 # Header 1
@@ -100,6 +106,7 @@ Content 3
     assert pages[1].h2 == "Header 2"
     assert pages[2].h1 == "New Header 1"
 
+
 def test_page_splitting_on_dividers():
     doc = """
 Content 1
@@ -110,6 +117,7 @@ Content 3
     """
     pages = composite(doc)
     assert len(pages) == 2
+
 
 def test_escaped_area_paging():
     doc = """
@@ -123,6 +131,7 @@ Content 3
     """
     pages = composite(doc)
     assert len(pages) == 1
+
 
 def test_escaped_area_chunking():
     doc = """
@@ -138,6 +147,7 @@ Content 3
     assert len(pages) == 2
     assert len(pages[1].chunk.children) == 0
 
+
 def test_title_and_subtitle():
     doc = """
 # Title
@@ -152,7 +162,8 @@ Content
     assert pages[0].title == "Title"
     assert pages[0].subtitle == "Subtitle"
     assert pages[1].title == "Title2"
-    
+
+
 def test_adjacent_headings_same_level():
     doc = """
 # Title
@@ -165,6 +176,7 @@ def test_adjacent_headings_same_level():
     assert len(pages) == 3
     assert pages[1].title == "Subtitle2"
     assert pages[1].subtitle == "Heading"
+
 
 def test_chunking_trivial():
     doc = """
@@ -181,7 +193,8 @@ Paragraph 4
     assert chunk.type == Type.PARAGRAPH
     assert len(chunk.children) == 0
     assert chunk.paragraph.strip() == doc.strip()
-    
+
+
 def test_chunking_vertical():
     doc = """
 Paragraph 1
@@ -195,7 +208,8 @@ Paragraph 2
     assert len(chunk.children) == 2
     assert chunk.direction == Direction.VERTICAL
     assert chunk.children[0].type == Type.PARAGRAPH
-    
+
+
 def test_chunking_horizontal():
     doc = """
 Paragraph 1
@@ -210,6 +224,7 @@ Paragraph 2
     assert len(chunk.children) == 3
     assert chunk.direction == Direction.HORIZONTAL
     assert chunk.children[0].type == Type.PARAGRAPH
+
 
 def test_chunking_hybrid():
     doc = """
@@ -236,6 +251,7 @@ Paragraph 4
     assert next.direction == Direction.HORIZONTAL
     assert len(next.children) == 3
 
+
 def test_empty_lines_handling():
     doc = """
 # Title
@@ -245,6 +261,7 @@ Content with empty line above
     pages = composite(doc)
     assert len(pages[0].chunk.children) == 0
     assert pages[0].option.styles == {}
+
 
 def test_deco_handling():
     doc = """
@@ -257,10 +274,11 @@ Hello
 @(background=blue)
 """
     pages = composite(doc)
-    assert pages[0].raw_md == 'Hello'
+    assert pages[0].raw_md == "Hello"
     assert pages[0].option.default_h1 == False
-    assert pages[0].option.styles == {'background': 'blue'}
-    
+    assert pages[0].option.styles == {"background": "blue"}
+
+
 def test_multiple_deco():
     doc = """
 ---
@@ -275,14 +293,13 @@ Hello
 """
     pages = composite(doc)
     assert len(pages) == 2
-    assert pages[0].raw_md == ''
-    assert pages[0].title == 'Title1'
-    assert pages[0].subtitle == 'Title2'
-    assert pages[0].option.styles == {'background': 'blue'}
+    assert pages[0].raw_md == ""
+    assert pages[0].title == "Title1"
+    assert pages[0].subtitle == "Title2"
+    assert pages[0].option.styles == {"background": "blue"}
     assert pages[0].option.default_h1 == True
     assert pages[1].option.default_h1 == False
-    
-    
+
 
 if __name__ == "__main__":
     pytest.main()

@@ -4,7 +4,14 @@ from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
 import yaml
 import re
-from moffee.utils.md_helper import get_header_level, is_divider, is_empty, rm_comments, contains_deco
+from moffee.utils.md_helper import (
+    get_header_level,
+    is_divider,
+    is_empty,
+    rm_comments,
+    contains_deco,
+)
+
 
 @dataclass
 class PageOption:
@@ -16,13 +23,16 @@ class PageOption:
     resource_dir: str = "."
     styles: dict = field(default_factory=dict)
 
+
 class Direction:
     HORIZONTAL = "horizontal"
     VERTICAL = "vertical"
 
+
 class Type:
     PARAGRAPH = "paragraph"
     NODE = "node"
+
 
 class Alignment:
     LEFT = "left"
@@ -30,10 +40,11 @@ class Alignment:
     RIGHT = "right"
     JUSTIFY = "justify"
 
+
 @dataclass
 class Chunk:
     paragraph: Optional[str] = None
-    children: Optional[List['Chunk']] = field(default_factory=list) # List of chunks
+    children: Optional[List["Chunk"]] = field(default_factory=list)  # List of chunks
     direction: Direction = Direction.HORIZONTAL
     type: Type = Type.PARAGRAPH
     alignment: Alignment = Alignment.LEFT
@@ -78,7 +89,7 @@ class Page:
             strs = [""]
             current_escaped = False
             for line in text.split("\n"):
-                if line.strip().startswith('```'):
+                if line.strip().startswith("```"):
                     current_escaped = not current_escaped
                 if is_divider(line, type) and not current_escaped:
                     strs.append("\n")
@@ -91,19 +102,19 @@ class Page:
         # split by "***" if possible
         for i in range(len(vchunks)):
             hchunks = split_by_div(vchunks[i].paragraph, "*")
-            if len(hchunks) > 1: # found ***
+            if len(hchunks) > 1:  # found ***
                 vchunks[i] = Chunk(children=hchunks, type=Type.NODE)
-            
+
         if len(vchunks) == 1:
             return vchunks[0]
-        
+
         return Chunk(children=vchunks, direction=Direction.VERTICAL, type=Type.NODE)
 
     def _preprocess(self):
         """
         Additional processing needed for the page.
         Modifies raw_md in place.
-        
+
         - Removes headings 1-3
         - Stripes
         """
@@ -125,8 +136,8 @@ def parse_frontmatter(document: str) -> Tuple[str, PageOption]:
     content = document
 
     # Check if the document starts with '---'
-    if document.startswith('---'):
-        parts = document.split('---', 2)
+    if document.startswith("---"):
+        parts = document.split("---", 2)
         if len(parts) >= 3:
             front_matter = parts[1].strip()
             content = parts[2].strip()
@@ -148,9 +159,7 @@ def parse_frontmatter(document: str) -> Tuple[str, PageOption]:
     return content, option
 
 
-def parse_deco(
-    line: str, base_option: Optional[PageOption] = None
-) -> PageOption:
+def parse_deco(line: str, base_option: Optional[PageOption] = None) -> PageOption:
     """
     Parses a deco (custom decorator) line and returns a dictionary of key-value pairs.
     If base_option is provided, it updates the option with matching keys from the deco. Otherwise initialize an option.
@@ -161,7 +170,9 @@ def parse_deco(
     """
 
     def rm_quotes(s):
-        if (s.startswith('"') and s.endswith('"')) or (s.startswith("'") and s.endswith("'")):
+        if (s.startswith('"') and s.endswith('"')) or (
+            s.startswith("'") and s.endswith("'")
+        ):
             return s[1:-1]
         return s
 
@@ -214,7 +225,7 @@ def composite(document: str) -> List[Page]:
     """
     pages: List[Page] = []
     current_page_lines = []
-    current_escaped = False # track whether in code area
+    current_escaped = False  # track whether in code area
     current_h1 = current_h2 = current_h3 = None
     prev_header_level = 0
 
@@ -227,7 +238,7 @@ def composite(document: str) -> List[Page]:
         nonlocal current_page_lines, current_h1, current_h2, current_h3, options
         # Only make new page if has non empty lines
 
-        if all([l.strip() == '' for l in current_page_lines]):
+        if all([l.strip() == "" for l in current_page_lines]):
             return
 
         raw_md = ""
@@ -238,11 +249,13 @@ def composite(document: str) -> List[Page]:
             else:
                 raw_md += "\n" + line
 
-        page = Page(raw_md=raw_md, 
-                    option=local_option, 
-                    h1=current_h1,
-                    h2=current_h2,
-                    h3=current_h3)
+        page = Page(
+            raw_md=raw_md,
+            option=local_option,
+            h1=current_h1,
+            h2=current_h2,
+            h3=current_h3,
+        )
 
         pages.append(page)
         current_page_lines = []
@@ -250,20 +263,22 @@ def composite(document: str) -> List[Page]:
 
     for _, line in enumerate(lines):
         # update current env stack
-        if line.strip().startswith('```'):
+        if line.strip().startswith("```"):
             current_escaped = not current_escaped
-            
+
         header_level = get_header_level(line) if not current_escaped else 0
 
         # Check if this is a new header and not consecutive
         # Only break at heading 1-3
-        is_downstep_header_level = prev_header_level == 0 or prev_header_level >= header_level
+        is_downstep_header_level = (
+            prev_header_level == 0 or prev_header_level >= header_level
+        )
         is_more_than_level_4 = prev_header_level > header_level >= 3
         if header_level > 0 and is_downstep_header_level and not is_more_than_level_4:
             # Check if the next line is also a header
             create_page()
 
-        if is_divider(line, type='-') and not current_escaped:
+        if is_divider(line, type="-") and not current_escaped:
             create_page()
             continue
 

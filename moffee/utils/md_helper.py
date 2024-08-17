@@ -55,7 +55,7 @@ def is_divider(line: str, type=None) -> bool:
         return False
     if type == None:
         type = "-*_"
-        
+
     assert type in "-*_", "type must be either '*', '-' or '_'"
     return all(char in type for char in stripped_line) and any(
         char * 3 in stripped_line for char in type
@@ -83,6 +83,7 @@ def contains_deco(line: str) -> bool:
     """
     return bool(re.match(r"^\s*@\(.*?\)\s*$", line))
 
+
 def extract_title(document: str) -> Optional[str]:
     """
     Extracts proper title from document.
@@ -99,12 +100,12 @@ def extract_title(document: str) -> Optional[str]:
     else:
         return None
 
+
 def rm_comments(document):
     """
     Remove comments from markdown. Supports html and "%%"
     """
-    document = re.sub(r'<!--[\s\S]*?-->', '', document)
-    document = re.sub(r'^\s*%%.*$', '', document, flags=re.MULTILINE)
+    document = re.sub(r"<!--[\s\S]*?-->", "", document)
+    document = re.sub(r"^\s*%%.*$", "", document, flags=re.MULTILINE)
 
     return document.strip()
-

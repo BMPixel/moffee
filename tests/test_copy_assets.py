@@ -5,7 +5,7 @@ import tempfile
 
 from moffee.utils.file_helper import (
     copy_assets,
-) 
+)
 
 
 @pytest.fixture

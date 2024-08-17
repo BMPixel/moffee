@@ -6,12 +6,14 @@ from moffee.markdown import md
 from moffee.utils.md_helper import extract_title
 from moffee.utils.file_helper import redirect_paths, copy_assets, merge_directories
 
+
 def read_options(document_path) -> PageOption:
     """Read frontmatter options from the document path"""
-    with open(document_path, 'r') as f:
+    with open(document_path, "r") as f:
         document = f.read()
     _, options = parse_frontmatter(document)
     return options
+
 
 def retrieve_structure(pages: List[Page]) -> dict:
     current_h1 = None
@@ -28,30 +30,18 @@ def retrieve_structure(pages: List[Page]) -> dict:
             current_h2 = None
             current_h3 = None
             last_h1_idx = len(headings)
-            headings.append({
-                "level": 1,
-                "content": page.h1,
-                "page_ids": []
-            })
+            headings.append({"level": 1, "content": page.h1, "page_ids": []})
 
         if page.h2 and page.h2 != current_h2:
             current_h2 = page.h2
             current_h3 = None
             last_h2_idx = len(headings)
-            headings.append({
-                "level": 2,
-                "content": page.h2,
-                "page_ids": []
-            })
+            headings.append({"level": 2, "content": page.h2, "page_ids": []})
 
         if page.h3 and page.h3 != current_h3:
             current_h3 = page.h3
             last_h3_idx = len(headings)
-            headings.append({
-                "level": 3,
-                "content": page.h3,
-                "page_ids": []
-            })
+            headings.append({"level": 3, "content": page.h3, "page_ids": []})
 
         if page.h1 or page.h2 or page.h3:
             headings[last_h1_idx]["page_ids"].append(i)
@@ -60,16 +50,10 @@ def retrieve_structure(pages: List[Page]) -> dict:
         if page.h3:
             headings[last_h3_idx]["page_ids"].append(i)
 
-        page_meta.append({
-            "h1": current_h1,
-            "h2": current_h2,
-            "h3": current_h3
-        })
-    
-    return {
-        "page_meta": page_meta,
-        "headings": headings
-    }
+        page_meta.append({"h1": current_h1, "h2": current_h2, "h3": current_h3})
+
+    return {"page_meta": page_meta, "headings": headings}
+
 
 def render_jinja2(document: str, template_dir) -> str:
     """Run jinja2 templating to create html"""
@@ -95,7 +79,7 @@ def render_jinja2(document: str, template_dir) -> str:
                 "h3": page.h3,
                 "chunk": page.chunk,
                 "layout": page.option.layout,
-                "styles": page.option.styles
+                "styles": page.option.styles,
             }
             for page in pages
         ],
@@ -104,7 +88,9 @@ def render_jinja2(document: str, template_dir) -> str:
     return template.render(data)
 
 
-def build(document_path: str, output_dir: str, template_dir: str, theme_dir: str=None):
+def build(
+    document_path: str, output_dir: str, template_dir: str, theme_dir: str = None
+):
     """Render document, create output directories and write result html."""
     with open(document_path) as f:
         document = f.read()
@@ -113,7 +99,9 @@ def build(document_path: str, output_dir: str, template_dir: str, theme_dir: str
     merge_directories(template_dir, output_dir, theme_dir)
     options = read_options(document_path)
     output_html = render_jinja2(document, output_dir)
-    output_html = redirect_paths(output_html, document_path=document_path, resource_dir=options.resource_dir)
+    output_html = redirect_paths(
+        output_html, document_path=document_path, resource_dir=options.resource_dir
+    )
     output_html = copy_assets(output_html, asset_dir).replace(asset_dir, "assets")
 
     output_file = os.path.join(output_dir, f"index.html")

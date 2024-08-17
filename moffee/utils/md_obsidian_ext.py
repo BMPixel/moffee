@@ -9,22 +9,25 @@ import xml.etree.ElementTree as etree
 import re
 from markdown import blockparser
 
+
 class ObsidianExtension(Extension):
-    """ Obsidian extension for Python-Markdown. """
+    """Obsidian extension for Python-Markdown."""
 
     def extendMarkdown(self, md):
-        """ Add Obsidian to Markdown instance. """
+        """Add Obsidian to Markdown instance."""
         md.registerExtension(self)
 
-        md.parser.blockprocessors.register(ObsidianProcessor(md.parser), 'obsidian', 105)
+        md.parser.blockprocessors.register(
+            ObsidianProcessor(md.parser), "obsidian", 105
+        )
 
 
 class ObsidianProcessor(BlockProcessor):
 
-    CLASSNAME = 'admonition'
-    CLASSNAME_TITLE = 'admonition-title'
-    RE = re.compile(r'(?:^|\n)> \[!([\w\-]+)\] *(?: (.*?))? *(?:\n|$)')
-    RE_SPACES = re.compile('  +')
+    CLASSNAME = "admonition"
+    CLASSNAME_TITLE = "admonition-title"
+    RE = re.compile(r"(?:^|\n)> \[!([\w\-]+)\] *(?: (.*?))? *(?:\n|$)")
+    RE_SPACES = re.compile("  +")
 
     def __init__(self, parser: blockparser.BlockParser):
         """Initialization."""
@@ -35,24 +38,23 @@ class ObsidianProcessor(BlockProcessor):
         self.content_indent = 0
 
     def test(self, parent: etree.Element, block: str) -> bool:
-        
+
         return self.RE.search(block)
 
     def dequote(self, text: str) -> tuple[str, str]:
-        """ Remove a quote mark (>) from the front of each line of the given text. """
+        """Remove a quote mark (>) from the front of each line of the given text."""
         newtext = []
-        lines = text.split('\n')
+        lines = text.split("\n")
         for line in lines:
-            if line.startswith('> '):
+            if line.startswith("> "):
                 newtext.append(line[2:])
-            elif line.startswith('>'):
+            elif line.startswith(">"):
                 newtext.append(line[1:])
             elif not line.strip():
-                newtext.append('')
+                newtext.append("")
             else:
                 break
-        return '\n'.join(newtext), '\n'.join(lines[len(newtext):])
-
+        return "\n".join(newtext), "\n".join(lines[len(newtext) :])
 
     def run(self, parent: etree.Element, blocks: list[str]) -> None:
         block = blocks.pop(0)
@@ -62,17 +64,17 @@ class ObsidianProcessor(BlockProcessor):
             raise ValueError()
 
         if m.start() > 0:
-            self.parser.parseBlocks(parent, [block[:m.start()]])
-        block = block[m.end():]  # removes the first line
+            self.parser.parseBlocks(parent, [block[: m.start()]])
+        block = block[m.end() :]  # removes the first line
         block, theRest = self.dequote(block)
 
         klass, title = self.get_class_and_title(m)
-        div = etree.SubElement(parent, 'div')
-        div.set('class', '{} {}'.format(self.CLASSNAME, klass))
+        div = etree.SubElement(parent, "div")
+        div.set("class", "{} {}".format(self.CLASSNAME, klass))
         if title:
-            p = etree.SubElement(div, 'p')
+            p = etree.SubElement(div, "p")
             p.text = title
-            p.set('class', self.CLASSNAME_TITLE)
+            p.set("class", self.CLASSNAME_TITLE)
 
         self.parser.parseChunk(div, block)
 
@@ -84,13 +86,13 @@ class ObsidianProcessor(BlockProcessor):
 
     def get_class_and_title(self, match: re.Match[str]) -> tuple[str, str | None]:
         klass, title = match.group(1).lower(), match.group(2)
-        klass = self.RE_SPACES.sub(' ', klass)
+        klass = self.RE_SPACES.sub(" ", klass)
         if title is None:
             # no title was provided, use the capitalized class name as title
             # e.g.: `> [!note]` will render
             # `<p class="admonition-title">Note</p>`
-            title = klass.split(' ', 1)[0].capitalize()
-        elif title == '':
+            title = klass.split(" ", 1)[0].capitalize()
+        elif title == "":
             # an explicit blank title should not be rendered
             # e.g.: `> [!warning] ""` will *not* render `p` with a title
             title = None
