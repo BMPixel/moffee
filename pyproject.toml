@@ -30,6 +30,7 @@ pygments = "^2.18.0"
 flake8 = "^7.1.1"
 black = "^24.8.0"
 pre-commit = "^3.8.0"
+mkdocs = "^1.6.0"
 
 [tool.ipdb]
 context = 15
