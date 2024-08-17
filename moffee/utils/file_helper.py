@@ -5,6 +5,8 @@ from urllib.parse import urlparse
 from pathlib import Path
 import uuid
 
+from bs4 import BeautifulSoup
+
 def merge_directories(base_dir: str, output_dir: str, merge_dir: str = None):
     """Merge base_dir and merge_dir into output_dir, merge_dir overwrites base_dir if confliction happens"""
     # Clear the output_dir before writing the merged files
@@ -71,29 +73,51 @@ def redirect_paths(document: str, document_path: str, resource_dir: str = ".") -
 
 def copy_assets(document: str, target_dir: str) -> str:
     """
-    Copy all asset resources in a document to target_dir, then renaming url to target_dir/uuid.ext
+    Copy all asset resources in an HTML document to target_dir, then update URLs to target_dir/uuid_originalname.ext
     
-    :param document: html document to process
+    :param document: HTML document to process
     :param target_dir: Target directory
-    :return: Updated document with url redirected
+    :return: Updated document with URLs redirected
     """
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
 
-    pattern = re.compile(r'"([^"]*)"')
-    matches = pattern.findall(document)
-    for url in matches:
-        if os.path.exists(url):
-            _, ext = os.path.splitext(url)
+    soup = BeautifulSoup(document, 'html.parser')
+    
+    # Dictionary to store original path to new path mapping
+    path_mapping = {}
 
-            # Generate a random ID for the new file name
-            random_id = str(uuid.uuid4())
-            new_filename = f"{random_id}{ext}"
-            new_path = os.path.join(target_dir, new_filename)
+    # Tags and attributes to check for URLs
+    tag_attr_pairs = [
+        ('img', 'src'),
+        ('link', 'href'),
+        ('script', 'src'),
+        ('a', 'href')
+    ]
 
-            shutil.copy(url, new_path)
+    for tag, attr in tag_attr_pairs:
+        for element in soup.find_all(tag):
+            if element.has_attr(attr):
+                original_path = element[attr]
+                
+                # Skip if it's an external URL or a non-file path
+                if urlparse(original_path).scheme or not os.path.isfile(original_path):
+                    continue
+                
+                if original_path not in path_mapping:
+                    # Generate a new filename
+                    original_filename = os.path.basename(original_path)
+                    name, ext = os.path.splitext(original_filename)
+                    new_filename = f"{str(uuid.uuid4())[:8]}_{name}{ext}"
+                    new_path = os.path.join(target_dir, new_filename)
+                    
+                    # Copy the file
+                    shutil.copy2(original_path, new_path)
+                    
+                    # Store the mapping
+                    path_mapping[original_path] = new_path
+                
+                # Update the attribute with the new path
+                element[attr] = path_mapping[original_path]
 
-            # Replace the URL in the document
-            document = document.replace(url, new_path)
-
-    return document
+    return str(soup)

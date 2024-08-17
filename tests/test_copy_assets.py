@@ -1,0 +1,165 @@
+import os
+import pytest
+import shutil
+import tempfile
+
+from moffee.utils.file_helper import (
+    copy_assets,
+) 
+
+
+@pytest.fixture
+def setup_test_environment():
+    temp_dir = tempfile.mkdtemp()
+
+    sample_image_path = os.path.join(temp_dir, "sample.png")
+    sample_pdf_path = os.path.join(temp_dir, "document.pdf")
+
+    with open(sample_image_path, "w") as f:
+        f.write("This is a test image file.")
+
+    with open(sample_pdf_path, "w") as f:
+        f.write("This is a test PDF file.")
+
+    yield temp_dir, sample_image_path, sample_pdf_path
+
+    shutil.rmtree(temp_dir)
+
+
+def test_copy_assets_updates_links(setup_test_environment):
+    temp_dir, sample_image_path, sample_pdf_path = setup_test_environment
+    target_dir = os.path.join(temp_dir, "asset_resources")
+
+    html_doc = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Test Document</title>
+        <link rel="stylesheet" href="{sample_pdf_path}">
+    </head>
+    <body>
+        <h1>Test HTML Document</h1>
+        <img src="{sample_image_path}" alt="Sample Image">
+        <a href="{sample_pdf_path}">Download PDF</a>
+    </body>
+    </html>
+    """
+
+    updated_doc = copy_assets(html_doc, target_dir)
+
+    # Check that the target directory is created
+    assert os.path.exists(target_dir)
+
+    # Verify that files have been moved and renamed
+    moved_files = os.listdir(target_dir)
+    assert len(moved_files) == 2
+
+    # Check if document URLs are updated with new file names
+    for moved_file in moved_files:
+        assert os.path.join(target_dir, moved_file) in updated_doc
+
+
+def test_copy_assets_ignores_nonexistent_files():
+    temp_dir = tempfile.mkdtemp()
+    target_dir = os.path.join(temp_dir, "asset_resources")
+
+    html_doc = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Test Document</title>
+        <link rel="stylesheet" href="css/nonexistent.css">
+    </head>
+    <body>
+        <h1>Test HTML Document</h1>
+        <img src="images/nonexistent.png" alt="Nonexistent Image">
+        <a href="files/nonexistent.pdf">Download Nonexistent PDF</a>
+    </body>
+    </html>
+    """
+
+    updated_doc = copy_assets(html_doc, target_dir)
+
+    # Verify that document URLs remain unchanged
+    assert "css/nonexistent.css" in updated_doc
+    assert "images/nonexistent.png" in updated_doc
+    assert "files/nonexistent.pdf" in updated_doc
+
+    shutil.rmtree(temp_dir)
+
+
+def test_copy_assets_creates_target_directory():
+    temp_dir = tempfile.mkdtemp()
+    target_dir = os.path.join(temp_dir, "asset_resources")
+
+    html_doc = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Test Document</title>
+    </head>
+    <body>
+        <h1>Test HTML Document</h1>
+        <img src="images/sample.png" alt="Sample Image">
+    </body>
+    </html>
+    """
+
+    # Assuming the image does not exist, but we're checking the creation
+    updated_doc = copy_assets(html_doc, target_dir)
+
+    # Check that the target directory is created even if it's empty
+    assert os.path.exists(target_dir)
+
+    shutil.rmtree(temp_dir)
+
+
+def test_copy_assets_ignores_urls_in_text_content():
+    temp_dir = tempfile.mkdtemp()
+    target_dir = os.path.join(temp_dir, "asset_resources")
+
+    # Create a sample file that exists
+    sample_file_path = os.path.join(temp_dir, "sample.txt")
+    with open(sample_file_path, "w") as f:
+        f.write("This is a sample file")
+
+    html_doc = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Test Document</title>
+    </head>
+    <body>
+        <h1>Test HTML Document</h1>
+        <img src="{sample_file_path}" alt="Sample Image">
+        <p>This is a paragraph mentioning the file path: {sample_file_path}</p>
+        <a href="{sample_file_path}">Download Sample</a>
+        <p>Another mention of the file: {sample_file_path}</p>
+    </body>
+    </html>
+    """
+
+    updated_doc = copy_assets(html_doc, target_dir)
+
+    # Check that the target directory is created
+    assert os.path.exists(target_dir)
+
+    # Verify that only one file has been moved (the one in the img src)
+    moved_files = os.listdir(target_dir)
+    assert len(moved_files) == 1
+
+    # Check if document URLs in attributes are updated with new file names
+    assert os.path.join(target_dir, moved_files[0]) in updated_doc
+
+    # Check that the file path mentioned in the paragraph text is not changed
+    assert sample_file_path in updated_doc
+
+    # Count occurrences of the original file path in the updated document
+    # It should appear twice in the text content, and once in the <a> tag
+    assert updated_doc.count(sample_file_path) == 2
+
+    shutil.rmtree(temp_dir)
