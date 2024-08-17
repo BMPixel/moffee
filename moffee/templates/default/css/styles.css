@@ -386,8 +386,8 @@ td {
 
 div.mermaid {
     display: flex;
-    justify-content: center; 
-    align-items: center;    
+    justify-content: center;
+    align-items: center;
 }
 
 /* Fenced Code */
@@ -525,11 +525,11 @@ div.highlight {
     body {
         background-color: white;
     }
-    
+
     .slide-container {
         margin: 0;
     }
-    
+
     .floating-btn {
         display: none;
     }

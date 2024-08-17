@@ -12,14 +12,14 @@ from moffee.utils.md_helper import (
 
 
 def test_is_comment():
-    assert is_comment("<!-- This is a comment -->") == True
-    assert is_comment("This is not a comment") == False
+    assert is_comment("<!-- This is a comment -->") is True
+    assert is_comment("This is not a comment") is False
 
 
 def test_is_empty():
-    assert is_empty("<!-- This is a comment -->") == True
-    assert is_empty("This is not a comment") == False
-    assert is_empty(" \n") == True
+    assert is_empty("<!-- This is a comment -->") is True
+    assert is_empty("This is not a comment") is False
+    assert is_empty(" \n") is True
 
 
 def test_get_header_level():
@@ -30,32 +30,32 @@ def test_get_header_level():
 
 
 def test_is_divider():
-    assert is_divider("---") == True
-    assert is_divider("***") == True
-    assert is_divider("___") == True
-    assert is_divider("  ----  ") == True
-    assert is_divider("--") == False
-    assert is_divider("- - -") == False
-    assert is_divider("This is not a divider") == False
-    assert is_divider("***", type="*") == True
-    assert is_divider("***", type="-") == False
-    assert is_divider("* * *", type="*") == False
+    assert is_divider("---") is True
+    assert is_divider("***") is True
+    assert is_divider("___") is True
+    assert is_divider("  ----  ") is True
+    assert is_divider("--") is False
+    assert is_divider("- - -") is False
+    assert is_divider("This is not a divider") is False
+    assert is_divider("***", type="*") is True
+    assert is_divider("***", type="-") is False
+    assert is_divider("* * *", type="*") is False
 
 
 def test_contains_image():
-    assert contains_image("![Alt text](image.jpg)") == True
-    assert contains_image("This is an image: ![Alt text](image.jpg)") == True
-    assert contains_image("This is not an image") == False
-    assert contains_image("![](image.jpg)") == True  # empty alt text
-    assert contains_image("![]()") == True  # empty alt text and URL
+    assert contains_image("![Alt text](image.jpg)") is True
+    assert contains_image("This is an image: ![Alt text](image.jpg)") is True
+    assert contains_image("This is not an image") is False
+    assert contains_image("![](image.jpg)") is True  # empty alt text
+    assert contains_image("![]()") is True  # empty alt text and URL
 
 
 def test_contains_deco():
-    assert contains_deco("@(layout=split, background=blue)") == True
-    assert contains_deco("  @(layout=default)  ") == True
-    assert contains_deco("This is not a deco") == False
-    assert contains_deco("@(key=value) Some text") == False
-    assert contains_deco("@()") == True  # empty deco
+    assert contains_deco("@(layout=split, background=blue)") is True
+    assert contains_deco("  @(layout=default)  ") is True
+    assert contains_deco("This is not a deco") is False
+    assert contains_deco("@(key=value) Some text") is False
+    assert contains_deco("@()") is True  # empty deco
 
 
 def test_extract_title():
@@ -68,8 +68,8 @@ def test_extract_title():
         extract_title("## Secondary Title\n# Main Title\nSome content")
         == "Secondary Title"
     )
-    assert extract_title("Some content without headings") == None
-    assert extract_title("") == None
+    assert extract_title("Some content without headings") is None
+    assert extract_title("") is None
     assert extract_title("#  Title with spaces  \nContent") == "Title with spaces"
     multi_para = "Para 1\n\nPara 2\n\n# Actual Title\nContent"
     assert extract_title(multi_para) == "Actual Title"

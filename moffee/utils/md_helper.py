@@ -53,7 +53,7 @@ def is_divider(line: str, type=None) -> bool:
     stripped_line = line.strip()
     if len(stripped_line) < 3:
         return False
-    if type == None:
+    if type is None:
         type = "-*_"
 
     assert type in "-*_", "type must be either '*', '-' or '_'"

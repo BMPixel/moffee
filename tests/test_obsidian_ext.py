@@ -44,10 +44,10 @@ def test_complex():
 > [!note]
 > co
 >[!note]
- 
+
 > [!warning]
 > co
-> 
+>
 > - item1
 > - item2
 """

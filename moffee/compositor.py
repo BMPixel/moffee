@@ -238,7 +238,7 @@ def composite(document: str) -> List[Page]:
         nonlocal current_page_lines, current_h1, current_h2, current_h3, options
         # Only make new page if has non empty lines
 
-        if all([l.strip() == "" for l in current_page_lines]):
+        if all(l.strip() == "" for l in current_page_lines):
             return
 
         raw_md = ""
@@ -307,15 +307,15 @@ def composite(document: str) -> List[Page]:
         inherit_h1 = page.option.default_h1
         inherit_h2 = page.option.default_h2
         inherit_h3 = page.option.default_h3
-        if page.h1 != None:
+        if page.h1 is not None:
             env_h1 = page.h1
             env_h2 = env_h3 = None
             inherit_h1 = inherit_h2 = inherit_h3 = False
-        if page.h2 != None:
+        if page.h2 is not None:
             env_h2 = page.h2
             env_h3 = None
             inherit_h2 = inherit_h3 = False
-        if page.h3 != None:
+        if page.h3 is not None:
             env_h3 = page.h3
             inherit_h3 = False
         if inherit_h1:

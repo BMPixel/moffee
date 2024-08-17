@@ -55,7 +55,7 @@ Generate slides from a markdown file.
 
 This command takes a markdown file as input and produces a set of slides
 formatted as an HTML file. You can specify an output directory where the
-HTML will be saved. 
+HTML will be saved.
 
 Example usage:
 
@@ -82,7 +82,7 @@ Launch live mode to update HTML outputs.
 
 This command starts a live server that watches for changes to the specified
 markdown file. As changes are made, the slides are automatically updated and
-reflected in the browser. 
+reflected in the browser.
 
 Example usage:
 

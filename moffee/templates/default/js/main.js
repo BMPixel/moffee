@@ -46,7 +46,7 @@ window.addEventListener('load', function () {
                 element.classList.remove("auto-scaled")
                 return;
             }
-            
+
             // console.log(`Performed auto scale Scale=${scale.toFixed(2)}, scrollHeight=${(element.scrollHeight * scale).toFixed(2)}, containerHeight=${containerHeight.toFixed(2)}`);
 
             // If somehow after resizing element significantly smaller than container
@@ -63,7 +63,7 @@ window.addEventListener('load', function () {
                     // console.log(`Scale=${scale.toFixed(2)}, scrollHeight=${(element.scrollHeight * scale).toFixed(2)}, containerHeight=${containerHeight.toFixed(2)}`);
                 }
             }
-        
+
         });
     }
 
@@ -144,7 +144,7 @@ function showSlide(index) {
 function scaleToFullScreen(element) {
     var windowWidth = window.innerWidth;
     var windowHeight = window.innerHeight;
-    var originalWidth = 720; 
+    var originalWidth = 720;
     var originalHeight = 405;
 
     var scaleX = windowWidth / originalWidth;

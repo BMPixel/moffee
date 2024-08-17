@@ -71,7 +71,7 @@ def test_read_options(setup_test_env):
     # import ipdb; ipdb.set_trace(context=15)
 
     options = read_options(doc_path)
-    assert options.default_h1 == True
+    assert options.default_h1 is True
     assert options.theme == "beam"
     assert options.styles["background-color"] == "red"
     assert options.resource_dir == "resources"

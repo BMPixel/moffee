@@ -39,7 +39,7 @@ Normal text here.
 2. Second item
 3. Third item
 
-This is a long paragraph 
+This is a long paragraph
 It continues for several lines to demonstrate the line count limit.
 We'll add more lines to ensure it goes over the 12 non-empty lines limit.
 This is line 4.
@@ -62,8 +62,8 @@ def test_paginate_creates_correct_number_of_pages(sample_document):
 def test_frontmatter_parsing(sample_document):
     pages = composite(sample_document)
     assert pages[0].option.layout == "split"
-    assert pages[0].option.default_h1 == True
-    assert pages[0].option.default_h2 == False
+    assert pages[0].option.default_h1 is True
+    assert pages[0].option.default_h2 is False
     assert pages[0].option.styles == {"background-color": "gray"}
 
 
@@ -84,9 +84,9 @@ Even more content
     """
     pages = composite(doc)
     assert pages[0].h1 == "Main Title"
-    assert pages[1].h1 == None
+    assert pages[1].h1 is None
     assert pages[1].h2 == "Subtitle"
-    assert pages[2].h1 == None
+    assert pages[2].h1 is None
     assert pages[2].h2 == "Subtitle"
     assert pages[2].h3 == "Subheader"
 
@@ -169,7 +169,7 @@ def test_adjacent_headings_same_level():
 # Title
 ## Subtitle
 ## Subtitle2
-### Heading 
+### Heading
 ### Heading2
 """
     pages = composite(doc)
@@ -275,7 +275,7 @@ Hello
 """
     pages = composite(doc)
     assert pages[0].raw_md == "Hello"
-    assert pages[0].option.default_h1 == False
+    assert pages[0].option.default_h1 is False
     assert pages[0].option.styles == {"background": "blue"}
 
 
@@ -297,8 +297,8 @@ Hello
     assert pages[0].title == "Title1"
     assert pages[0].subtitle == "Title2"
     assert pages[0].option.styles == {"background": "blue"}
-    assert pages[0].option.default_h1 == True
-    assert pages[1].option.default_h1 == False
+    assert pages[0].option.default_h1 is True
+    assert pages[1].option.default_h1 is False
 
 
 if __name__ == "__main__":

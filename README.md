@@ -7,7 +7,7 @@
   <strong>moffee</strong>: Make Markdown Ready to Present
 </p>
 
-moffee is an open-source slide maker that transforms markdown documents into clean, professional slide decks. 
+moffee is an open-source slide maker that transforms markdown documents into clean, professional slide decks.
 
 - **moffee handles layout, pagination, and styling**, so you can focus on your content.
 - **There's little to learn**. moffee uses simple syntax to arrange and style content to your liking.
@@ -17,7 +17,7 @@ moffee is an open-source slide maker that transforms markdown documents into cle
 
 <details>
   <summary> Click to expand input markdown document (29 lines)</summary>
-  
+
 ```markdown
 # moffee
 ## Make markdown ready to present
