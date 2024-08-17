@@ -4,14 +4,21 @@
   </a>
 </p>
 <p align="center">
-  <strong>moffee</strong>: Make Markdown Ready to Present
-</p>
-<p align="center">
-  <img src="https://github.com/bmpixel/moffee/actions/workflows/python-app-test.yaml/badge.svg"></img>
-  <img src="https://img.shields.io/pypi/v/moffee.svg" alt="PyPI version">
-  <img src="https://img.shields.io/pypi/l/moffee.svg" alt="License">
-  <img src="https://readthedocs.org/projects/moffee/badge/?version=latest" alt="Doc build status">
-  <img src="https://img.shields.io/github/stars/bmpixel/moffee.svg?style=social" alt="GitHub stars">
+  <a href="https://github.com/bmpixel/moffee/actions/workflows/python-app-test.yaml">
+    <img src="https://github.com/bmpixel/moffee/actions/workflows/python-app-test.yaml/badge.svg" alt="GitHub Actions">
+  </a>
+  <a href="https://pypi.org/project/moffee/">
+    <img src="https://img.shields.io/pypi/v/moffee.svg" alt="PyPI version">
+  </a>
+  <a href="https://github.com/bmpixel/moffee/blob/main/LICENSE">
+    <img src="https://img.shields.io/pypi/l/moffee.svg" alt="License">
+  </a>
+  <a href="https://moffee.readthedocs.io/en/latest/">
+    <img src="https://readthedocs.org/projects/moffee/badge/?version=latest" alt="Doc build status">
+  </a>
+  <a href="https://github.com/bmpixel/moffee">
+    <img src="https://img.shields.io/github/stars/bmpixel/moffee.svg?style=social" alt="GitHub stars">
+  </a>
 </p>
 
 moffee is an open-source slide maker that transforms markdown documents into clean, professional slide decks.
