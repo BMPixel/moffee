@@ -1,1 +1,3 @@
 site_name: moffee Docs
+theme:
+  name: readthedocs
