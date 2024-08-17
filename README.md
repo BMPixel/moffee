@@ -179,6 +179,10 @@ Our journey begins here
 @(layout=content, background-image='url("https://placehold.co/600x400")')
 ```
 
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md)
+
 ## License
 
 MIT License © 2024 [Wenbo Pan](https://wenbo.io)
