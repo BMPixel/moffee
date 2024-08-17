@@ -6,6 +6,12 @@
 <p align="center">
   <strong>moffee</strong>: Make Markdown Ready to Present
 </p>
+<p align="center">
+  <img src="https://github.com/bmpixel/moffee/actions/workflows/python-app-test.yaml/badge.svg"></img>
+  <img src="https://img.shields.io/pypi/v/moffee.svg" alt="PyPI version">
+  <img src="https://img.shields.io/pypi/l/moffee.svg" alt="License">
+  <img src="https://img.shields.io/github/stars/bmpixel/moffee.svg?style=social" alt="GitHub stars">
+</p>
 
 moffee is an open-source slide maker that transforms markdown documents into clean, professional slide decks.
 
