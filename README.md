@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/BMPixel/moffee">
-    <img src="https://github.com/user-attachments/assets/37fa6c1b-df21-4df1-9ccf-6075f009c74d" alt="moffee logo" width="500">
+    <img src="https://github.com/user-attachments/assets/c8c20dc6-4812-460b-b66b-2fa0dbe97636" alt="moffee logo" width="650">
   </a>
 </p>
 <p align="center">
