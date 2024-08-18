@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "moffee"
-version = "0.2.4"
+version = "0.2.5"
 description = "A slide maker that transform markdown into slides."
 authors = ["Wenbo Pan <pixelwenbo@gmail.com>"]
 readme = "README.md"
@@ -31,6 +31,7 @@ flake8 = "^7.1.1"
 black = "^24.8.0"
 pre-commit = "^3.8.0"
 mkdocs = "^1.6.0"
+mkdocs-callouts = "^1.14.0"
 
 [tool.ipdb]
 context = 15

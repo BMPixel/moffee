@@ -1,3 +1,4 @@
+from moffee import __version__
 import click
 import os
 from functools import partial
@@ -43,8 +44,10 @@ Render markdown file into slides.
 This tool allows you to convert markdown files into HTML slides,
 either generating them once or launching a live server to continuously
 update the output as changes are made to the markdown file.
-"""
+""",
+    context_settings={"help_option_names": ["-h", "--help"]},
 )
+@click.version_option(__version__, prog_name="moffee")
 def cli():
     pass
 
