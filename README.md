@@ -213,7 +213,9 @@ Our journey begins here
 
 ## Contributing
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md)
+Find moffee helpful? ![star](https://img.shields.io/github/stars/bmpixel/moffee.svg?style=social) are the best motivation to keep me improving. 🚀 So thank you!
+
+To submit bug/feature requests/PR, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
