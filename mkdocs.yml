@@ -1,3 +1,19 @@
 site_name: moffee Docs
 theme:
   name: readthedocs
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Installation: installation.md
+  - Syntax: syntax.md
+  - Configuration: configuration.md
+  - Theme: theme.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+
+plugins:
+  - search
+  - callouts
