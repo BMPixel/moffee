@@ -1,8 +1,14 @@
 <p align="center">
   <a href="https://github.com/BMPixel/moffee">
-    <img src="https://github.com/user-attachments/assets/c8c20dc6-4812-460b-b66b-2fa0dbe97636" alt="moffee logo" width="650">
+    <img src="https://github.com/user-attachments/assets/8fcdf93f-3861-468d-a819-874ee554b5d3" alt="moffee logo" width="150">
   </a>
 </p>
+<h1 align="center">
+moffee
+</h1>
+<p align="center">
+moffee the Markdown Presenter.
+<p>
 <p align="center">
   <a href="https://github.com/bmpixel/moffee/actions/workflows/python-app-test.yaml">
     <img src="https://github.com/bmpixel/moffee/actions/workflows/python-app-test.yaml/badge.svg" alt="GitHub Actions">
@@ -74,7 +80,7 @@ moffee automatically adjusts element sizes to accommodate large blocks of text o
 </details>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/b766cf39-e46c-4b7d-8dfc-bb717feba974" alt="moffee example PDF">
+  <img src="https://github.com/user-attachments/assets/be2f7706-0b0a-415e-a207-78c43596d8c4" alt="moffee example PDF">
 </p>
 
 ## Installation
@@ -153,6 +159,7 @@ Front matter is used to define moffee's behavior. Default values are:
 
 ```yaml
 ---
+theme: default # Other availble themes are "beam", "robo", "blue" and "gaia"
 layout: content # HTML template. Use "centered" for centered alignment.
 resource_dir: "." # Relative URLs are based on this directory.
 default_h1: false # Inherit H1 from previous slides if not defined.
