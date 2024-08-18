@@ -101,7 +101,6 @@ h3 {
 
 .chunk {
     display: flex;
-    justify-content: space-between;
     width: 100%;
 }
 
@@ -111,6 +110,7 @@ h3 {
 
 .chunk-horizontal {
     flex-direction: row;
+    justify-content: space-between;
     gap: 20px;
 }
 
@@ -124,6 +124,10 @@ h3 {
     hyphens: auto;
     max-width: 100%;
     max-height: 100%;
+}
+
+.chunk-paragraph > p:has(img) {
+    height: 100%;
 }
 
 .chunk-paragraph img {
@@ -142,7 +146,6 @@ h3 {
     flex-grow: 1;
 }
 
-enlarge img when scale ratio is high
 .auto-scaled.s7 img,
 .auto-scaled.s6 img,
 .auto-scaled.s5 img,
@@ -161,7 +164,6 @@ enlarge img when scale ratio is high
 /* Admonition Styles */
 div.admonition {
     font-size: 0.9em;
-    margin: 1em 0;
     border-radius: 10px;
     padding: 1rem 2rem;
     background-color: var(--color-admonition-bg);

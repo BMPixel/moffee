@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/BMPixel/moffee">
-    <img src="https://github.com/user-attachments/assets/8fcdf93f-3861-468d-a819-874ee554b5d3" alt="moffee logo" width="150">
+    <img src="https://raw.githubusercontent.com/BMPixel/moffee/main/docs/images/logo.png" alt="moffee logo" width="150">
   </a>
 </p>
 <h1 align="center">
@@ -80,8 +80,33 @@ moffee automatically adjusts element sizes to accommodate large blocks of text o
 </details>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/be2f7706-0b0a-415e-a207-78c43596d8c4" alt="moffee example PDF">
+  <img src="https://raw.githubusercontent.com/BMPixel/moffee/main/docs/images/moffee-example.png" alt="moffee example PDF">
 </p>
+
+Or you can use other built-in themes:
+
+<table>
+  <tr>
+    <td align="center"><strong>default</strong></td>
+    <td align="center"><strong>beam</strong></td>
+    <td align="center"><strong>robo</strong></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://raw.githubusercontent.com/BMPixel/moffee/main/docs/images/default.png" alt="default theme" /></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/BMPixel/moffee/main/docs/images/beam.png" alt="beam theme" /></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/BMPixel/moffee/main/docs/images/robo.png" alt="robo theme" /></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>blue</strong></td>
+    <td align="center"><strong>gaia</strong></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://raw.githubusercontent.com/BMPixel/moffee/main/docs/images/blue.png" alt="blue theme" /></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/BMPixel/moffee/main/docs/images/gaia.png" alt="gaia theme" /></td>
+    <td></td>
+  </tr>
+</table>
 
 ## Installation
 
