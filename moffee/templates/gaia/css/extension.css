@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    --color-background: #F5F4F1;
+    --color-text: #4a3c31;
+    --color-accent: #8c7a6b;
+    --color-border: #d3c7b8;
+    --font-handwritten: 'Kalam', cursive;
+    --font-main: 'Noto Serif', cursive;
+    --max-content-height: 200px;
+    --color-admonition-fg: hsl(219.5, 84%, 20%);
+    --color-admonition-bg: hsl(219.5, 84%, 90%);
+    --colour-warning-fg: hsl(28.5, 74%, 20%);
+    --colour-warning-bg: hsl(28.5, 74%, 90%);
+    --colour-note-fg: hsl(219.5, 84%, 20%);
+    --colour-note-bg: hsl(219.5, 84%, 90%);
+    --colour-success-fg: hsl(150, 36.7%, 20%);
+    --colour-success-bg: hsl(150, 36.7%, 90%);
+    --colour-error-fg: hsl(0, 37%, 20%);
+    --colour-error-bg: hsl(0, 37%, 90%);
+    --colour-todo-fg: hsl(266.8, 100%, 20%);
+    --colour-todo-bg: hsl(266.8, 100%, 90%);
+}
+
+.slide-content {
+    padding: 20px 40px;
+    background: var(--color-background);
+    font-family: var(--font-main);
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-handwritten);
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: var(--color-accent);
+}
+
+h2 {
+    font-size: 1.8em;
+    width: fit-content;
+}
+
+h3 {
+    font-size: 1.3em;
+    margin: 10px 0;
+}
+
+h2::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    border-radius: 3px;
+    background: var(--color-text)
+}
+p {
+    margin-bottom: 15px;
+}
+
+/* Table Styles */
+table {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead tr {
+    background-color: var(--color-border);
+}
+
+th,
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Code Block Styles */
+div.highlight {
+    background-color: #f6f3ed;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+/* Blockquote Styles */
+blockquote {
+    border-left: 4px solid var(--color-accent);
+    background-color: #f6f3ed;
+    padding: 16px;
+    margin: 20px 0;
+    font-style: italic;
+}
+
+.slide-number {
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--color-accent);
+}
