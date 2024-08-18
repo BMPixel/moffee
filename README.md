@@ -7,7 +7,7 @@
 moffee
 </h1>
 <p align="center">
-moffee the Markdown Presenter.
+Make Markdown Ready to Present.
 <p>
 <p align="center">
   <a href="https://github.com/bmpixel/moffee/actions/workflows/python-app-test.yaml">
@@ -213,7 +213,7 @@ Our journey begins here
 
 ## Contributing
 
-Find moffee helpful? ![star](https://img.shields.io/github/stars/bmpixel/moffee.svg?style=social) are the best motivation to keep me improving. 🚀 So thank you!
+Find moffee helpful? ![star](https://img.shields.io/github/stars/bmpixel/moffee.svg?style=social) are the best motivation to keep me improving. So thank you! ;)
 
 To submit bug/feature requests/PR, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
