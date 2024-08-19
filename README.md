@@ -83,7 +83,7 @@ moffee automatically adjusts element sizes to accommodate large blocks of text o
   <img src="https://raw.githubusercontent.com/BMPixel/moffee/main/docs/images/moffee-example.png" alt="moffee example PDF">
 </p>
 
-Or you can use other built-in themes:
+Or you can use other built-in [themes](https://moffee.readthedocs.io/en/latest/theme/):
 
 <table>
   <tr>
@@ -110,7 +110,7 @@ Or you can use other built-in themes:
 
 ## Installation
 
-moffee is written in Python and is recommended to install with `pipx`:
+moffee is written in Python and is recommended to install with `pipx`. See [our documentation](https://moffee.readthedocs.io/en/latest/installation/) for step-by-step instructions.
 
 ```bash
 pipx install moffee
@@ -128,7 +128,7 @@ moffee make example.md -o output_html/ # export to HTML
 
 ## Usage
 
-To start, write in standard markdown. moffee supports most extended syntax found in [Obsidian Flavored Markdown](https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown).
+To start, write in standard markdown. moffee supports most extended syntax found in [Obsidian Flavored Markdown](https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown). See [the syntax documentation](https://moffee.readthedocs.io/en/latest/syntax/) for more details.
 
 ```markdown
 # Markdown Title
