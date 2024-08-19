@@ -12,6 +12,9 @@ moffee's behavior can be customized using front matter at the beginning of your 
 | default_h1 | Inherit H1 from previous slides if not defined | false | true, false |
 | default_h2 | Inherit H2 from previous slides if not defined | true | true, false |
 | default_h3 | Inherit H3 from previous slides if not defined | true | true, false |
+| aspect_ratio | Aspect ratio of the slides | "16:9" | "16:9", "4:3" |
+| slide_width | Width of the slides | 720 | Any number |
+| slide_height | Height of the slides | 405 | Any number |
 
 ### Default Front Matter
 
@@ -23,6 +26,9 @@ resource_dir: "."
 default_h1: false
 default_h2: true
 default_h3: true
+aspect_ratio: "16:9"
+slide_width: 720
+slide_width: 405
 ---
 ```
 

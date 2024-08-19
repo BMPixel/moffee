@@ -68,10 +68,14 @@ def render_jinja2(document: str, template_dir) -> str:
     pages = composite(document)
     title = extract_title(document) or "Untitled"
     slide_struct = retrieve_structure(pages)
+    _, options = parse_frontmatter(document)
+    width, height = options.computed_slide_size
 
     data = {
         "title": title,
         "struct": slide_struct,
+        "slide_width": width,
+        "slide_height": height,
         "slides": [
             {
                 "h1": page.h1,

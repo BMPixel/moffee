@@ -12,6 +12,10 @@ from moffee.utils.md_helper import (
     contains_deco,
 )
 
+DEFAULT_ASPECT_RATIO = "16:9"
+DEFAULT_SLIDE_WIDTH = 720
+DEFAULT_SLIDE_HEIGHT = 405
+
 
 @dataclass
 class PageOption:
@@ -19,9 +23,41 @@ class PageOption:
     default_h2: bool = True
     default_h3: bool = True
     theme: str = "default"
+    aspect_ratio: str = DEFAULT_ASPECT_RATIO
+    slide_width: int = DEFAULT_SLIDE_WIDTH
+    slide_height: int = DEFAULT_SLIDE_HEIGHT
     layout: str = "content"
     resource_dir: str = "."
     styles: dict = field(default_factory=dict)
+
+    @property
+    def computed_slide_size(self) -> Tuple[int, int]:
+        changed_ar = self.aspect_ratio != DEFAULT_ASPECT_RATIO
+        changed_w = self.slide_width != DEFAULT_SLIDE_WIDTH
+        changed_h = self.slide_height != DEFAULT_SLIDE_HEIGHT
+
+        assert isinstance(
+            self.aspect_ratio, str
+        ), f"Aspect ratio must be a string, got {self.aspect_ratio}"
+        matches = re.match("([0-9]+):([0-9]+)", self.aspect_ratio)
+        if matches is None:
+            raise ValueError(f"Incorrect aspect ratio format: {self.aspect_ratio}")
+        ar = int(matches.group(2)) / int(matches.group(1))
+        width = self.slide_width
+        height = self.slide_height
+
+        if changed_ar and changed_h and changed_w:
+            raise ValueError(
+                f"Aspect ratio, width and height cannot be changed at the same time!"
+            )
+        if changed_ar and changed_h:
+            width = height / ar
+        elif changed_ar and changed_w:
+            height = width * ar
+        elif changed_ar:
+            height = width * ar
+
+        return width, height
 
 
 class Direction:

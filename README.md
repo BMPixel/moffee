@@ -180,16 +180,14 @@ Bottom bun
 
 ### Options and Styles
 
-Front matter is used to define moffee's behavior. Default values are:
+Front matter is used to define moffee's behavior. Here are some common used options. Refer to [Configuration](https://moffee.readthedocs.io/en/latest/configuration/) for the full list.
 
 ```yaml
 ---
 theme: default # Other availble themes are "beam", "robo", "blue" and "gaia"
 layout: content # HTML template. Use "centered" for centered alignment.
 resource_dir: "." # Relative URLs are based on this directory.
-default_h1: false # Inherit H1 from previous slides if not defined.
-default_h2: true  # Inherit H2
-default_h3: true  # Inherit H3
+aspect_ratio: "16:9" # Aspect ratio of the slides
 ---
 ```
 

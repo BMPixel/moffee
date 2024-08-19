@@ -14,10 +14,12 @@
     --colour-todo-fg: hsl(267, 100%, 50%);
     --min-element-height: 100px;
     --min-element-width: 100px;
+    --slide-width: 720px;
+    --slide-height: 405px;
 }
 
 @page {
-    size: 720px 405px;
+    size: var(--slide-width) var(--slide-height);
     margin: 0;
 }
 
@@ -35,8 +37,8 @@ body{
 /* Basic Layouts */
 
 .slide-container {
-    width: 720px;
-    height: 405px;
+    width: var(--slide-width);
+    height: var(--slide-height);
     margin: 40px auto;
     overflow: hidden;
 }
@@ -83,7 +85,7 @@ h3 {
     display: flex;
     flex-direction: column;
     flex: 1;
-    max-height: 405px;
+    max-height: var(--slide-height);
     overflow: hidden;
     margin: 0 15px 30px 15px;
 }

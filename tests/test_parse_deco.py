@@ -67,5 +67,36 @@ def test_deco_with_hyphen():
     assert option.styles == {"background-color": "red"}
 
 
+def test_computed_slide_size():
+    page_option = PageOption()
+    assert page_option.computed_slide_size == (720, 405)
+
+    page_option = PageOption(slide_width=1280)
+    assert page_option.computed_slide_size == (1280, 405)
+
+    page_option = PageOption(slide_height=540)
+    assert page_option.computed_slide_size == (720, 540)
+
+    page_option = PageOption(aspect_ratio="4:3")
+    assert page_option.computed_slide_size == (720, 540)
+
+    page_option = PageOption(slide_width=1024, aspect_ratio="4:3")
+    assert page_option.computed_slide_size == (1024, 768)
+
+    page_option = PageOption(slide_height=768, aspect_ratio="16:10")
+    assert page_option.computed_slide_size == (1228.8, 768)
+
+    with pytest.raises(
+        ValueError,
+        match="Aspect ratio, width and height cannot be changed at the same time!",
+    ):
+        PageOption(
+            slide_width=1280, slide_height=720, aspect_ratio="4:3"
+        ).computed_slide_size
+
+    with pytest.raises(ValueError, match="Incorrect aspect ratio format:"):
+        PageOption(aspect_ratio="16-9").computed_slide_size
+
+
 if __name__ == "__main__":
     pytest.main()
