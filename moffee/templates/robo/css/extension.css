@@ -90,8 +90,6 @@ div.highlight {
 
 /* Blockquote Styles */
 blockquote {
-    border-left: 4px solid var(--color-accent);
-    background-color: #f6f8fa;
     padding: 16px;
     margin: 20px 0;
     font-style: normal;

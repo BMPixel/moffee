@@ -66,7 +66,6 @@ body{
 h1 {
     font-size: 2.2em;
     margin: 10px 0;
-    color: #005fdb;
 }
 
 h2 {
@@ -74,16 +73,6 @@ h2 {
     font-size: 1.8em;
     position: relative;
     padding: 10px 0;
-}
-
-h2::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(to right, #0066cc, #86d7ff);
 }
 
 h3 {
@@ -304,10 +293,9 @@ div.admonition div.highlight {
 
 blockquote {
     border-left: 5px solid #007acc;
-    background-color: #f0f8ff;
+    background-color: rgba(0, 0, 0, 0.02);
     padding: 15px 20px;
     margin: 20px 0;
-    border-radius: 10px;
     font-style: italic;
     color: #333;
 }
@@ -408,7 +396,6 @@ div.highlight {
 .centered h1 {
     font-size: 3em;
     margin: 0;
-    position: relative;
     z-index: 2;
     margin: 15% auto 20px auto;
 }
@@ -416,11 +403,7 @@ div.highlight {
 .centered h2 {
     font-size: 1.8em;
     margin-bottom: 15px;
-    color: rgb(77, 77, 77);
-}
-
-.centered h2::after {
-    display: none;
+    margin: 0 auto 20px auto;
 }
 
 .centered h3 {

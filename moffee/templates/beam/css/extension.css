@@ -26,16 +26,11 @@ body {
     font-size: 2rem;
     color: white;
     background: var(--color-beamer-blue);
-    color: white
 }
 
 .centered h3,
 .centered h2 {
     margin: 0 auto;
-}
-
-.centered h2::before{
-    display: none;
 }
 
 h2 {
@@ -58,6 +53,9 @@ h2::before {
             0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+h3 {
+    font-size: 1.4em;
+}
 
 .content {
     margin: 0 15px 35px 15px;
@@ -104,7 +102,6 @@ h2::before {
     color: white;
 }
 
-
 .footer {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color: white;
@@ -130,26 +127,7 @@ h2::before {
     font-size: inherit;
 }
 
-h3 {
-    font-size: 1.4em;
-}
-
-/* 修改 blockquote */
-blockquote {
-    border-left: 5px solid #268bd2;
-    /* 类似 Beamer 引用颜色 */
-    background-color: white;
-    padding: 10px 20px;
-    margin: 20px 0;
-    border-radius: 2px;
-    font-style: italic;
-}
-
-/* 修改 table */
 table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 20px 0;
     font-size: 16px;
     border-radius: 3px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
