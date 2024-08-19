@@ -13,16 +13,13 @@ def run(md, output=None, live=False):
         output = tempfile.mkdtemp()
     template_dir = os.path.join(os.path.dirname(__file__), "templates")
     options = read_options(md)
-    default_template_dir = os.path.join(template_dir, "default")
-    if options.theme != "default":
-        theme_template_dir = os.path.join(template_dir, options.theme)
-    else:
-        theme_template_dir = None
+    base_template_dir = os.path.join(template_dir, "base")
+    theme_template_dir = os.path.join(template_dir, options.theme)
     render_handler = partial(
         build,
         document_path=md,
         output_dir=output,
-        template_dir=default_template_dir,
+        template_dir=base_template_dir,
         theme_dir=theme_template_dir,
     )
 
@@ -31,7 +28,7 @@ def run(md, output=None, live=False):
     if live:
         server = Server()
         server.watch(md, render_handler)
-        server.watch(default_template_dir, render_handler)
+        server.watch(base_template_dir, render_handler)
         if theme_template_dir:
             server.watch(theme_template_dir, render_handler)
         server.serve(root=output)
