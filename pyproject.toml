@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "moffee"
-version = "0.2.5"
+version = "0.2.6"
 description = "A slide maker that transform markdown into slides."
 authors = ["Wenbo Pan <pixelwenbo@gmail.com>"]
 readme = "README.md"
