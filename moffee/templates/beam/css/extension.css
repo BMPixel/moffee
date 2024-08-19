@@ -24,13 +24,35 @@ body {
 .centered h1 {
     padding: 20px;
     font-size: 2rem;
-    color: white;
     background: var(--color-beamer-blue);
 }
 
 .centered h3,
 .centered h2 {
     margin: 0 auto;
+    color: var(--color-beamer-blue);
+}
+
+.centered h1::before,
+.centered h2::before {
+    display: none;
+}
+
+h1 {
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+
+h1::before {
+    content: '';
+    position: absolute;
+    left: -20%;
+    bottom: -11px;
+    top: -10px;
+    width: 140%;
+    z-index: -1;
+    background: var(--color-beamer-dark);
 }
 
 h2 {
