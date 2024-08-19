@@ -6,7 +6,7 @@ from moffee.builder import build, render_jinja2, read_options, retrieve_structur
 from moffee.compositor import composite
 
 
-def template_dir(name="default"):
+def template_dir(name="base"):
     return os.path.join(os.path.dirname(__file__), "..", "moffee", "templates", name)
 
 
