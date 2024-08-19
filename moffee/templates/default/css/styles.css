@@ -12,8 +12,8 @@
     --colour-error-fg: hsl(0, 37%, 50%);
     --colour-todo-bg: hsl(266.8, 100%, 90%);
     --colour-todo-fg: hsl(267, 100%, 50%);
-    --max-content-height: 290px;
-    --max-content-width: 650px;
+    --min-element-height: 100px;
+    --min-element-width: 100px;
 }
 
 @page {
@@ -42,13 +42,13 @@ body{
 }
 
 .slide-content {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
     position: relative;
     padding: 0 20px;
-    display: flex;
-    flex-direction: column;
     background-color: white;
     background-size: cover;
     background-position: center;
@@ -66,7 +66,6 @@ body{
 h1 {
     font-size: 2.2em;
     margin: 10px 0;
-    position: relative;
     color: #005fdb;
 }
 
@@ -92,16 +91,26 @@ h3 {
 }
 
 .content {
-    flex-grow: 1;
-    overflow: hidden;
-    margin: 0 15px 30px 15px;
     display: flex;
     flex-direction: column;
+    flex: 1;
+    max-height: 405px;
+    overflow: hidden;
+    margin: 0 15px 30px 15px;
+}
+
+.auto-sizing {
+    display: flex;
+    flex-direction: column;
+    transform-origin: top left;
+    flex: 1;
 }
 
 .chunk {
     display: flex;
-    width: 100%;
+    flex: 1;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .chunk-vertical {
@@ -127,37 +136,21 @@ h3 {
 }
 
 .chunk-paragraph > p:has(img) {
+    position: relative;
     height: 100%;
+    width: 100%;
 }
 
-.chunk-paragraph img {
+.chunk-paragraph img,
+.chunk-paragraph .mermaid {
     display: block;
+    position: absolute;
     object-fit: contain;
-    max-height: var(--max-content-height);
-    max-width: var(--max-content-width);
+    min-height: var(--min-element-height);
+    min-width: var(--min-element-width);
     width: 100%;
     height: 100%;
-    margin: 0 auto;
-}
-
-.auto-sizing {
-    transform-origin: top left;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.auto-scaled.s7 img,
-.auto-scaled.s6 img,
-.auto-scaled.s5 img,
-.auto-scaled.s4 img {
-    max-height: 400px;
-}
-
-.auto-scaled.s3 img,
-.auto-scaled.s2 img,
-.auto-scaled.s1 img,
-.auto-scaled.s0 img {
-    max-height: 500px;
+    margin: auto;
 }
 
 
@@ -166,6 +159,7 @@ div.admonition {
     font-size: 0.9em;
     border-radius: 10px;
     padding: 1rem 2rem;
+    margin: 10px 0;
     background-color: var(--color-admonition-bg);
 }
 
@@ -334,9 +328,7 @@ blockquote {
 /* Footnote */
 
 .footnote {
-    position: absolute;
-    bottom: -10px;
-    left: 0;
+    margin-top: 10px;
     font-size: 12px;
     color: gray;
 }

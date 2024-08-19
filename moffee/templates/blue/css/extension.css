@@ -16,7 +16,6 @@
     --colour-error-fg: hsl(0, 37%, 90%);
     --colour-todo-bg: hsl(266.8, 100%, 20%);
     --colour-todo-fg: hsl(266.8, 100%, 90%);
-    --max-content-height: 240px;
 }
 
 .slide-content {

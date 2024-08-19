@@ -15,9 +15,8 @@
     --colour-todo-fg: hsl(266.8, 100%, 20%);
     --color-beamer-blue: #164994;
     --color-beamer-dark: #0B244A;
-    --max-content-height: 250px;
-    --max-content-width: 650px;
 }
+
 body {
     font-family: "Noto Serif", "Georgia", "SimSun", "STSong", "NSimSun", "PMingLiU", "MingLiU", serif;
 }
@@ -133,11 +132,6 @@ h2::before {
 
 h3 {
     font-size: 1.4em;
-}
-
-.chunk-paragraph {
-    font-size: 20px;
-    margin: 10px 0;
 }
 
 /* 修改 blockquote */

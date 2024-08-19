@@ -38,13 +38,9 @@ window.addEventListener('load', function () {
             if (scale < 1 || contentWidth > availableWidth) {
                 element.style.transform = `scale(${scale})`;
                 element.style.width = `${availableWidth / scale}px`;
+                element.style.height = `${availableHeight / scale}px`;
                 // Force refresh
                 document.body.offsetHeight;
-                element.classList.add("auto-scaled")
-                element.classList.add("s" + (scale*10).toFixed(0))
-            } else {
-                element.classList.remove("auto-scaled")
-                return;
             }
 
             // console.log(`Performed auto scale Scale=${scale.toFixed(2)}, scrollHeight=${(element.scrollHeight * scale).toFixed(2)}, containerHeight=${containerHeight.toFixed(2)}`);
@@ -70,11 +66,11 @@ window.addEventListener('load', function () {
     autoScale();
 
     // update
-    window.addEventListener('resize', autoScale);
+    // window.addEventListener('resize', autoScale);
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('load', autoScale);
     });
-    setInterval(autoScale, 1000);
+    // setInterval(autoScale, 1000);
     window.triggerAutoScale = autoScale;
 });
 
