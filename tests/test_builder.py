@@ -23,11 +23,11 @@ background-color: 'red'
 Other Pages
 ![Image-1](image.png)
 ---
-Paragraph 1
+Paragraph 1 中文
 ___
-Paragraph 2
+Paragraph 2 أخذ العينات; اختبار التبقع; اخذ العينات; اعتيان
 ***
-Paragraph 3
+Paragraph 3 Арефьев.Виталий.Кириллович
 ***
 ![Image-2](image2.png)
     """
@@ -39,7 +39,7 @@ Paragraph 3
         os.mkdir(res_dir)
 
         # Create various test files
-        with open(doc_path, "w") as f:
+        with open(doc_path, "w", encoding="utf8") as f:
             f.write(doc)
 
         with open(os.path.join(temp_dir, "image.png"), "w") as f:
@@ -57,7 +57,7 @@ def appeared(text, pattern):
 
 def test_rendering(setup_test_env):
     _, doc_path, _, _ = setup_test_env
-    with open(doc_path) as f:
+    with open(doc_path, encoding="utf8") as f:
         doc = f.read()
     html = render_jinja2(doc, template_dir())
     assert appeared(html, "chunk-paragraph") == 5
@@ -82,7 +82,7 @@ def test_build(setup_test_env):
     options = read_options(doc_path)
     build(doc_path, output_dir, template_dir(), template_dir(options.theme))
     j = os.path.join
-    with open(j(output_dir, "index.html")) as f:
+    with open(j(output_dir, "index.html"), encoding="utf8") as f:
         output_html = f.read()
 
     # output dir integrity
@@ -95,7 +95,7 @@ def test_build(setup_test_env):
         assert name in output_html
 
     # use beamer css
-    with open(j(output_dir, "css", "extension.css")) as f:
+    with open(j(output_dir, "css", "extension.css"), encoding="utf8") as f:
         assert len(f.readlines()) > 2
 
 
@@ -103,12 +103,12 @@ def test_retrieve_structure():
     doc = """
 # Title
 p0
-## Heading1
+## Heading1 中文
 p1
-### Subheading1
+### Subheading1 أخذ العينات; اختبار التبقع; اخذ العينات; اعتيان
 p2
 ## Heading2
-### Subheading1
+### Subheading1 Арефьев.Виталий.Кириллович
 p3
 # Title2
 p4

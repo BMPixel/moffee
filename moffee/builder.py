@@ -9,7 +9,7 @@ from moffee.utils.file_helper import redirect_paths, copy_assets, merge_director
 
 def read_options(document_path) -> PageOption:
     """Read frontmatter options from the document path"""
-    with open(document_path, "r") as f:
+    with open(document_path, "r", encoding="utf8") as f:
         document = f.read()
     _, options = parse_frontmatter(document)
     return options
@@ -96,7 +96,7 @@ def build(
     document_path: str, output_dir: str, template_dir: str, theme_dir: str = None
 ):
     """Render document, create output directories and write result html."""
-    with open(document_path) as f:
+    with open(document_path, encoding="utf8") as f:
         document = f.read()
     asset_dir = os.path.join(output_dir, "assets")
 
