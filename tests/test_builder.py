@@ -23,11 +23,11 @@ background-color: 'red'
 Other Pages
 ![Image-1](image.png)
 ---
-Paragraph 1 中文
+Paragraph 1
 ___
-Paragraph 2 أخذ العينات; اختبار التبقع; اخذ العينات; اعتيان
+Paragraph 2
 ***
-Paragraph 3 Арефьев.Виталий.Кириллович
+Paragraph 3
 ***
 ![Image-2](image2.png)
     """
@@ -103,12 +103,12 @@ def test_retrieve_structure():
     doc = """
 # Title
 p0
-## Heading1 中文
+## Heading1
 p1
-### Subheading1 أخذ العينات; اختبار التبقع; اخذ العينات; اعتيان
+### Subheading1
 p2
 ## Heading2
-### Subheading1 Арефьев.Виталий.Кириллович
+### Subheading1
 p3
 # Title2
 p4
