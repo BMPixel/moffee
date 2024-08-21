@@ -205,20 +205,26 @@ def parse_deco(line: str, base_option: Optional[PageOption] = None) -> PageOptio
     :return: An updated PageOption
     """
 
-    def rm_quotes(s):
-        if (s.startswith('"') and s.endswith('"')) or (
-            s.startswith("'") and s.endswith("'")
-        ):
-            return s[1:-1]
-        return s
+    def parse_key_value_string(s: str) -> dict:
+        pattern = r'([\w-]+)\s*=\s*((?:"(?:[^"\\]|\\.)*"|\'(?:[^\'\\]|\\.)*\'|[^,]+))'
+        matches = re.findall(pattern, s)
+
+        result = {}
+        for key, value in matches:
+            if (value.startswith('"') and value.endswith('"')) or (
+                value.startswith("'") and value.endswith("'")
+            ):
+                value = value[1:-1].replace('\\"', '"').replace("\\'", "'")
+            result[key] = value.strip()
+
+        return result
 
     deco_match = re.match(r"^\s*@\((.*?)\)\s*$", line)
     if not deco_match:
         raise ValueError(f"Input line should contain a deco, {line} received.")
 
     deco_content = deco_match.group(1)
-    pairs = re.findall(r"([\w\-]+)\s*=\s*([^,]+)(?:,|$)", deco_content)
-    deco = {key.strip(): rm_quotes(value.strip()) for key, value in pairs}
+    deco = parse_key_value_string(deco_content)
 
     if base_option is None:
         base_option = PageOption()

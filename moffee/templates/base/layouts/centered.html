@@ -1,4 +1,4 @@
-<div class="slide-content centered" {{"style"}}="{% for key, value in slide.styles.items() %}{{ key }}: {{ value }}; {% endfor %}">
+<div class="slide-content centered" {{"style"}}="{% for key, value in slide.styles.items() %}{{ key }}: {{ value | escape }}; {% endfor %}">
     {% if slide.h1 %}
     <h1>{{ slide.h1 }}</h1>
     {% endif %}

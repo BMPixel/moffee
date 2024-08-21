@@ -67,6 +67,14 @@ def test_deco_with_hyphen():
     assert option.styles == {"background-color": "red"}
 
 
+def test_deco_with_complex_url():
+    line = """@(background-image='url("https://www.example.com/hello(world, this%20isa complex@url)")')"""
+    option = parse_deco(line)
+    assert option.styles == {
+        "background-image": 'url("https://www.example.com/hello(world, this%20isa complex@url)")'
+    }
+
+
 def test_computed_slide_size():
     page_option = PageOption()
     assert page_option.computed_slide_size == (720, 405)
