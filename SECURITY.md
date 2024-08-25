@@ -12,7 +12,7 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please report it by creating an issue in our project's Issue Tracker. 
+If you discover a security vulnerability, please report it by creating an issue in our project's Issue Tracker.
 
 When reporting, please provide:
 - A brief description of the vulnerability

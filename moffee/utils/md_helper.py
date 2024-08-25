@@ -40,26 +40,30 @@ def is_empty(line: str) -> bool:
     return is_comment(line) or line.strip() == ""
 
 
-def is_divider(line: str, type=None) -> bool:
+def is_divider(line: str, type: Optional[str] = None) -> bool:
     """
-    Determines if a given line is a Markdown divider (horizontal rule).
-    Markdown dividers are three or more hyphens, asterisks, or underscores,
-    without any other characters except spaces.
+    Determines if a given line is a Markdown divider (horizontal rule, vertical divider, or horizontal divider).
 
     :param line: The line to check
-    :param type: Which type to match, str. e.g. "*" to match "***" only. Defaults to "", match any of "*", "-" and "_".
+    :param type: Which type to match, str. e.g. "*" to match "***" only, "<" to match "<->", "=" to match "===".
+                 Defaults to None, match any of "*", "-", "_", "<" or "=".
     :return: True if the line is a divider, False otherwise
     """
     stripped_line = line.strip()
-    if len(stripped_line) < 3:
-        return False
     if type is None:
-        type = "-*_"
-
-    assert type in "-*_", "type must be either '*', '-' or '_'"
-    return all(char in type for char in stripped_line) and any(
-        char * 3 in stripped_line for char in type
-    )
+        return bool(re.match(r"^\s*([\*\-\_]{3,}|<->|={3,})\s*$", stripped_line))
+    elif type == "*":
+        return bool(re.match(r"^\s*\*{3,}\s*$", stripped_line))
+    elif type == "-":
+        return bool(re.match(r"^\s*\-{3,}\s*$", stripped_line))
+    elif type == "_":
+        return bool(re.match(r"^\s*_{3,}\s*$", stripped_line))
+    elif type == "<":
+        return bool(re.match(r"^\s*<->\s*$", stripped_line))
+    elif type == "=":
+        return bool(re.match(r"^\s*={3,}\s*$", stripped_line))
+    else:
+        return False
 
 
 def contains_image(line: str) -> bool:

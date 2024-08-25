@@ -65,15 +65,15 @@ moffee is an open-source slide maker that transforms markdown documents into cle
 
 One of moffee's strengths is using dividers to organize text and images effectively.
 
-___
+===
 
 - Use `---` to trigger page breaks.
-- Use `***` to arrange elements horizontally.
-- Use `___` to split elements vertically.
+- Use `<->` to arrange elements horizontally.
+- Use `===` to split elements vertically.
 
 moffee automatically adjusts element sizes to accommodate large blocks of text or complex illustrations.
 
-***
+<->
 
 ![blue coffee](coffee.png)
 ```
@@ -158,23 +158,23 @@ Text on the next slide.
 
 You'll notice the second slide shares the `Page 1` title. moffee selects the most suitable title for each slide.
 
-In addition to `---`, moffee supports `***` and `___` for in-slide layout. Use `***` to separate elements horizontally:
+In addition to `---`, moffee supports `<->` and `===` for in-slide layout. Use `<->` to separate elements horizontally:
 
 ```markdown
 Text on the left.
-***
+<->
 ![Image on the right](https://placehold.co/600x400)
 ```
 
-`___` places elements vertically and takes precedence over `***`. Use them together for flexible layouts:
+`===` places elements vertically and takes precedence over `<->`. Use them together for flexible layouts:
 
 ```markdown
 Top bun
-___
+===
 Patty on the left
-***
+<->
 Lettuce on the right
-___
+===
 Bottom bun
 ```
 

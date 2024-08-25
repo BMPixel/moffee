@@ -15,7 +15,7 @@ Use headers to structure your presentation:
 Emphasize key points:
 - *Italic*: `*italic*` or `_italic_`
 - **Bold**: `**bold**` or `__bold__`
-- ***Bold and Italic***: `***bold and italic***`
+- <->Bold and Italic<->: `<->bold and italic<->`
 
 ### Lists
 Organize information clearly:
@@ -131,18 +131,18 @@ Content for slide 2
 ### In-slide Layout
 
 #### Horizontal Separation
-Create columns with `***`:
+Create columns with `<->`:
 ```markdown
 Left column content
-***
+<->
 Right column content
 ```
 
 #### Vertical Separation
-Stack content with `___`:
+Stack content with `===`:
 ```markdown
 Top section
-___
+===
 Bottom section
 ```
 
@@ -150,11 +150,11 @@ Bottom section
 Create complex layouts:
 ```markdown
 Top row
-___
+===
 Left column
-***
+<->
 Right column
-___
+===
 Bottom row
 ```
 

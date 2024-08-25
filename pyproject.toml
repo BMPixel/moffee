@@ -18,6 +18,7 @@ pymdown-extensions = "^10.8.1"
 livereload = "^2.7.0"
 click = "^8.1.7"
 beautifulsoup4 = "^4.12.3"
+myst-parser = "^4.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.2.2"

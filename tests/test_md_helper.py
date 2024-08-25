@@ -40,6 +40,15 @@ def test_is_divider():
     assert is_divider("***", type="*") is True
     assert is_divider("***", type="-") is False
     assert is_divider("* * *", type="*") is False
+    assert is_divider("<->") is True
+    assert is_divider("<->", type="<") is True
+    assert is_divider("<->", type="-") is False
+    assert is_divider("===") is True
+    assert is_divider("===", type="=") is True
+    assert is_divider("===", type="*") is False
+    assert is_divider("  ===  ") is True
+    assert is_divider("==") is False
+    assert is_divider("= = =") is False
 
 
 def test_contains_image():
