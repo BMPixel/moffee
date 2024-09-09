@@ -7,7 +7,7 @@ extensions = [
     "pymdownx.extra",
     "pymdownx.caret",
     "pymdownx.tilde",
-    "nl2br",
+    # "nl2br",
     "admonition",
     "pymdownx.superfences",
     "pymdownx.saneheaders",
@@ -18,6 +18,7 @@ extensions = [
     "wikilinks",
     "pymdownx.inlinehilite",
     "moffee.utils.md_obsidian_ext",
+    "moffee.utils.math_escape_ext",
 ]
 
 extension_configs = {
