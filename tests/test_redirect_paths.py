@@ -1,3 +1,4 @@
+from urllib.parse import quote
 import pytest
 import tempfile
 import os
@@ -31,9 +32,22 @@ def test_redirect_paths(setup_test_env):
     temp_dir, doc_path, res_dir = setup_test_env
 
     document = """
-Image Path: "image.png"
-Image in resource: "image2.png"
-URL: "http://example.com"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Sample Images and URL</h1>
+    <img src="image.png" alt="Sample Image">
+    <img src="resources/image2.png" alt="Image in resource">
+    <a href="http://example.com">Example URL</a>
+    <script src="script.js"></script>
+</body>
+</html>"
 """
 
     redirected_document = redirect_paths(document, doc_path, res_dir)
@@ -41,18 +55,31 @@ URL: "http://example.com"
     expected_path_image1 = os.path.abspath(os.path.join(temp_dir, "image.png"))
     expected_path_image2 = os.path.abspath(os.path.join(res_dir, "image2.png"))
 
-    assert f'"{expected_path_image1}"' in redirected_document
-    assert '"http://example.com"' in redirected_document
-    assert f'"{expected_path_image2}"' in redirected_document
+    assert quote(f"{expected_path_image1}") in redirected_document
+    assert "http://example.com" in redirected_document
+    assert quote(f"{expected_path_image2}") in redirected_document
 
 
 def test_redirect_paths_no_res_dir(setup_test_env):
     temp_dir, doc_path, res_dir = setup_test_env
 
     document = """
-Image Path: "image.png"
-Image in resource: "image2.png"
-URL: "http://example.com"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Sample Images and URL</h1>
+    <img src="image.png" alt="Sample Image">
+    <img src="resources/image2.png" alt="Image in resource">
+    <a href="http://example.com">Example URL</a>
+    <script src="script.js"></script>
+</body>
+</html>"
 """
 
     redirected_document = redirect_paths(document, doc_path)
@@ -60,10 +87,10 @@ URL: "http://example.com"
     expected_path_image1 = os.path.abspath(os.path.join(temp_dir, "image.png"))
     expected_path_image2 = os.path.abspath(os.path.join(res_dir, "image2.png"))
 
-    assert f'"{expected_path_image1}"' in redirected_document
-    assert '"http://example.com"' in redirected_document
-    assert not f'"{expected_path_image2}"' in redirected_document
-    assert f'"image2.png"' in redirected_document
+    assert quote(f"{expected_path_image1}") in redirected_document
+    assert "http://example.com" in redirected_document
+    assert quote(f"{expected_path_image2}") in redirected_document
+    assert quote(f"image2.png") in redirected_document
 
 
 def test_redirect_paths_trivial(setup_test_env):

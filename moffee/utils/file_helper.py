@@ -1,7 +1,7 @@
 import os
 import re
 import shutil
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse, quote
 from pathlib import Path
 import uuid
 
@@ -31,7 +31,7 @@ def redirect_paths(document: str, document_path: str, resource_dir: str = ".") -
     - The resource dir (if it exists as an absolute path)
     - The resource dir relative to the document (Otherwise)
 
-    :param document: Markdown document string
+    :param document: HTML document string
     :param document_path: Path to the document
     :param resource_dir: Optional resource path
     :return: Document string with all urls redirected.
@@ -45,10 +45,9 @@ def redirect_paths(document: str, document_path: str, resource_dir: str = ".") -
     def make_absolute(base, relative):
         return os.path.abspath(os.path.normpath(os.path.join(base, relative)))
 
-    def replace_url(match):
-        url = match.group(1)
+    def redirect_url(url):
         if is_absolute_url(url):
-            return match.group(0)
+            return url
 
         # Try different base paths to make the URL absolute
         base_paths = [
@@ -60,23 +59,35 @@ def redirect_paths(document: str, document_path: str, resource_dir: str = ".") -
         for base in base_paths:
             absolute_url = make_absolute(base, url)
             if os.path.exists(absolute_url) or is_absolute_url(absolute_url):
-                return match.group(0).replace(url, absolute_url)
+                return absolute_url
 
-        return match.group(0)
+        return url
 
-    # Regular expression to find markdown links
-    # import ipdb; ipdb.set_trace(context=15)
-    url_pattern = re.compile(r'"(.+?)"')
+    soup = BeautifulSoup(document, "html.parser")
 
-    # Substitute all URLs in the document using the replace_url function
-    redirected_document = url_pattern.sub(replace_url, document)
+    # Tags and attributes to check for URLs
+    tag_attr_pairs = [
+        ("img", "src"),
+        ("link", "href"),
+        ("script", "src"),
+        ("a", "href"),
+    ]
 
-    return redirected_document
+    for tag, attr in tag_attr_pairs:
+        for element in soup.find_all(tag):
+            if element.has_attr(attr):
+                original_url = element[attr]
+                decoded_url = unquote(original_url)
+                redirected_url = redirect_url(decoded_url)
+                element[attr] = redirected_url
+
+    return str(soup)
 
 
 def copy_assets(document: str, target_dir: str) -> str:
     """
     Copy all asset resources in an HTML document to target_dir, then update URLs to target_dir/uuid_originalname.ext
+    Handles encoded URLs.
 
     :param document: HTML document to process
     :param target_dir: Target directory
@@ -103,24 +114,34 @@ def copy_assets(document: str, target_dir: str) -> str:
             if element.has_attr(attr):
                 original_path = element[attr]
 
-                # Skip if it's an external URL or a non-file path
-                if urlparse(original_path).scheme or not os.path.isfile(original_path):
+                # Decode the URL
+                decoded_path = unquote(original_path)
+
+                # Skip if it's an external URL
+                if urlparse(decoded_path).scheme:
+                    continue
+
+                # Convert to absolute path if it's relative
+                absolute_path = os.path.abspath(decoded_path)
+
+                # Skip if it's not a file
+                if not os.path.isfile(absolute_path):
                     continue
 
                 if original_path not in path_mapping:
                     # Generate a new filename
-                    original_filename = os.path.basename(original_path)
+                    original_filename = os.path.basename(absolute_path)
                     name, ext = os.path.splitext(original_filename)
                     new_filename = f"{str(uuid.uuid4())[:8]}_{name}{ext}"
                     new_path = os.path.join(target_dir, new_filename)
 
                     # Copy the file
-                    shutil.copy2(original_path, new_path)
+                    shutil.copy2(absolute_path, new_path)
 
                     # Store the mapping
                     path_mapping[original_path] = new_path
 
                 # Update the attribute with the new path
-                element[attr] = path_mapping[original_path]
+                element[attr] = quote(path_mapping[original_path])
 
     return str(soup)
