@@ -302,6 +302,10 @@ blockquote {
     color: #333;
 }
 
+code {
+    white-space: pre-wrap;
+}
+
 /* Checkbox */
 
 .task-list-item {
