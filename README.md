@@ -184,7 +184,7 @@ Front matter is used to define moffee's behavior. Here are some common used opti
 
 ```yaml
 ---
-theme: default # Other availble themes are "beam", "robo", "blue" and "gaia"
+theme: default # Other available themes are "beam", "robo", "blue" and "gaia"
 layout: content # HTML template. Use "centered" for centered alignment.
 resource_dir: "." # Relative URLs are based on this directory.
 aspect_ratio: "16:9" # Aspect ratio of the slides
