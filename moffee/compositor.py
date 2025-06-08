@@ -11,6 +11,10 @@ from moffee.utils.md_helper import (
     contains_deco,
 )
 
+# Pre-compiled regex patterns for better performance
+ASPECT_RATIO_PATTERN = re.compile(r"([0-9]+):([0-9]+)")
+KEY_VALUE_PATTERN = re.compile(r'([\w-]+)\s*=\s*((?:"(?:[^"\\]|\\.)*"|\'(?:[^\'\\]|\\.)*\'|[^,]+))')
+
 DEFAULT_ASPECT_RATIO = "16:9"
 DEFAULT_SLIDE_WIDTH = 720
 DEFAULT_SLIDE_HEIGHT = 405
@@ -38,7 +42,7 @@ class PageOption:
         assert isinstance(
             self.aspect_ratio, str
         ), f"Aspect ratio must be a string, got {self.aspect_ratio}"
-        matches = re.match("([0-9]+):([0-9]+)", self.aspect_ratio)
+        matches = ASPECT_RATIO_PATTERN.match(self.aspect_ratio)
         if matches is None:
             raise ValueError(f"Incorrect aspect ratio format: {self.aspect_ratio}")
         ar = int(matches.group(2)) / int(matches.group(1))
@@ -205,8 +209,7 @@ def parse_deco(line: str, base_option: Optional[PageOption] = None) -> PageOptio
     """
 
     def parse_key_value_string(s: str) -> dict:
-        pattern = r'([\w-]+)\s*=\s*((?:"(?:[^"\\]|\\.)*"|\'(?:[^\'\\]|\\.)*\'|[^,]+))'
-        matches = re.findall(pattern, s)
+        matches = KEY_VALUE_PATTERN.findall(s)
 
         result = {}
         for key, value in matches:
