@@ -1,4 +1,3 @@
-from typing import List
 from dataclasses import dataclass, field, fields
 from typing import List, Optional, Tuple, Dict, Any
 from copy import deepcopy
