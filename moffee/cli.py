@@ -9,6 +9,10 @@ import tempfile
 
 def run(md, output=None, live=False):
     """Process the markdown file to render slides."""
+    if not os.path.exists(md):
+        click.echo(f"Error: Markdown file '{md}' does not exist.", err=True)
+        raise click.Abort()
+    
     if not output:
         output = tempfile.mkdtemp()
     template_dir = os.path.join(os.path.dirname(__file__), "templates")
