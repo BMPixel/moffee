@@ -19,6 +19,11 @@ def run(md, output=None, live=False):
     options = read_options(md)
     base_template_dir = os.path.join(template_dir, "base")
     theme_template_dir = os.path.join(template_dir, options.theme)
+    
+    if not os.path.exists(theme_template_dir):
+        click.echo(f"Error: Theme '{options.theme}' not found in templates directory.", err=True)
+        click.echo(f"Available themes: {', '.join(os.listdir(template_dir))}", err=True)
+        raise click.Abort()
     render_handler = partial(
         build,
         document_path=md,
