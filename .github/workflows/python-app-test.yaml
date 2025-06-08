@@ -21,32 +21,19 @@ jobs:
       with:
         python-version: "3.10"
 
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
       with:
-        version: 1.5.1
-        virtualenvs-create: true
-        virtualenvs-in-project: true
+        enable-cache: true
 
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v4
-      with:
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction --no-root
-
-    - name: Install project
-      run: poetry install --no-interaction
+    - name: Set up project
+      run: uv sync --dev
 
     - name: Lint with flake8
       run: |
-        poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        poetry run flake8 . --count --exit-zero --statistics
+        uv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        uv run flake8 . --count --exit-zero --statistics
 
     - name: Test with pytest
       run: |
-        poetry run pytest
+        uv run pytest

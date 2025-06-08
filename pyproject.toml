@@ -1,45 +1,49 @@
-[tool.poetry]
+[project]
 name = "moffee"
 version = "0.2.7"
 description = "A slide maker that transform markdown into slides."
-authors = ["Wenbo Pan <pixelwenbo@gmail.com>"]
+authors = [
+    {name = "Wenbo Pan", email = "pixelwenbo@gmail.com"}
+]
 readme = "README.md"
-license = "MIT"
+license = {text = "MIT"}
 homepage = "https://github.com/bmpixel/moffee"
 repository = "https://github.com/bmpixel/moffee"
 keywords = ["markdown", "slides", "presentation", "CLI"]
+requires-python = ">=3.10"
+dependencies = [
+    "jinja2>=3.1.4",
+    "markdown>=3.6",
+    "pyyaml>=6.0.1",
+    "pymdown-extensions>=10.8.1",
+    "livereload>=2.7.0",
+    "click>=8.1.7",
+    "beautifulsoup4>=4.12.3",
+    "myst-parser>=4.0.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-jinja2 = "^3.1.4"
-markdown = "^3.6"
-pyyaml = "^6.0.1"
-pymdown-extensions = "^10.8.1"
-livereload = "^2.7.0"
-click = "^8.1.7"
-beautifulsoup4 = "^4.12.3"
-myst-parser = "^4.0.0"
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.2",
+    "wat-inspector>=0.3.3",
+    "pygments>=2.18.0",
+    "ipdb>=0.13.13",
+    "flake8>=7.1.1",
+    "black>=24.8.0",
+    "pre-commit>=3.8.0",
+    "mkdocs>=1.6.0",
+    "mkdocs-callouts>=1.14.0",
+]
 
-[tool.poetry.dev-dependencies]
-pytest = "^8.2.2"
-wat-inspector = "^0.3.3"
-pygments = "^2.18.0"
-ipdb = "^0.13.13"
-flake8 = "^7.1.1"
-black = "^24.8.0"
-pre-commit = "^3.8.0"
-mkdocs = "^1.6.0"
-mkdocs-callouts = "^1.14.0"
+[project.scripts]
+moffee = "moffee.cli:cli"
 
 [tool.ipdb]
 context = 15
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-moffee = "moffee.cli:cli"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.flake8]
 exclude = [

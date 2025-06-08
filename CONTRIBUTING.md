@@ -53,25 +53,25 @@ Adhering to the following process is the best way to get your work included in t
    git checkout -b <topic-branch-name>
    ```
 
-3. Set up the development environment. moffee uses [poetry](https://python-poetry.org/) to manage dependencies:
+3. Set up the development environment. moffee uses [uv](https://docs.astral.sh/uv/) to manage dependencies:
 
     ```bash
     # Install project and dependencies
-    poetry install
-    # Use 'poetry run moffee' to call the CLI tool
-    poetry run moffee live your_example.md
+    uv sync --dev
+    # Use 'uv run moffee' to call the CLI tool
+    uv run moffee live your_example.md
     ```
 
 4. It's coding time! moffee uses PEP 8 compatible code. Linters and formatters are defined as [pre-commit](https://pre-commit.com/) hooks in `.pre-commit-config.yaml`. To ensure a consistent code style, you can call the pre-commit hooks manually before commits:
 
     ```bash
-    poetry run pre-commit run --all-files
+    uv run pre-commit run --all-files
     ```
 
 5. Test your code with [pytest](https://docs.pytest.org/en/stable/):
 
    ```bash
-   poetry run pytest
+   uv run pytest
    ```
 
 6. Locally merge (or rebase) the upstream development branch into your topic branch and push your topic branch to your fork:
