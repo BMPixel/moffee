@@ -28,7 +28,7 @@ default_h2: true
 default_h3: true
 aspect_ratio: "16:9"
 slide_width: 720
-slide_width: 405
+slide_height: 405
 ---
 ```
 
